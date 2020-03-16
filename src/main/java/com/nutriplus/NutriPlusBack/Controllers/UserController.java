@@ -94,7 +94,7 @@ public class UserController {
 
         UserLoginDTO userLoginDTO = UserLoginDTO.Create(user);
 
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userLoginDTO);
     }
 
 
