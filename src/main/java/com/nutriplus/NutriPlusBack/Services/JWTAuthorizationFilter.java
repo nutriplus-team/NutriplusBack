@@ -1,8 +1,9 @@
 package com.nutriplus.NutriPlusBack.Services;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -45,21 +48,31 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null)
         {
-            Jws<Claims> claims = Jwts.parser()
-                    .setSigningKey(SecurityConstants.SECRET.getBytes())
-                    .parseClaimsJws(token);
+//            Jws<Claims> claims = Jwts.parser()
+//                    .setSigningKey(SecurityConstants.SECRET.getBytes())
+//                    .parseClaimsJws(token);
+//
+//            String user = claims.getBody().get("username").toString();
 
-            String user = claims.getBody().get("username").toString();
+            try {
+                DecodedJWT jwt = JWT.decode(token);
+                Date expiresAt = jwt.getExpiresAt();
+                if(expiresAt.getTime() < System.currentTimeMillis())
+                {
+                    return null;
+                }
+                Map<String, Claim> claims = jwt.getClaims();
+                Claim claim = claims.get("username");
+                String user = claim.asString();
+                return user != null ?
+                        new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()) :
+                        null;
+            }
+            catch (JWTDecodeException exception)
+            {
+                return null;
+            }
 
-//            String user = Jwts.parser()
-//                    .setSigningKey(SecurityConstants.SECRET)
-//                    .parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-//                    .getBody()
-//                    .getSubject();
-
-            return user != null ?
-                    new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()) :
-                    null;
         }
 
         return null;

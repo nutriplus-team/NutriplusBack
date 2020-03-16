@@ -20,8 +20,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation 'com.auth0:java-jwt:3.10.1'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.2.2.RELEASE'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-web

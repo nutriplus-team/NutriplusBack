@@ -1,23 +1,15 @@
 package com.nutriplus.NutriPlusBack.Controllers;
 
-import com.nutriplus.NutriPlusBack.Domain.DTOs.ErrorDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.UserDataDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.UserLoginDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sun.security.validator.ValidatorException;
 
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/user")
@@ -65,6 +57,44 @@ public class UserController {
         UserLoginDTO responseData = UserLoginDTO.Create(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseData);
+    }
+
+    @PostMapping("/login/")
+    public ResponseEntity<?> Login(@RequestBody LoginDTO userData)
+    {
+        if(userData.password == null || userData.usernameOrEmail == null)
+        {
+            ErrorDTO errorDTO = new ErrorDTO("Missing information.", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.OK).body(errorDTO);
+        }
+        String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        Pattern patter = Pattern.compile(emailRegex);
+        Matcher matcher = patter.matcher(userData.usernameOrEmail);
+        UserCredentials user;
+        if(matcher.matches())
+        {
+            user = applicationUserRepository.findByEmail(userData.usernameOrEmail);
+        }
+        else
+        {
+            user = applicationUserRepository.findByUsername(userData.usernameOrEmail);
+        }
+
+        if(user == null)
+        {
+            ErrorDTO errorDTO = new ErrorDTO("User not found", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+        }
+
+        if(!bCryptPasswordEncoder.encode(userData.password).equals(user.password))
+        {
+            ErrorDTO errorDTO = new ErrorDTO("Invalid Password", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+        }
+
+        UserLoginDTO userLoginDTO = UserLoginDTO.Create(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
 

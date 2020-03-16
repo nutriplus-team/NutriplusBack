@@ -2,8 +2,6 @@ package com.nutriplus.NutriPlusBack.Services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
