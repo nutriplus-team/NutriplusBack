@@ -47,16 +47,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-        String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
-                .compact();
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + " " + token);
-    }
+//    @Override
+//    protected void successfulAuthentication(HttpServletRequest req,
+//                                            HttpServletResponse res,
+//                                            FilterChain chain,
+//                                            Authentication auth) throws IOException, ServletException {
+//        String token = Jwts.builder()
+//                .setSubject(((User) auth.getPrincipal()).getUsername())
+//                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+//                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
+//                .compact();
+//        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + " " + token);
+//    }
 }

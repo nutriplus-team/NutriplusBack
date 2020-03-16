@@ -1,5 +1,7 @@
 package com.nutriplus.NutriPlusBack.Services;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,11 +45,17 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null)
         {
-            String user = Jwts.parser()
-                    .setSigningKey(SecurityConstants.SECRET)
-                    .parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                    .getBody()
-                    .getSubject();
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(SecurityConstants.SECRET.getBytes())
+                    .parseClaimsJws(token);
+
+            String user = claims.getBody().get("username").toString();
+
+//            String user = Jwts.parser()
+//                    .setSigningKey(SecurityConstants.SECRET)
+//                    .parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+//                    .getBody()
+//                    .getSubject();
 
             return user != null ?
                     new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()) :

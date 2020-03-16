@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableNeo4jRepositories(basePackages = "com.nutriplus.NutriPlusBack.Repositories")
-@EntityScan(basePackages = "com.nutriplus.NutriPlusBack.Entities")
+@EntityScan(basePackages = "com.nutriplus.NutriPlusBack.Domain")
 @EnableTransactionManagement
 public class ApplicationConfiguration {
 
     @Bean
     public SessionFactory sessionFactory() {
-        return new org.neo4j.ogm.session.SessionFactory(configuration(), "com.nutriplus.NutriPlusBack.Entities");
+        return new org.neo4j.ogm.session.SessionFactory(configuration(), "com.nutriplus.NutriPlusBack.Domain");
     }
 
 
@@ -28,7 +28,7 @@ public class ApplicationConfiguration {
 
     @Bean org.neo4j.ogm.config.Configuration configuration() {
         org.neo4j.ogm.config.Configuration configuration = new org.neo4j.ogm.config.Configuration.Builder()
-                .uri("bolt://localhost:7474")
+                .uri("bolt://localhost")
                 .credentials("neo4j", "password")
                 .build();
         return configuration;
