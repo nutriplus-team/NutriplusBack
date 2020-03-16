@@ -1,8 +1,7 @@
-package main.java.com.nutriplus.NutriPlusBack;
+package com.nutriplus.NutriPlusBack;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 
 @SpringBootApplication
 public class NutriPlusBackApplication {
