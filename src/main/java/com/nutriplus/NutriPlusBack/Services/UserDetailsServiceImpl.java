@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.Services;
 
-import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
-import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        return new User(userCredentials.username, userCredentials.password, Collections.emptyList());
+        return new User(userCredentials.getUsername(), userCredentials.getPassword(), Collections.emptyList());
     }
 }

@@ -1,4 +1,4 @@
-package com.nutriplus.NutriPlusBack.Domain.DTOs;
+package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
 
 public class LoginDTO {
     public String usernameOrEmail;

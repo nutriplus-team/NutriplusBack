@@ -1,8 +1,8 @@
-package com.nutriplus.NutriPlusBack.Domain.DTOs;
+package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
 import com.nutriplus.NutriPlusBack.Services.SecurityConstants;
 
 
@@ -34,8 +34,8 @@ public class UserLoginDTO {
 
         Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET);
         String token = JWT.create()
-                .withClaim("username", user.username)
-                .withClaim("id", user.id)
+                .withClaim("username", user.getUsername())
+                .withClaim("id", user.getId())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(algorithm);
 

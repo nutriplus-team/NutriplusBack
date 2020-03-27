@@ -1,6 +1,6 @@
-package com.nutriplus.NutriPlusBack.Domain.DTOs;
+package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
 
-import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
 
 public class UserDataDTO {
     public String email;
@@ -17,11 +17,11 @@ public class UserDataDTO {
     public static UserDataDTO Create(UserCredentials user)
     {
         UserDataDTO userData = new UserDataDTO();
-        userData.email = user.email;
-        userData.firstName = user.firstName;
-        userData.lastName = user.lastName;
-        userData.username = user.username;
-        userData.id = user.id;
+        userData.email = user.getEmail();
+        userData.firstName = user.getFirstName();
+        userData.lastName = user.getLastName();
+        userData.username = user.getUsername();
+        userData.id = user.getId();
 
         return userData;
     }
