@@ -1,6 +1,6 @@
-package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
+package com.nutriplus.NutriPlusBack.Domain.DTOs;
 
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 
 public class UserDataDTO {
     public String email;

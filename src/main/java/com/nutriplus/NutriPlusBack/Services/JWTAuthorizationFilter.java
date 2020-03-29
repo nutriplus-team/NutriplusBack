@@ -1,9 +1,14 @@
 package com.nutriplus.NutriPlusBack.Services;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,16 +18,21 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager)
+    private final ApplicationUserRepository applicationUserRepository;
+
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, ApplicationUserRepository applicationUserRepository)
     {
         super(authenticationManager);
+        this.applicationUserRepository = applicationUserRepository;
     }
 
     @Override
@@ -48,11 +58,18 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null)
         {
-//            Jws<Claims> claims = Jwts.parser()
-//                    .setSigningKey(SecurityConstants.SECRET.getBytes())
-//                    .parseClaimsJws(token);
-//
-//            String user = claims.getBody().get("username").toString();
+            token = token.replace("Port ", "");
+
+            try{
+                Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET);
+                JWTVerifier verifier = JWT.require(algorithm)
+                        .build();
+                DecodedJWT jwt = verifier.verify(token);
+            }
+            catch (JWTVerificationException exception)
+            {
+                return null;
+            }
 
             try {
                 DecodedJWT jwt = JWT.decode(token);
@@ -62,13 +79,33 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     return null;
                 }
                 Map<String, Claim> claims = jwt.getClaims();
+
+                Claim refreshClaim = claims.get("refresh");
+                if(refreshClaim.asBoolean())
+                {
+                    return null;
+                }
+
                 Claim claim = claims.get("username");
                 String user = claim.asString();
-                return user != null ?
-                        new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()) :
-                        null;
+
+                if(user == null)
+                {
+                    return null;
+                }
+
+                Claim userIdClaim = claims.get("id");
+                Long id = Long.valueOf(userIdClaim.asInt());
+                Optional<UserCredentials> userCredentials = applicationUserRepository.findById(id);
+
+                return userCredentials.map(credentials -> new UsernamePasswordAuthenticationToken(user, credentials, new ArrayList<>())).orElse(null);
+
             }
             catch (JWTDecodeException exception)
+            {
+                return null;
+            }
+            catch (java.lang.NullPointerException e)
             {
                 return null;
             }

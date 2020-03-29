@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.Services;
 
-import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
+import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

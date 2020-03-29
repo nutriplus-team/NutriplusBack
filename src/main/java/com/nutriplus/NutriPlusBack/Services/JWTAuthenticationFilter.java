@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.Services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,16 +41,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-//    @Override
-//    protected void successfulAuthentication(HttpServletRequest req,
-//                                            HttpServletResponse res,
-//                                            FilterChain chain,
-//                                            Authentication auth) throws IOException, ServletException {
-//        String token = Jwts.builder()
-//                .setSubject(((User) auth.getPrincipal()).getUsername())
-//                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-//                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
-//                .compact();
-//        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + " " + token);
-//    }
 }

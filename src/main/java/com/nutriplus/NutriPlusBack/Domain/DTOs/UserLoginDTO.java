@@ -1,8 +1,8 @@
-package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
+package com.nutriplus.NutriPlusBack.Domain.DTOs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Services.SecurityConstants;
 
 
@@ -24,23 +24,22 @@ public class UserLoginDTO {
         userDTO.user = UserDataDTO.Create(user);
 
 
-//        String token = Jwts.builder()
-//        .setSubject("User")
-//                .claim("id", user.id)
-//                .claim("username", user.username)
-//        .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-//        .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET.getBytes())
-//                .compact();
-
         Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET);
-        String token = JWT.create()
+        userDTO.token = JWT.create()
                 .withClaim("username", user.getUsername())
                 .withClaim("id", user.getId())
+                .withClaim("refresh", false)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(algorithm);
 
-        userDTO.token = token;
-        userDTO.refresh = null;
+
+        userDTO.refresh = JWT.create()
+                .withClaim("username", user.getUsername())
+                .withClaim("id", user.getId())
+                .withClaim("refresh", true)
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.REFRESH_EXPIRATION_TIME))
+                .sign(algorithm);
+
         return userDTO;
     }
 }

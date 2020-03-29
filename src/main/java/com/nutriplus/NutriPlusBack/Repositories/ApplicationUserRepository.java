@@ -1,8 +1,7 @@
-package com.nutriplus.NutriPlusBack.repositories;
+package com.nutriplus.NutriPlusBack.Repositories;
 
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.stereotype.Repository;
 
 public interface ApplicationUserRepository extends Neo4jRepository<UserCredentials, Long> {
     UserCredentials findByUsername(String username);

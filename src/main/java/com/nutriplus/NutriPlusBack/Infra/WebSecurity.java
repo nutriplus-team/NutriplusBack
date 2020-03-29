@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.Infra;
 
+import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
 import com.nutriplus.NutriPlusBack.Services.JWTAuthenticationFilter;
 import com.nutriplus.NutriPlusBack.Services.JWTAuthorizationFilter;
 import com.nutriplus.NutriPlusBack.Services.SecurityConstants;
@@ -22,11 +23,13 @@ import org.springframework.context.annotation.Bean;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationUserRepository applicationUserRepository;
 
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder)
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, ApplicationUserRepository applicationUserRepository)
     {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.applicationUserRepository = applicationUserRepository;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), applicationUserRepository))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

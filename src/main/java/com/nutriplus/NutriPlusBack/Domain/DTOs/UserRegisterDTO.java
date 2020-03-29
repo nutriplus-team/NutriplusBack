@@ -1,4 +1,4 @@
-package com.nutriplus.NutriPlusBack.domainClasses.DTOs;
+package com.nutriplus.NutriPlusBack.Domain.DTOs;
 
 public class UserRegisterDTO {
     public String username;

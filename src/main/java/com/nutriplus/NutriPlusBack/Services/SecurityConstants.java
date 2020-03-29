@@ -1,8 +1,9 @@
 package com.nutriplus.NutriPlusBack.Services;
 
 public class SecurityConstants {
-    public static final String SECRET = "SecretKeyToGenJWTs";
-    public static final long EXPIRATION_TIME = 864_000_000; // 10 days
+    public static final String SECRET = "stcW05YEWZN8ipTs7gUW1Gj8O0rdUHhw";
+    public static final long EXPIRATION_TIME = 172_800_000;
+    public static final long REFRESH_EXPIRATION_TIME = 864_000_000; //10 days
     public static final String TOKEN_PREFIX = "Port ";
     public static final String HEADER_STRING = "Authorization";
     public static final String SIGN_UP_URL = "/user/register/";

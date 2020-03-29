@@ -1,6 +1,7 @@
-package com.nutriplus.NutriPlusBack.domainClasses;
+package com.nutriplus.NutriPlusBack.Domain;
 
-import com.nutriplus.NutriPlusBack.domainClasses.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.Validators.Validator;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -84,6 +85,18 @@ public class UserCredentials {
 
     public static String Validate(UserRegisterDTO userData)
     {
+        Boolean check = Validator.CheckIfIsNullOrEmpty(userData.email) ||
+                Validator.CheckIfIsNullOrEmpty(userData.firstName) ||
+                Validator.CheckIfIsNullOrEmpty(userData.lastName) ||
+                Validator.CheckIfIsNullOrEmpty(userData.password1) ||
+                Validator.CheckIfIsNullOrEmpty(userData.password2) ||
+                Validator.CheckIfIsNullOrEmpty(userData.username);
+
+        if(check)
+        {
+            return "Fields should not be empty or null.";
+        }
+
         if(!userData.password1.equals(userData.password2))
         {
             return "Passwords not equal";

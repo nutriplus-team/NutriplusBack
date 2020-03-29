@@ -1,11 +1,12 @@
 package com.nutriplus.NutriPlusBack.Controllers;
 
-import com.nutriplus.NutriPlusBack.domainClasses.DTOs.*;
-import com.nutriplus.NutriPlusBack.domainClasses.UserCredentials;
-import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,43 +62,50 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-//    @PostMapping("/login/")
-//    public ResponseEntity<?> Login(@RequestBody LoginDTO userData)
-//    {
-//        if(userData.password == null || userData.usernameOrEmail == null)
-//        {
-//            ErrorDTO errorDTO = new ErrorDTO("Missing information.");
-//            return ResponseEntity.status(HttpStatus.OK).body(errorDTO);
-//        }
-//        String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-//        Pattern patter = Pattern.compile(emailRegex);
-//        Matcher matcher = patter.matcher(userData.usernameOrEmail);
-//        UserCredentials user;
-//        if(matcher.matches())
-//        {
-//            user = applicationUserRepository.findByEmail(userData.usernameOrEmail);
-//        }
-//        else
-//        {
-//            user = applicationUserRepository.findByUsername(userData.usernameOrEmail);
-//        }
-//
-//        if(user == null)
-//        {
-//            ErrorDTO errorDTO = new ErrorDTO("User not found");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
-//        }
-//
-//        if(!bCryptPasswordEncoder.encode(userData.password).equals(user.password))
-//        {
-//            ErrorDTO errorDTO = new ErrorDTO("Invalid Password");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
-//        }
-//
-//        UserLoginDTO userLoginDTO = UserLoginDTO.Create(user);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(userLoginDTO);
-//    }
+    @PostMapping("/login/")
+    public ResponseEntity<?> Login(@RequestBody LoginDTO userData)
+    {
+        if(userData.password == null || userData.usernameOrEmail == null)
+        {
+            ErrorDTO errorDTO = new ErrorDTO("Missing information.");
+            return ResponseEntity.status(HttpStatus.OK).body(errorDTO);
+        }
+        String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        Pattern patter = Pattern.compile(emailRegex);
+        Matcher matcher = patter.matcher(userData.usernameOrEmail);
+        UserCredentials user;
+        if(matcher.matches())
+        {
+            user = applicationUserRepository.findByEmail(userData.usernameOrEmail);
+        }
+        else
+        {
+            user = applicationUserRepository.findByUsername(userData.usernameOrEmail);
+        }
 
+        if(user == null)
+        {
+            ErrorDTO errorDTO = new ErrorDTO("User not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+        }
+
+        if(!bCryptPasswordEncoder.matches(userData.password, user.getPassword()))
+        {
+            ErrorDTO errorDTO = new ErrorDTO("Invalid Password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+        }
+
+        UserLoginDTO userLoginDTO = UserLoginDTO.Create(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userLoginDTO);
+    }
+
+//    @GetMapping("/teste/")
+//    public UserCredentials testando()
+//    {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserCredentials user = (UserCredentials) authentication.getCredentials();
+//        return user;
+//    }
 
 }
