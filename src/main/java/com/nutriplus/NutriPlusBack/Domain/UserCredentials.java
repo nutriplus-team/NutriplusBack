@@ -1,11 +1,13 @@
 package com.nutriplus.NutriPlusBack.Domain;
 
 import com.nutriplus.NutriPlusBack.Domain.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.Validators.Validator;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.GeneratedValue;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,7 @@ public class UserCredentials {
     private String password;
     private String firstName;
     private String lastName;
-
+    private ArrayList<Patient> patient_list = new ArrayList<Patient>();
     public UserCredentials()
     {
 
@@ -62,6 +64,8 @@ public class UserCredentials {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setPatient(Patient patient){this.patient_list.add(patient);}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
