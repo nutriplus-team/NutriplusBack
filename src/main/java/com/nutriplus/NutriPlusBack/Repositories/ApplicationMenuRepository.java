@@ -9,3 +9,5 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
     @Override
     Optional<Menu> findById(Long aLong);
 }
+
+

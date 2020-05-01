@@ -9,5 +9,8 @@ public class Meal {
     @Id
     @GeneratedValue
     public Long id;
+
+    public Long get_id() { return id; }
+
     // PLACEHOLDER: Deve ser substituído pela implementação final
 }

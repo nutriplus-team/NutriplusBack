@@ -29,10 +29,7 @@ public class Menu extends MenuModel{
     public void remove_portion(Portion portion_value) {portions.remove(portion_value);}
 
     // Getters
-    public Long getId()
-    {
-        return id;
-    }
+    public Long get_id() {return id;}
     public Meal get_meal_type() {return meal_type;}
     public Patient get_patient() {return patient;}
     public ArrayList<Portion> get_portions() {return portions;}

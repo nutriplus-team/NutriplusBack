@@ -20,6 +20,7 @@ public class Portion extends PortionModel {
     public void set_quantity(float quantity_value) {quantity = quantity_value;}
 
     // Getters
+    public Long get_id() {return id;}
     public Food get_food() {return food;}
     public float get_quantity() {return quantity;}
 }
