@@ -4,10 +4,8 @@ import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class MenuModel {
@@ -22,5 +20,5 @@ public abstract class MenuModel {
     Patient patient;
 
     @Relationship(type = "PORTIONS", direction = Relationship.UNDIRECTED)
-    Set<Portions> portions;
+    Set<Portion> portions;
 }

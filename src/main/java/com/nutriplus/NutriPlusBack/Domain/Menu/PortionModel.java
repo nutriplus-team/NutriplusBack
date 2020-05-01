@@ -8,12 +8,12 @@ import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
 
-public abstract class PortionsModel {
+public abstract class PortionModel {
     @Id
     @GeneratedValue
     public Long id;
 
-    @Relationship(type = "Food", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "FOOD", direction = Relationship.UNDIRECTED)
     Food food;
     float quantity;
 }
