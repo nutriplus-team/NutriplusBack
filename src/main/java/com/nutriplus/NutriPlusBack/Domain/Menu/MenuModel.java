@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class MenuModel {
@@ -20,5 +21,5 @@ public abstract class MenuModel {
     Patient patient;
 
     @Relationship(type = "PORTIONS", direction = Relationship.UNDIRECTED)
-    Set<Portion> portions;
+    ArrayList<Portion> portions;
 }
