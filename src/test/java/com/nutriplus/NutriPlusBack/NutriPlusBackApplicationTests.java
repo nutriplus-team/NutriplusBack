@@ -15,6 +15,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.sound.sampled.Port;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 
 import java.util.*;
 
@@ -26,19 +27,6 @@ class NutriPlusBackApplicationTests {
 
 	@Autowired
 	private ApplicationMenuRepository applicationMenuRepository;
-
-	@Autowired
-	private ApplicationPatientRepository applicationPatientRepository;
-
-	@Autowired
-	private ApplicationPortionRepository applicationPortionRepository;
-
-	@Autowired
-	private ApplicationFoodRepository applicationFoodRepository;
-
-	@Autowired
-	private ApplicationMealRepository applicationMealRepository;
-
 
 	@Test
 	void contextLoads() {
@@ -57,15 +45,18 @@ class NutriPlusBackApplicationTests {
 		test.calculate_methabolic_rate(Constants.TINSLEY);
 
 		user.setPatient(test);
-
 		applicationUserRepository.save(user);
 
 		UserCredentials test_user = applicationUserRepository.findByUsername("TestPatient");
+
 		assertThat(test_user).isNotNull();
 		assertThat(test_user.getId()).isEqualTo(user.getId());
 
+		// Delete Data
+		user.deletePatient(test);
+		applicationUserRepository.save(user);
+		applicationUserRepository.deletePatientFromRepository(test.get_id());
 		applicationUserRepository.deleteById(user.getId());
-		applicationPatientRepository.deleteById(test.get_id());
 	}
 
 
@@ -111,13 +102,24 @@ class NutriPlusBackApplicationTests {
 		// Delete Data
 		for(Portion portion_element : dummy_portions)
 		{
-			applicationPortionRepository.deleteById(portion_element.get_id());
+			applicationMenuRepository.deleteFoodFromRepository(portion_element.get_food().get_id());
+			portion_element.set_food(null);
+			portion_element.set_quantity(0);
+			applicationMenuRepository.deletePortionFromRepository(portion_element.get_id());
 		}
+		dummy_portions.clear();
+
+		applicationMenuRepository.deleteMealFromRepository(menu.get_meal_type().get_id());
+		menu.set_meal_type(null);
+
+		menu.set_patient(null);
+		applicationMenuRepository.save(menu);
 
 		applicationMenuRepository.deleteById(menuId);
+
+		userMenu.deletePatient(test_patient);
+		applicationUserRepository.save(userMenu);
+		applicationUserRepository.deletePatientFromRepository(test_patient.get_id());
 		applicationUserRepository.deleteById(userMenu.getId());
-		applicationPatientRepository.deleteById(test_patient.get_id());
-		applicationMealRepository.deleteById(dummy_meal.get_id());
-		applicationFoodRepository.deleteById(dummy_food.get_id());
 	}
 }
