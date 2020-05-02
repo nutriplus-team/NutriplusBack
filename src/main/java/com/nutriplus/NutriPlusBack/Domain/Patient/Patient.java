@@ -77,6 +77,7 @@ public class Patient extends PatientModel {
 
     //Get Functions
 
+    public Long get_id() { return id; }
     public String get_cpf(){
         return cpf;
     }
