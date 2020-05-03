@@ -6,7 +6,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 public class Food extends FoodModel {
     //Constructor
     public Food(){}
-    public Food(String foodNameValue, String foodGroupValue, float measureTotalGramsValue, String measureTypeValue,
+    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
          int measureAmountValue, NutritionFacts nutritionFactsValue)
     {
         foodName            = foodNameValue;
@@ -20,22 +20,23 @@ public class Food extends FoodModel {
     // Setters
     public void setFoodName(String foodNameValue)                     { foodName = foodNameValue; }
     public void setFoodGroup(String foodGroupValue)                   { foodGroup = foodGroupValue; }
-    public void setMeasureTotalGrams(float measureTotalGramsValue)    { measureTotalGrams = measureTotalGramsValue; }
+    public void setMeasureTotalGrams(double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
     public void setMeasureType(String measureTypeValue)               { measureType = measureTypeValue; }
     public void setMeasureAmount(int measureAmountValue)              { measureAmount = measureAmountValue; }
     public void setNutritionFacts(NutritionFacts nutritionFactsValue) { nutritionFacts = nutritionFactsValue; }
 
-//    public void set_calories(float calories_value)              { nutrition_facts.calories = calories_value }
-//    public void set_proteins(float proteins_value)              { nutrition_facts.proteins = proteins_value }
-//    public void set_carbohydrates(float carbohydrates_value)    { nutrition_facts.carbohydrates = carbohydrates_value }
-//    public void set_lipids(float lipids_value)                  { nutrition_facts.lipids = lipids_value }
-//    public void set_fiber(float fiber_value)                    { nutrition_facts.fiber = fiber_value }
+    public void setCalories(double caloriesValue)              { nutritionFacts.calories = caloriesValue; }
+    public void setProteins(double proteinsValue)              { nutritionFacts.proteins = proteinsValue; }
+    public void setCarbohydrates(double carbohydratesValue)    { nutritionFacts.carbohydrates = carbohydratesValue; }
+    public void setLipids(double lipidsValue)                  { nutritionFacts.lipids = lipidsValue; }
+    public void setFiber(double fiberValue)                    { nutritionFacts.fiber = fiberValue; }
+
 
     // Getters
     public Long getId()                       { return id; }
     public String getFoodName()               { return foodName; }
     public String getFoodGroup()              { return foodGroup; }
-    public float getMeasureTotalGrams()       { return measureTotalGrams; }
+    public double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
     public int getMeasureAmount()             { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }

@@ -13,7 +13,7 @@ public abstract class FoodModel {
 
     String foodName;
     String foodGroup;
-    float measureTotalGrams;   // in grams
+    double measureTotalGrams;   // in grams
     String measureType;        // homemade measure, such as a "tablespoon" or a "cup of tea"
     int measureAmount;         // amount of measureType to reach measureTotalGrams
     NutritionFacts nutritionFacts;
@@ -21,9 +21,9 @@ public abstract class FoodModel {
 }
 
 class NutritionFactsModel {
-    float calories;     // calories per measureTotalGrams
-    float proteins;     // proteins per measureTotalGrams
-    float carbohydrates;// carbohydrates per measureTotalGrams
-    float lipids;       // lipids per measureTotalGrams
-    float fiber;        // fiber per measureTotalGrams
+    public double calories;     // calories per measureTotalGrams
+    public double proteins;     // proteins per measureTotalGrams
+    public double carbohydrates;// carbohydrates per measureTotalGrams
+    public double lipids;       // lipids per measureTotalGrams
+    public double fiber;        // fiber per measureTotalGrams
 }

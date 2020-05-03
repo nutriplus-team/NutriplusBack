@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack;
 
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
+import com.nutriplus.NutriPlusBack.Domain.Food.NutritionFacts;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Portion;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Constants;
@@ -24,6 +25,9 @@ class NutriPlusBackApplicationTests {
 
 	@Autowired
 	private ApplicationMenuRepository applicationMenuRepository;
+
+	@Autowired
+	private ApplicationFoodRepository applicationFoodRepository;
 
 	@Test
 	void contextLoads() {
@@ -118,5 +122,31 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.save(userMenu);
 		applicationUserRepository.deletePatientFromRepository(test_patient.get_id());
 		applicationUserRepository.deleteById(userMenu.getId());
+	}
+
+	@Test
+	void TestFood(){
+		// Constructors test
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood = new Food("Feijão", "Leguminosa", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+
+		// Set tests
+		testFood.setFoodName("Arroz");
+		testFood.setFoodGroup("Gãos");
+		testFood.setMeasureTotalGrams(23.0);
+		testFood.setMeasureType("Colher tipo concha");
+		testFood.setMeasureAmount(1);
+
+		testNutritionFacts.lipids = 23;
+		testFood.setNutritionFacts(testNutritionFacts);
+		testFood.setCalories(1.2);
+		testFood.setProteins(2.3);
+		testFood.setCarbohydrates(3.4);
+		testFood.setLipids(4.5);
+		testFood.setFiber(5.6);
+
+		applicationFoodRepository.save(testFood);
 	}
 }
