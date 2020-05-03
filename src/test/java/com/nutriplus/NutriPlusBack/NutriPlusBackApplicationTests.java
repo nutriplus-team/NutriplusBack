@@ -99,7 +99,7 @@ class NutriPlusBackApplicationTests {
 		// Delete Data
 		for(Portion portion_element : dummy_portions)
 		{
-			applicationMenuRepository.deleteFoodFromRepository(portion_element.get_food().get_id());
+			applicationMenuRepository.deleteFoodFromRepository(portion_element.get_food().getId());
 			portion_element.set_food(null);
 			portion_element.set_quantity(0);
 			applicationMenuRepository.deletePortionFromRepository(portion_element.get_id());

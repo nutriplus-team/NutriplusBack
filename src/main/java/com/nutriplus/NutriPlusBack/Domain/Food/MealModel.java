@@ -5,14 +5,18 @@ import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class MealModel {
     @Id
     @GeneratedValue
-    private long id;
+    long id;
 
-    String meal_name;
+    String mealName;
     // Only:
     //  - Breakfast
     //  - Morning snack
@@ -21,5 +25,5 @@ public abstract class MealModel {
     //  - Pre workout
     //  - Dinner
     @Relationship(type = "CONTAINS_FOOD")
-    private List<Food> food_set = new ArrayList<>();
+    List<Food> foodList = new ArrayList<>();
 }
