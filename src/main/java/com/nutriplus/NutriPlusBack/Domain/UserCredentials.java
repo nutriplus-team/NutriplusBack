@@ -6,6 +6,7 @@ import com.nutriplus.NutriPlusBack.Domain.Validators.Validator;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -21,6 +22,7 @@ public class UserCredentials {
     private String password;
     private String firstName;
     private String lastName;
+    @Relationship(type = "IS_PATIENT", direction = Relationship.OUTGOING)
     private ArrayList<Patient> patient_list = new ArrayList<Patient>();
     public UserCredentials()
     {
@@ -66,6 +68,8 @@ public class UserCredentials {
     }
 
     public void setPatient(Patient patient){this.patient_list.add(patient);}
+
+    public void deletePatient(Patient patient) {this.patient_list.remove(patient);}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
