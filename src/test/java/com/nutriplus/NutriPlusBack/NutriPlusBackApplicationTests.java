@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack;
 
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
+import com.nutriplus.NutriPlusBack.Domain.Food.MealType;
 import com.nutriplus.NutriPlusBack.Domain.Food.NutritionFacts;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Portion;
@@ -74,7 +75,10 @@ class NutriPlusBackApplicationTests {
 		userMenu.setPatient(test_patient);
 		applicationUserRepository.save(userMenu);
 
-		Food dummy_food = new Food();
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food dummy_food = new Food("Feijão", "Leguminosa", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
 		ArrayList<Portion> dummy_portions = new ArrayList<>();
 		Portion dummy_portion1 = new Portion(dummy_food, 21.2f);
 		Portion dummy_portion2 = new Portion(dummy_food, 2020.2f);
@@ -83,7 +87,9 @@ class NutriPlusBackApplicationTests {
 		dummy_portions.add(dummy_portion2);
 		dummy_portions.add(dummy_portion3);
 
-		Meal dummy_meal = new Meal();
+		List<Food> testFoodList = new ArrayList<>();
+		testFoodList.add(dummy_food);
+		Meal dummy_meal = new Meal(MealType.BREAKFAST, testFoodList);
 
 		Menu menu = new Menu(dummy_meal, test_patient, dummy_portions);
 		applicationMenuRepository.save(menu);
@@ -110,7 +116,7 @@ class NutriPlusBackApplicationTests {
 		}
 		dummy_portions.clear();
 
-		applicationMenuRepository.deleteMealFromRepository(menu.get_meal_type().get_id());
+		applicationMenuRepository.deleteMealFromRepository(menu.get_meal_type().getId());
 		menu.set_meal_type(null);
 
 		menu.set_patient(null);
@@ -126,27 +132,42 @@ class NutriPlusBackApplicationTests {
 
 	@Test
 	void TestFood(){
-		// Constructors test
+		// Create data
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
-		Food testFood = new Food("Feijão", "Leguminosa", 23.9,
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
 				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food(testFood1);
 
-		// Set tests
-		testFood.setFoodName("Arroz");
-		testFood.setFoodGroup("Gãos");
-		testFood.setMeasureTotalGrams(23.0);
-		testFood.setMeasureType("Colher tipo concha");
-		testFood.setMeasureAmount(1);
+		// Set examples
+		testFood2.setFoodName("Arroz Carioca");
+		testFood2.setFoodGroup("Gãos");
+		testFood2.setMeasureTotalGrams(23.0);
+		testFood2.setMeasureType("Colher tipo concha");
+		testFood2.setMeasureAmount(1);
+		testFood2.setNutritionFacts(testNutritionFacts);
 
-		testNutritionFacts.lipids = 23;
-		testFood.setNutritionFacts(testNutritionFacts);
-		testFood.setCalories(1.2);
-		testFood.setProteins(2.3);
-		testFood.setCarbohydrates(3.4);
-		testFood.setLipids(4.5);
-		testFood.setFiber(5.6);
+		testFood2.setCalories(1.2);
+		testFood2.setProteins(2.3);
+		testFood2.setCarbohydrates(3.4);
+		testFood2.setLipids(4.5);
+		testFood2.setFiber(5.6);
 
-		applicationFoodRepository.save(testFood);
+		System.out.println(testFood1.getId());
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+
+		// Food test
+		List<Food> foodsFound = applicationFoodRepository.findFoodByFoodNameLike("Arroz");
+		for (Food foodFound : foodsFound){
+			assertThat(foodFound).isNotNull();
+		}
+		assertThat(testFood1.getId()).isEqualTo(foodsFound.get(0).getId());
+		assertThat(testFood2.getId()).isEqualTo(foodsFound.get(1).getId());
+
+		// Delete data
+		applicationFoodRepository.deleteFoodById(testFood1.getId());
+//		applicationFoodRepository.deleteById(foodsFound.getId());
+
 	}
 }

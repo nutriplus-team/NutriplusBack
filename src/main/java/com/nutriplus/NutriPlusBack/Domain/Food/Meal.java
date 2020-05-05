@@ -7,24 +7,23 @@ import java.util.List;
 @NodeEntity
 public class Meal extends MealModel {
     //Constructor
-    public Meal(){}
-    public Meal(String mealNameValue, List<Food> foodSetValue){
-        mealName = mealNameValue;
-        foodList = foodSetValue;
+    public Meal(MealType mealTypeValue, List<Food> foodListValue){
+        mealType = mealTypeValue;
+        foodList = foodListValue;
     }
 
 
-    // Setters
-    public void set_meal_name(String mealNameValue) { mealName = mealNameValue; }
+//    // Setters
+//    public void setMealType(MealType mealTypeValue) { mealType = mealTypeValue; }
 
     // Adders
-    public void add_food(Food foodValue)            { foodList.add(foodValue); }
+    public void addFood(Food foodValue)            { foodList.add(foodValue); }
 
     // Removers
-    public void remove_food(Food foodValue)         { foodList.remove(foodValue); }
+    public void removeFood(Food foodValue)         { foodList.remove(foodValue); }
 
     // Getters
-    public Long get_id()            { return id; }
-    public String getMealName()     { return mealName; }
-    public List<Food> getFoodSet()  { return foodList; }
+    public Long getId()             { return id; }
+    public MealType getMealType()   { return mealType; }
+    public List<Food> getFoodList() { return foodList; }
 }
