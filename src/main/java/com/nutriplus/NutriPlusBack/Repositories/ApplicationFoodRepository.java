@@ -9,17 +9,15 @@ import java.util.List;
 
 @Repository
 public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
-//    @Query("MATCH (f:Food) where f.foodName = $0 RETURN f")
     Food getFoodByFoodName(String foodName);
 
-    Food getFoodById(long id);
+    Food getFoodById(Long id);
 
-    List<Food> findFoodByFoodNameLike(String foodName);
+    List<Food> findFoodByFoodNameContaining(String foodName);
 
-    @Query("MATCH (f:Food) where ID(f) = $0")
-    Food findById(long id);
-
-    @Query("MATCH (f:Food) where ID(f)=$0 DETACH DELETE f")
-    void deleteFoodById(long id);
+    @Query("MATCH (f:Food )-[]->(x:NutritionFacts) WHERE ID(f) = $0" +
+            "OPTIONAL MATCH (g:Food) WHERE ID(g) = $0\n" +
+            "DETACH DELETE x, f, g")
+    void deleteFoodFromRepository(Long id);
 
 }

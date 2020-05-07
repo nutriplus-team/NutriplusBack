@@ -137,7 +137,8 @@ class NutriPlusBackApplicationTests {
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
 				"Colher de sopa", 5, testNutritionFacts);
-		Food testFood2 = new Food(testFood1);
+		Food testFood2 = new Food();
+		Food dummyFood = new Food();
 
 		// Set examples
 		testFood2.setFoodName("Arroz Carioca");
@@ -153,21 +154,30 @@ class NutriPlusBackApplicationTests {
 		testFood2.setLipids(4.5);
 		testFood2.setFiber(5.6);
 
-		System.out.println(testFood1.getId());
 		applicationFoodRepository.save(testFood1);
 		applicationFoodRepository.save(testFood2);
+		applicationFoodRepository.save(dummyFood);
 
 		// Food test
-		List<Food> foodsFound = applicationFoodRepository.findFoodByFoodNameLike("Arroz");
-		for (Food foodFound : foodsFound){
-			assertThat(foodFound).isNotNull();
+		Food foodFound = applicationFoodRepository.getFoodByFoodName("Arroz branco");
+		assertThat(testFood1.getId()).isEqualTo(foodFound.getId());
+
+		foodFound = applicationFoodRepository.getFoodById(testFood2.getId());
+		assertThat(testFood2.getId()).isEqualTo(foodFound.getId());
+
+		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContaining("Arroz");
+		for (Food someFood : foodList){
+			assertThat(someFood).isNotNull();
 		}
-		assertThat(testFood1.getId()).isEqualTo(foodsFound.get(0).getId());
-		assertThat(testFood2.getId()).isEqualTo(foodsFound.get(1).getId());
+		assertThat(testFood1.getId()).isEqualTo(foodList.get(0).getId());
+		assertThat(testFood2.getId()).isEqualTo(foodList.get(1).getId());
+//		assertThat(testFood1.getId()).is(foodList.get(0) || foodList.get(1));
 
 		// Delete data
-		applicationFoodRepository.deleteFoodById(testFood1.getId());
-//		applicationFoodRepository.deleteById(foodsFound.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
+
 
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 @NodeEntity
 public class Meal extends MealModel {
     //Constructor
+    public Meal(){}
     public Meal(MealType mealTypeValue, List<Food> foodListValue){
         mealType = mealTypeValue;
         foodList = foodListValue;

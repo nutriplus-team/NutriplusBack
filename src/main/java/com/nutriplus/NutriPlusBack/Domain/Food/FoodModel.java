@@ -9,7 +9,7 @@ public abstract class FoodModel {
 
     @Id
     @GeneratedValue
-    public long id;
+    public Long id;
 
     String foodName;
     String foodGroup;
