@@ -1,11 +1,10 @@
 package com.nutriplus.NutriPlusBack.Domain.Menu;
 
-import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
+import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 @NodeEntity
 public class Menu extends MenuModel{

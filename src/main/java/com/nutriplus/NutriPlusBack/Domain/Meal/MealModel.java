@@ -1,5 +1,6 @@
-package com.nutriplus.NutriPlusBack.Domain.Food;
+package com.nutriplus.NutriPlusBack.Domain.Meal;
 
+import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Relationship;

@@ -1,4 +1,4 @@
-package com.nutriplus.NutriPlusBack.Domain.Food;
+package com.nutriplus.NutriPlusBack.Domain.Meal;
 
 public enum MealType {
     BREAKFAST,

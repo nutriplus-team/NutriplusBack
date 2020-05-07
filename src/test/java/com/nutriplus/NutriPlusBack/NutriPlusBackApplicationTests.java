@@ -1,8 +1,8 @@
 package com.nutriplus.NutriPlusBack;
 
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
-import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
-import com.nutriplus.NutriPlusBack.Domain.Food.MealType;
+import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
+import com.nutriplus.NutriPlusBack.Domain.Meal.MealType;
 import com.nutriplus.NutriPlusBack.Domain.Food.NutritionFacts;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Portion;
@@ -29,6 +29,9 @@ class NutriPlusBackApplicationTests {
 
 	@Autowired
 	private ApplicationFoodRepository applicationFoodRepository;
+
+	@Autowired
+	private ApplicationMealRepository applicationMealRepository;
 
 	@Test
 	void contextLoads() {
@@ -75,10 +78,7 @@ class NutriPlusBackApplicationTests {
 		userMenu.setPatient(test_patient);
 		applicationUserRepository.save(userMenu);
 
-		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
-				4.4, 5.5);
-		Food dummy_food = new Food("Feijão", "Leguminosa", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+		Food dummy_food = new Food();
 		ArrayList<Portion> dummy_portions = new ArrayList<>();
 		Portion dummy_portion1 = new Portion(dummy_food, 21.2f);
 		Portion dummy_portion2 = new Portion(dummy_food, 2020.2f);
@@ -87,9 +87,7 @@ class NutriPlusBackApplicationTests {
 		dummy_portions.add(dummy_portion2);
 		dummy_portions.add(dummy_portion3);
 
-		List<Food> testFoodList = new ArrayList<>();
-		testFoodList.add(dummy_food);
-		Meal dummy_meal = new Meal(MealType.BREAKFAST, testFoodList);
+		Meal dummy_meal = new Meal();
 
 		Menu menu = new Menu(dummy_meal, test_patient, dummy_portions);
 		applicationMenuRepository.save(menu);
@@ -158,7 +156,7 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.save(testFood2);
 		applicationFoodRepository.save(dummyFood);
 
-		// Food test
+		// Food tests
 		Food foodFound = applicationFoodRepository.getFoodByFoodName("Arroz branco");
 		assertThat(testFood1.getId()).isEqualTo(foodFound.getId());
 
@@ -171,7 +169,6 @@ class NutriPlusBackApplicationTests {
 		}
 		assertThat(testFood1.getId()).isEqualTo(foodList.get(0).getId());
 		assertThat(testFood2.getId()).isEqualTo(foodList.get(1).getId());
-//		assertThat(testFood1.getId()).is(foodList.get(0) || foodList.get(1));
 
 		// Delete data
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
@@ -179,5 +176,45 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 
 
+	}
+	@Test
+	void TestMeal(){
+		// Create foods
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food dummyFood = new Food();
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+		applicationFoodRepository.save(dummyFood);
+
+		// Creat Meals
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		foodList.add(dummyFood);
+
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		Meal dummyMeal = new Meal();
+
+		// Adders and removers examples
+		testMeal.addFood(testFood2);
+		testMeal.removeFood(dummyFood);
+
+		applicationMealRepository.save(testMeal);
+		applicationMealRepository.save(dummyMeal);
+		// Meal tests
+		Meal mealFound = applicationMealRepository.getMealById(testMeal.getId());
+		assertThat(mealFound.getId()).isNotNull();
+		assertThat(mealFound.getMealType()).isEqualTo(testMeal.getMealType());
+
+		// Delete data
+		applicationMealRepository.deleteMealById(testMeal.getId());
+		applicationMealRepository.deleteMealById(dummyMeal.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
 }
