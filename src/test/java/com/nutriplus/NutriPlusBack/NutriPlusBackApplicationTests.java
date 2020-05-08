@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack;
 
+import com.nutriplus.NutriPlusBack.Domain.Book.Book;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Food.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
@@ -8,7 +9,12 @@ import com.nutriplus.NutriPlusBack.Domain.Patient.Constants;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
@@ -24,6 +30,9 @@ class NutriPlusBackApplicationTests {
 
 	@Autowired
 	private ApplicationMenuRepository applicationMenuRepository;
+
+	@Autowired
+	private ApplicationBookRepository applicationBookRepository;
 
 	@Test
 	void contextLoads() {
@@ -56,6 +65,24 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.deleteById(user.getId());
 	}
 
+	@Test
+	void TestBook() throws InterruptedException {
+		Book book = new Book("123", "Book1", "publ1", new String[] {"author1"}, "Nov 2017");
+		System.out.println(book.getIsn());
+		// applicationBookRepository.save(book);
+		// SpringApplication.run(NutriPlusBackApplication.class);
+		// Thread.sleep(10000);
+
+		/*
+		HttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost("/rest/books");
+		String data = "{book(isn: \"123\"){authors}}";
+		httppost.setEntity(new UrlEncodedFormEntity(data, "UTF-8"));
+		*/
+
+
+
+	}
 
 	@Test
 	void TestMenu(){
