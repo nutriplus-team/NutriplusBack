@@ -14,18 +14,18 @@ public abstract class PatientModel{
     String cpf;
     String name;
 
-    String date_of_birth;
-    short biological_sex;   //0 equals female and 1 equals male
-    float ethnic_group;     //0 for white/hispanic and 1.1 for afroamerican
+    String dateOfBirth;
+    short biologicalSex;   //0 equals female and 1 equals male
+    float ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
 
-    ArrayList<String> food_restrictions = new ArrayList<String>();
+    ArrayList<String> foodRestrictions = new ArrayList<String>();
 
     String nutritionist;
 
-    boolean is_athlete ;
+    boolean isAthlete ;
     int age;
-    float physical_activity_level;
-    float corporal_mass;
+    float physicalActivityLevel;
+    float corporalMass;
     float height ;
     String observations;
 
@@ -41,17 +41,17 @@ public abstract class PatientModel{
     float calf;
 
     //Circumferences
-    float waist_circ;
-    float abdominal_circ;
-    float hips_circ;
-    float right_arm_circ;
-    float thigh_circ;
-    float calf_circ;
+    float waistCirc;
+    float abdominalCirc;
+    float hipsCirc;
+    float rightArmCirc;
+    float thighCirc;
+    float calfCirc;
 
-    float muscular_mass;
-    float corporal_density;
-    float body_fat;
-    float methabolic_rate;
-    float energy_requirements;
+    float muscularMass;
+    float corporalDensity;
+    float bodyFat;
+    float methabolicRate;
+    float energyRequirements;
 
 }
