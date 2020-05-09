@@ -71,6 +71,15 @@ public class UserCredentials {
 
     public void deletePatient(Patient patient) {this.patient_list.remove(patient);}
 
+    public Patient getPatient(String cpfPatient){
+        for(Patient patient: this.patient_list){
+            if(patient.get_cpf().equals(cpfPatient)) return patient;
+        }
+        return null;
+    }
+
+    public ArrayList<Patient> getPatientList(){return this.patient_list;}
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

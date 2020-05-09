@@ -1,0 +1,18 @@
+schema {
+    query: Query
+}
+
+
+type Query {
+    allPatients:[Patient]
+    patient(cpf:String):Patient
+}
+
+
+type Patient {
+
+     id:Long
+     cpf:String
+     name:String
+
+}

@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.Services;
 
-import com.nutriplus.NutriPlusBack.Repositories.ApplicationBookRepository;
-import com.nutriplus.NutriPlusBack.Services.datafetcher.BookDataFetcher;
+import com.nutriplus.NutriPlusBack.Repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.Services.datafetcher.PatientDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -21,14 +21,14 @@ import java.io.IOException;
 public class GraphQLService {
 
     @Autowired
-    ApplicationBookRepository applicationBookRepository;
+    ApplicationUserRepository applicationUserRepository;
 
-    @Value("classpath:books.graphql")
+    @Value("classpath:patients.graphql")
     Resource resource;
 
     private GraphQL graphQL;
     @Autowired
-    private BookDataFetcher bookDataFetcher;
+    private PatientDataFetcher patientsDataFetcher;
 
     @PostConstruct
     private void loadSchema() throws IOException {
@@ -45,13 +45,12 @@ public class GraphQLService {
     private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("book", bookDataFetcher))
+                        .dataFetcher("patient", patientsDataFetcher))
                 .build();
     }
 
     public GraphQL getGraphQL() {
         return graphQL;
     }
-
 
 }
