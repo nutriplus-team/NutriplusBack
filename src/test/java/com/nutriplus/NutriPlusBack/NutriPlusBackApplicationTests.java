@@ -44,10 +44,10 @@ class NutriPlusBackApplicationTests {
 		UserCredentials user = new UserCredentials("TestPatient","test@email.com","senhaTest","Test","P");
 		Patient test = new Patient();
 
-		test.set_name("TestPatient");
-		test.set_corporal_mass((float)89.3);
-		test.set_cpf("123456");
-		test.calculate_methabolic_rate(Constants.TINSLEY);
+		test.setName("TestPatient");
+		test.setCorporalMass((float)89.3);
+		test.setCpf("123456");
+		test.calculateMethabolicRate(Constants.TINSLEY);
 
 		user.setPatient(test);
 		applicationUserRepository.save(user);
@@ -60,7 +60,7 @@ class NutriPlusBackApplicationTests {
 		// Delete Data
 		user.deletePatient(test);
 		applicationUserRepository.save(user);
-		applicationUserRepository.deletePatientFromRepository(test.get_id());
+		applicationUserRepository.deletePatientFromRepository(test.getId());
 		applicationUserRepository.deleteById(user.getId());
 	}
 
@@ -71,10 +71,10 @@ class NutriPlusBackApplicationTests {
 
 		// Add data
 		Patient test_patient = new Patient();
-		test_patient.set_name("TestMenuPatient");
-		test_patient.set_corporal_mass((float)89.3);
-		test_patient.set_cpf("123456");
-		test_patient.calculate_methabolic_rate(Constants.TINSLEY);
+		test_patient.setName("TestMenuPatient");
+		test_patient.setCorporalMass((float)89.3);
+		test_patient.setCpf("123456");
+		test_patient.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(test_patient);
 		applicationUserRepository.save(userMenu);
 
@@ -124,7 +124,7 @@ class NutriPlusBackApplicationTests {
 
 		userMenu.deletePatient(test_patient);
 		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(test_patient.get_id());
+		applicationUserRepository.deletePatientFromRepository(test_patient.getId());
 		applicationUserRepository.deleteById(userMenu.getId());
 	}
 

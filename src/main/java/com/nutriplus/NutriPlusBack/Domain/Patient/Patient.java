@@ -17,181 +17,180 @@ public class Patient extends PatientModel {
 
     //Constructor
     public Patient(){
-        DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
     //Set Functions
-    public void set_cpf(String cpf_value){
-        cpf = cpf_value;
+    public void setCpf(String cpfValue){
+        cpf = cpfValue;
     }
-    public void set_name(String name_value){
-        name = name_value;
+    public void setName(String nameValue){
+        name = nameValue;
     }
-    public void set_date_of_birth(String date_of_birth_value){
-        date_of_birth = date_of_birth_value;
+    public void setDateOfBirth(String dateOfBirthValue){
+        dateOfBirth = dateOfBirthValue;
     }
-    public void set_biological_sex(short biological_sex_value){
-        biological_sex = biological_sex_value;
+    public void setBiologicalSex(short biologicalSexValue){
+        biologicalSex = biologicalSexValue;
     }
-    public void set_ethnic_group(float ethnic_group_value){
-        ethnic_group = ethnic_group_value;
+    public void setEthnicGroup(float ethnicGroupValue){
+        ethnicGroup = ethnicGroupValue;
     }
-    public void set_nutritionist(String nutritionist_value){
-        nutritionist = nutritionist_value;
+    public void setNutritionist(String nutritionistValue){
+        nutritionist = nutritionistValue;
     }
-    public void set_food_restrictions(ArrayList<String> food_restrictions_value){
-        for(String food : food_restrictions_value){
-            food_restrictions.add(food);
+    public void setFoodRestrictions(ArrayList<String> foodRestrictionsValue){
+        for(String food : foodRestrictionsValue){
+            foodRestrictions.add(food);
         }
     }
-    public void set_is_athlete(boolean value){is_athlete = value;}
-    public void set_age(int age_value){age = age_value;}
-    public void set_physical_activity_level(float physical_activity_level_value){physical_activity_level = physical_activity_level_value;}
-    public void set_corporal_mass(float corporal_mass_value){corporal_mass = corporal_mass_value;}
-    public void set_height(float height_value){height = height_value;}
-    public void set_observations(String observations_value){observations = observations_value;}
+    public void setIsAthlete(boolean value){isAthlete = value;}
+    public void setAge(int ageValue){age = ageValue;}
+    public void setPhysicalActivityLevel(float physicalActivityLevelValue){physicalActivityLevel = physicalActivityLevelValue;}
+    public void setCorporalMass(float corporalMassValue){corporalMass = corporalMassValue;}
+    public void setHeight(float heightValue){height = heightValue;}
+    public void setObservations(String observationsValue){observations = observationsValue;}
 
     //Fat Folds
-    public void set_subscapular(float subscapular_value){subscapular = subscapular_value;}
-    public void set_triceps(float triceps_value){triceps = triceps_value;}
-    public void set_biceps(float biceps_value){biceps = biceps_value;}
-    public void set_chest(float chest_value){chest = chest_value;}
-    public void set_axillary(float axillary_value){axillary = axillary_value;}
-    public void set_supriailiac(float supriailiac_value){supriailiac = supriailiac_value;}
-    public void set_abdominal(float abdominal_value){abdominal = abdominal_value;}
-    public void set_thigh(float thigh_value){thigh = thigh_value;}
-    public void set_calf(float calf_value){calf = calf_value;}
+    public void setSubscapular(float subscapularValue){subscapular = subscapularValue;}
+    public void setTriceps(float tricepsValue){triceps = tricepsValue;}
+    public void setBiceps(float bicepsValue){biceps = bicepsValue;}
+    public void setChest(float chestValue){chest = chestValue;}
+    public void setAxillary(float axillaryValue){axillary = axillaryValue;}
+    public void setSupriailiac(float supriailiacValue){supriailiac = supriailiacValue;}
+    public void setAbdominal(float abdominalValue){abdominal = abdominalValue;}
+    public void setThigh(float thighValue){thigh = thighValue;}
+    public void setCalf(float calfValue){calf = calfValue;}
 
     //Circumferences
-    public void set_wait_circ(float waist_circ_value){waist_circ=waist_circ_value;}
-    public void set_abdominal_circ(float abdominal_circ_value){abdominal_circ=abdominal_circ_value;}
-    public void set_hips_circ(float hips_circ_value){hips_circ = hips_circ_value;}
-    public void set_right_arm_circ(float right_arm_circ_value){right_arm_circ = right_arm_circ_value;}
-    public void set_thigh_circ(float thigh_circ_value){thigh_circ = thigh_circ_value;}
-    public void set_calf_circ(float calf_circ_value){calf_circ = calf_circ_value;}
+    public void setWaistCirc(float waistCircValue){waistCirc=waistCircValue;}
+    public void setAbdominalCirc(float abdominalCircValue){abdominalCirc=abdominalCircValue;}
+    public void setHipsCirc(float hipsCircValue){hipsCirc = hipsCircValue;}
+    public void setRightArmCirc(float rightArmCircValue){rightArmCirc = rightArmCircValue;}
+    public void setThighCirc(float thighCircValue){thighCirc = thighCircValue;}
+    public void setCalfCirc(float calfCircValue){calfCirc = calfCircValue;}
 
-    public void set_muscular_mass(float muscular_mass_value){muscular_mass = muscular_mass_value;}
-    public void set_corporal_density(float corporal_density_value){corporal_density = corporal_density_value;}
-    public void set_body_fat(float body_fat_value){body_fat = body_fat_value;}
-    public void set_methabolic_rate(float methabolic_rate_value){methabolic_rate = methabolic_rate_value;}
-    public void set_energy_requirements(float energy_requirements_value){energy_requirements = energy_requirements_value;}
+    public void setMuscularMass(float muscularMassValue){muscularMass = muscularMassValue;}
+    public void setCorporalDensity(float corporalDensityValue){corporalDensity = corporalDensityValue;}
+    public void setBodyFat(float bodyFatValue){bodyFat = bodyFatValue;}
+    public void setMethabolicRate(float methabolicRateValue){methabolicRate = methabolicRateValue;}
+    public void setEnergyRequirements(float energyRequirementsValue){energyRequirements = energyRequirementsValue;}
 
     //Get Functions
 
-    public Long get_id() { return id; }
-    public String get_cpf(){
+    public Long getId() { return id; }
+    public String getCpf(){
         return cpf;
     }
-    public String get_name(){
+    public String getName(){
         return name;
     }
-    public String get_date_of_birth(){
-        return date_of_birth;
+    public String getDateOfBirth(){
+        return dateOfBirth;
     }
-    public short get_biological_sex(){
-        return biological_sex;
+    public short getBiologicalSex(){
+        return biologicalSex;
     }
-    public float get_ethnic_group(){
-        return ethnic_group;
+    public float getEthnicGroup(){
+        return ethnicGroup;
     }
-    public String get_nutritionist(){
+    public String getNutritionist(){
         return nutritionist;
     }
-    public ArrayList<String> get_food_restrictions(){return food_restrictions;}
-    public boolean get_is_athlete(){return is_athlete;}
-    public int get_age(){return age;}
-    public float get_physical_activity_level(){return physical_activity_level;}
-    public float get_corporal_mass(){return corporal_mass;}
-    public float get_height(){return height;}
-    public String get_observations(){return observations;}
+    public ArrayList<String> getFoodRestrictions(){return foodRestrictions;}
+    public boolean getIsAthlete(){return isAthlete;}
+    public int getAge(){return age;}
+    public float getPhysicalActivityLevel(){return physicalActivityLevel;}
+    public float getCorporalMass(){return corporalMass;}
+    public float getHeight(){return height;}
+    public String getObservations(){return observations;}
 
     //Fat Folds
-    public float get_subscapular(){return subscapular;}
-    public float get_triceps(){return triceps;}
-    public float get_biceps(){return biceps;}
-    public float get_chest(){return chest;}
-    public float get_axillary(){return axillary;}
-    public float get_supriailiac(){return supriailiac;}
-    public float get_abdominal(){return abdominal;}
-    public float get_thigh(){return thigh;}
-    public float get_calf(){return calf;}
+    public float getSubscapular(){return subscapular;}
+    public float getTriceps(){return triceps;}
+    public float getBiceps(){return biceps;}
+    public float getChest(){return chest;}
+    public float getAxillary(){return axillary;}
+    public float getSupriailiac(){return supriailiac;}
+    public float getAbdominal(){return abdominal;}
+    public float getThigh(){return thigh;}
+    public float getCalf(){return calf;}
 
     //Circumferences
-    public float get_wait_circ(){return waist_circ;}
-    public float get_abdominal_circ(){return abdominal_circ;}
-    public float get_hips_circ(){return hips_circ;}
-    public float get_right_arm_circ(){return right_arm_circ;}
-    public float get_thigh_circ(){return thigh_circ;}
-    public float get_calf_circ(){return calf_circ;}
+    public float getWaistCirc(){return waistCirc;}
+    public float getAbdominalCirc(){return abdominalCirc;}
+    public float getHipsCirc(){return hipsCirc;}
+    public float getRightArmCirc(){return rightArmCirc;}
+    public float getThighCirc(){return thighCirc;}
+    public float getCalfCirc(){return calfCirc;}
 
-    public float get_muscular_mass(){return muscular_mass;}
-    public float get_corporal_density(){return corporal_density;}
-    public float get_body_fat(){return body_fat;}
-    public float get_methabolic_rate(){return methabolic_rate;}
-    public float get_energy_requirements(){return energy_requirements;}
+    public float getMuscularMass(){return muscularMass;}
+    public float getCorporalDensity(){return corporalDensity;}
+    public float getBodyFat(){return bodyFat;}
+    public float getMethabolicRate(){return methabolicRate;}
+    public float getEnergyRequirements(){return energyRequirements;}
 
     //Calculate Functions
-    public void calculate_energy_requirements(){
-        set_energy_requirements(get_methabolic_rate()*get_physical_activity_level());
+    public void calculateEnergyRequirements(){
+        setEnergyRequirements(getMethabolicRate()*getPhysicalActivityLevel());
     }
 
-    public void calculate_methabolic_rate(Constants method){
+    public void calculateMethabolicRate(Constants method){
         //the default is "" string when patient is no athlete.
         float value = 0;
-        if(get_is_athlete()){
+        if(getIsAthlete()){
             switch (method){
                 case TINSLEY:
-                    value = (float) 24.8 * get_corporal_mass() + 10;
+                    value = (float) 24.8 * getCorporalMass() + 10;
                     break;
                 case TINSLEY_NO_FAT:
-                    value = (float)(25.9*get_corporal_mass()*(100 - get_body_fat())/100 + 284);
+                    value = (float)(25.9*getCorporalMass()*(100 - getBodyFat())/100 + 284);
                     break;
                 case CUNNINGHAM:
-                    value = (float)(22*get_corporal_mass()*(100 - get_body_fat())/100 + 500);
+                    value = (float)(22*getCorporalMass()*(100 - getBodyFat())/100 + 500);
                     break;
             }
         }
-        else if (get_biological_sex() == 0) //female
-            value = (float) (9.99 * get_corporal_mass() + 6.25 * get_height() - 4.92 * get_age() - 161);
+        else if (getBiologicalSex() == 0) //female
+            value = (float) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() - 161);
         else                                //male
-            value = (float) (9.99 * get_corporal_mass() + 6.25 * get_height() - 4.92 * get_age() + 5);
+            value = (float) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() + 5);
 
-        set_methabolic_rate(value);
+        setMethabolicRate(value);
     }
 
-    public void calculate_muscular_mass(){
-        set_muscular_mass((float)(get_height()*0.0074*Math.pow(get_right_arm_circ() - 3.1416*get_triceps()/10,2)+0.00088*Math.pow(get_thigh_circ()-3.1416*get_thigh()/10,2)+0.00441*Math.pow(get_calf_circ()-3.1416*get_calf()/10,2)+2.4*get_biological_sex()-0.048*get_age()+get_ethnic_group()+7.8));
+    public void calculateMuscularMass(){
+        setMuscularMass((float)(getHeight()*0.0074*Math.pow(getRightArmCirc() - 3.1416*getTriceps()/10,2)+0.00088*Math.pow(getThighCirc()-3.1416*getThigh()/10,2)+0.00441*Math.pow(getCalfCirc()-3.1416*getCalf()/10,2)+2.4*getBiologicalSex()-0.048*getAge()+getEthnicGroup()+7.8));
     }
 
-    public float sum_seven_skin_folds(){
-        return get_subscapular()+get_triceps()+get_chest()+get_axillary()+get_supriailiac()+get_abdominal()+get_thigh();
+    public float sumSevenSkinFolds(){
+        return getSubscapular()+getTriceps()+getChest()+getAxillary()+getSupriailiac()+getAbdominal()+getThigh();
     }
 
-    public float sum_all_skin_folds(){
-        return get_subscapular()+get_triceps()+get_chest()+get_axillary()+get_supriailiac()+get_abdominal()+get_thigh()+get_biceps()+get_calf();
+    public float sumAllSkinFolds(){
+        return getSubscapular()+getTriceps()+getChest()+getAxillary()+getSupriailiac()+getAbdominal()+getThigh()+getBiceps()+getCalf();
     }
 
-    public void calculate_corporal_density(){
+    public void calculateCorporalDensity(){
         float corporal_density;
 
-        if (get_biological_sex() == 0) //female
-            corporal_density = (float) (1.097 - 0.00046971*sum_seven_skin_folds()+0.00000056*Math.pow(sum_seven_skin_folds(),2)- 0.00012828*get_age());
+        if (getBiologicalSex() == 0) //female
+            corporal_density = (float) (1.097 - 0.00046971*sumSevenSkinFolds()+0.00000056*Math.pow(sumSevenSkinFolds(),2)- 0.00012828*getAge());
 
         else
-            corporal_density = (float) (1.112 - 0.00043499*sum_seven_skin_folds() + 0.00000055*Math.pow(sum_seven_skin_folds(),2)-0.00028826*sum_seven_skin_folds()*get_age());
+            corporal_density = (float) (1.112 - 0.00043499*sumSevenSkinFolds() + 0.00000055*Math.pow(sumSevenSkinFolds(),2)-0.00028826*sumSevenSkinFolds()*getAge());
 
-        set_corporal_density(corporal_density);
+        setCorporalDensity(corporal_density);
     }
 
-    public void calculate_body_fat(Constants method){
+    public void calculateBodyFat(Constants method){
 
         float body_fat;
         if(method == Constants.FAULKNER)
-            body_fat = (float) ((get_subscapular()+get_triceps()+get_abdominal()+get_supriailiac())*0.153+5.18);
+            body_fat = (float) ((getSubscapular()+getTriceps()+getAbdominal()+getSupriailiac())*0.153+5.18);
         else
-            body_fat = (float) ((4.95/(get_corporal_density()) - 4.5)*100);
+            body_fat = (float) ((4.95/(getCorporalDensity()) - 4.5)*100);
 
-        set_body_fat(body_fat);
-
+        setBodyFat(body_fat);
     }
 
 }
