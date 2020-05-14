@@ -11,25 +11,25 @@ public class Menu extends MenuModel{
     public Menu() {
     }
 
-    public Menu(Meal meal_type_value, Patient patient_value, ArrayList<Portion> portions_value) {
-        meal_type = meal_type_value;
-        patient = patient_value;
-        portions = portions_value;
+    public Menu(Meal mealTypeValue, Patient patientValue, ArrayList<Portion> portionsValue) {
+        mealType = mealTypeValue;
+        patient = patientValue;
+        portions = portionsValue;
     }
 
     // Setters
-    public void set_meal_type(Meal meal_value) {meal_type = meal_value;}
-    public void set_patient(Patient patient_value) {patient = patient_value;}
+    public void setMealType(Meal mealValue) { mealType = mealValue;}
+    public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
-    public void add_portion(Portion portion_value) {portions.add(portion_value);}
+    public void addPortion(Portion portionValue) {portions.add(portionValue);}
 
     // Removers
-    public void remove_portion(Portion portion_value) {portions.remove(portion_value);}
+    public void removePortion(Portion portionValue) {portions.remove(portionValue);}
 
     // Getters
-    public Long get_id() {return id;}
-    public Meal get_meal_type() {return meal_type;}
-    public Patient get_patient() {return patient;}
-    public ArrayList<Portion> get_portions() {return portions;}
+    public Long getId() {return id;}
+    public Meal getMealType() {return mealType;}
+    public Patient getPatient() {return patient;}
+    public ArrayList<Portion> getPortions() {return portions;}
 }
