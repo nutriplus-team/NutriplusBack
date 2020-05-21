@@ -43,9 +43,11 @@ class NutriPlusBackApplicationTests {
 	@Test
 	void insertPatient(){
 
+		UserCredentials user = new UserCredentials("adriano","test@email.com","senhaTest","Test","P");
+		applicationUserRepository.save(user);
 		Patient test = new Patient();
 
-		test.setName("TestPatient");
+		test.setName("adriano");
 		test.setCorporalMass((float)89.3);
 		test.setCpf("123456");
 		test.calculateMethabolicRate(Constants.TINSLEY);
@@ -193,8 +195,7 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
-
-
+		
 	}
 	@Test
 	void TestMeal(){
