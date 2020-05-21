@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.2.5.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'io.freefair.lombok' version '5.0.1'
 	id 'java'
 }
 
@@ -13,6 +14,8 @@ repositories {
 }
 
 dependencies {
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+	compile 'com.graphql-java:graphql-java:11.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

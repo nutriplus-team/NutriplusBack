@@ -1,14 +1,16 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
+
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
+//import org.jetbrains.annotations.NotNull;
 import org.neo4j.ogm.annotation.NodeEntity;
-import javax.validation.constraints.NotNull;
 
 @NodeEntity
 public class Food extends FoodModel {
     //Constructor
     public Food(){}
-    public Food(@NotNull Food foodValue) {
+    //public Food(@NotNull Food foodValue) {
+    public Food(Food foodValue) {
         foodName            = foodValue.foodName;
         foodGroup           = foodValue.foodGroup;
         measureTotalGrams   = foodValue.measureTotalGrams;

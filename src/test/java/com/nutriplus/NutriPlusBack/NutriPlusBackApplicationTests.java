@@ -11,6 +11,7 @@ import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.*;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
@@ -33,8 +34,27 @@ class NutriPlusBackApplicationTests {
 	@Autowired
 	private ApplicationMealRepository applicationMealRepository;
 
+
 	@Test
 	void contextLoads() {
+
+	}
+
+	@Test
+	void insertPatient(){
+
+		Patient test = new Patient();
+
+		test.setName("TestPatient");
+		test.setCorporalMass((float)89.3);
+		test.setCpf("123456");
+		test.calculateMethabolicRate(Constants.TINSLEY);
+
+		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
+		assertThat(test_user).isNotNull();
+
+		test_user.setPatient(test);
+		applicationUserRepository.save(test_user);
 
 	}
 
@@ -57,13 +77,12 @@ class NutriPlusBackApplicationTests {
 		assertThat(testUser).isNotNull();
 		assertThat(testUser.getId()).isEqualTo(user.getId());
 
-		// Delete Data
+		//Delete Data
 		user.deletePatient(test);
 		applicationUserRepository.save(user);
 		applicationUserRepository.deletePatientFromRepository(test.getId());
 		applicationUserRepository.deleteById(user.getId());
 	}
-
 
 	@Test
 	void TestMenu(){
