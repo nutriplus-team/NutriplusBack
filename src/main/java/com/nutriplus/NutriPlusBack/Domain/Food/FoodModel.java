@@ -16,6 +16,7 @@ public abstract class FoodModel {
     double measureTotalGrams;  // in grams
     String measureType;        // homemade measure, such as a "tablespoon" or a "cup of tea"
     int measureAmount;         // amount of measureType to reach measureTotalGrams
+    boolean custom;
     NutritionFacts nutritionFacts;
 
 }

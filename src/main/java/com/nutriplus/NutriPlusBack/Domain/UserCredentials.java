@@ -1,6 +1,7 @@
 package com.nutriplus.NutriPlusBack.Domain;
 
 import com.nutriplus.NutriPlusBack.Domain.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.Validators.Validator;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -22,8 +23,10 @@ public class UserCredentials {
     private String password;
     private String firstName;
     private String lastName;
-    @Relationship(type = "IS_PATIENT", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_PATIENT", direction = Relationship.OUTGOING)
     private ArrayList<Patient> patient_list = new ArrayList<Patient>();
+    @Relationship(type = "CUSTOM_FOOD", direction = Relationship.OUTGOING)
+    private ArrayList<Food> customFoods = new ArrayList<Food>();
     public UserCredentials()
     {
 
@@ -35,7 +38,7 @@ public class UserCredentials {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
-        this. lastName = lastName;
+        this.lastName = lastName;
     }
     //TODO:Criar validadores para email e senha
 
@@ -70,6 +73,10 @@ public class UserCredentials {
     public void setPatient(Patient patient){this.patient_list.add(patient);}
 
     public void deletePatient(Patient patient) {this.patient_list.remove(patient);}
+
+    public void addCustomFood(Food food) {this.customFoods.add(food);}
+
+    public void deleteFood(Food food) {this.customFoods.remove(food);}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

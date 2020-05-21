@@ -1,7 +1,8 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-import org.jetbrains.annotations.NotNull;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.neo4j.ogm.annotation.NodeEntity;
+import javax.validation.constraints.NotNull;
 
 @NodeEntity
 public class Food extends FoodModel {
@@ -13,6 +14,7 @@ public class Food extends FoodModel {
         measureTotalGrams   = foodValue.measureTotalGrams;
         measureType         = foodValue.measureType;
         measureAmount       = foodValue.measureAmount;
+        custom = false;
         nutritionFacts      = new NutritionFacts(foodValue.nutritionFacts);
     }
     public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
@@ -22,7 +24,17 @@ public class Food extends FoodModel {
         measureTotalGrams   = measureTotalGramsValue;
         measureType         = measureTypeValue;
         measureAmount       = measureAmountValue;
+        custom = false;
         nutritionFacts      = new NutritionFacts(nutritionFactsValue);
+    }
+
+    // Custom Food
+    public Food createCustomBasedFood(UserCredentials owner) {
+        Food customFood = new Food(this.foodName, this.foodGroup, this.measureTotalGrams, this.measureType,
+                this.measureAmount, this.nutritionFacts);
+        customFood.setCustom(true);
+        owner.addCustomFood(customFood);
+        return customFood;
     }
 
     // Setters
@@ -67,6 +79,10 @@ public class Food extends FoodModel {
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.fiber = fiberValue;
+    }
+
+    public void setCustom(boolean customValue) {
+        custom = customValue;
     }
 
 

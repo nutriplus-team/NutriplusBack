@@ -16,7 +16,7 @@ public abstract class MenuModel {
     @Relationship(type = "MEALTYPE", direction = Relationship.UNDIRECTED)
     Meal mealType;
 
-    @Relationship(type = "PATIENT", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)
     Patient patient;
 
     @Relationship(type = "PORTIONS", direction = Relationship.UNDIRECTED)

@@ -163,7 +163,7 @@ class NutriPlusBackApplicationTests {
 		foodFound = applicationFoodRepository.getFoodById(testFood2.getId());
 		assertThat(testFood2.getId()).isEqualTo(foodFound.getId());
 
-		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContaining("Arroz");
+		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
 		}
@@ -216,5 +216,92 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
+	}
+
+	@Test
+	void TosoOverallTest(){
+		// Create foods
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food dummyFood = new Food();
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+		applicationFoodRepository.save(dummyFood);
+
+		// Creat Meals
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		foodList.add(dummyFood);
+
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		Meal dummyMeal = new Meal();
+
+		// Adders and removers examples
+		testMeal.addFood(testFood2);
+		testMeal.removeFood(dummyFood);
+
+		applicationMealRepository.save(testMeal);
+		applicationMealRepository.save(dummyMeal);
+		// Meal tests
+		Meal mealFound = applicationMealRepository.getMealById(testMeal.getId());
+		assertThat(mealFound.getId()).isNotNull();
+		assertThat(mealFound.getMealType()).isEqualTo(testMeal.getMealType());
+
+
+		UserCredentials userMenu = new UserCredentials("Nutricionista","test@email.com","senhaTest","Nutricionista","M");
+
+		Food customFood = testFood1.createCustomBasedFood(userMenu);
+		applicationFoodRepository.save(customFood);
+
+		// Add data
+		Patient testPatient = new Patient();
+		testPatient.setName("Toso");
+		testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
+		applicationUserRepository.save(userMenu);
+
+		ArrayList<Portion> dummyPortions = new ArrayList<>();
+		Portion dummyPortion1 = new Portion(testFood1, 150f);
+		Portion dummyPortion2 = new Portion(testFood2, 200f);
+		dummyPortions.add(dummyPortion1);
+		dummyPortions.add(dummyPortion2);
+
+		Menu menu = new Menu(testMeal, testPatient, dummyPortions);
+		applicationMenuRepository.save(menu);
+
+		// Test Menu
+		Long menuId = menu.getId();
+		assertThat(menuId).isNotNull();
+		Optional<Menu> test_menu = applicationMenuRepository.findById(menuId);
+		assertThat(test_menu).isNotNull();
+
+		// Delete data
+		applicationMealRepository.deleteMealById(testMeal.getId());
+		applicationMealRepository.deleteMealById(dummyMeal.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+		for(Portion portionElement : dummyPortions)
+		{
+			applicationMenuRepository.deleteFoodFromRepository(portionElement.getFood().getId());
+			portionElement.setFood(null);
+			portionElement.setQuantity(0);
+			applicationMenuRepository.deletePortionFromRepository(portionElement.getId());
+		}
+		dummyPortions.clear();
+		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		menu.setMealType(null);
+		menu.setPatient(null);
+		applicationMenuRepository.save(menu);
+		applicationMenuRepository.deleteById(menuId);
+		userMenu.deletePatient(testPatient);
+		applicationUserRepository.save(userMenu);
+		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
+		applicationUserRepository.deleteById(userMenu.getId());
 	}
 }

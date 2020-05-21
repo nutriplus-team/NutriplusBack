@@ -1,6 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraints.NotNull;
 
 
 public class NutritionFacts extends NutritionFactsModel {
