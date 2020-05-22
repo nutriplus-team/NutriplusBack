@@ -217,4 +217,22 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
+
+	@Test
+	void addMockFood()
+	{
+		Food breakfastFood = new Food("ComidaOcimar", "Teresinense", 140, "Ocimares", 2);
+		Food morningSnack = new Food("ComidaMorad", "Indaiatubense", 130, "Felipes", 1);
+		Food lunch = new Food("ComidaToso", "Curitibano", 120, "Tosos", 1);
+		Food afternoonSnack = new Food("ComidaAvan", "Avaniandavense", 105.6, "Adrianos", 2);
+		Food workoutSnack = new Food("ComidaChen", "Chines", 132, "Chens", 1);
+		Food dinner = new Food("ComidaSte", "Catarinense", 152, "Stes", 7);
+
+		applicationFoodRepository.save(breakfastFood);
+		applicationFoodRepository.save(morningSnack);
+		applicationFoodRepository.save(lunch);
+		applicationFoodRepository.save(afternoonSnack);
+		applicationFoodRepository.save(workoutSnack);
+		applicationFoodRepository.save(dinner);
+	}
 }
