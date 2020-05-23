@@ -1,6 +1,5 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-//import org.jetbrains.annotations.NotNull;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -24,6 +23,17 @@ public class Food extends FoodModel {
         measureAmount       = measureAmountValue;
         nutritionFacts      = new NutritionFacts(nutritionFactsValue);
     }
+
+    //This was only for testing
+//    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+//                int measureAmountValue){
+//        foodName            = foodNameValue;
+//        foodGroup           = foodGroupValue;
+//        measureTotalGrams   = measureTotalGramsValue;
+//        measureType         = measureTypeValue;
+//        measureAmount       = measureAmountValue;
+//        nutritionFacts      = null;
+//    }
 
     // Setters
     public void setFoodName(String foodNameValue)                     { foodName = foodNameValue; }

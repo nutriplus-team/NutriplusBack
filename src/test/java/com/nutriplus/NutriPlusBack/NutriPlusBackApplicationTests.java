@@ -52,10 +52,10 @@ class NutriPlusBackApplicationTests {
 		user.setPatient(test);
 		applicationUserRepository.save(user);
 
-		UserCredentials test_user = applicationUserRepository.findByUsername("TestPatient");
+		UserCredentials testUser = applicationUserRepository.findByUsername("TestPatient");
 
-		assertThat(test_user).isNotNull();
-		assertThat(test_user.getId()).isEqualTo(user.getId());
+		assertThat(testUser).isNotNull();
+		assertThat(testUser.getId()).isEqualTo(user.getId());
 
 		// Delete Data
 		user.deletePatient(test);
@@ -70,61 +70,61 @@ class NutriPlusBackApplicationTests {
 		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
 
 		// Add data
-		Patient test_patient = new Patient();
-		test_patient.setName("TestMenuPatient");
-		test_patient.setCorporalMass((float)89.3);
-		test_patient.setCpf("123456");
-		test_patient.calculateMethabolicRate(Constants.TINSLEY);
-		userMenu.setPatient(test_patient);
+		Patient testPatient = new Patient();
+		testPatient.setName("TestMenuPatient");
+		testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
 		applicationUserRepository.save(userMenu);
 
-		Food dummy_food = new Food();
-		ArrayList<Portion> dummy_portions = new ArrayList<>();
-		Portion dummy_portion1 = new Portion(dummy_food, 21.2f);
-		Portion dummy_portion2 = new Portion(dummy_food, 2020.2f);
-		Portion dummy_portion3 = new Portion(dummy_food, 3.14f);
-		dummy_portions.add(dummy_portion1);
-		dummy_portions.add(dummy_portion2);
-		dummy_portions.add(dummy_portion3);
+		Food dummyFood = new Food();
+		ArrayList<Portion> dummyPortions = new ArrayList<>();
+		Portion dummyPortion1 = new Portion(dummyFood, 21.2f);
+		Portion dummyPortion2 = new Portion(dummyFood, 2020.2f);
+		Portion dummyPortion3 = new Portion(dummyFood, 3.14f);
+		dummyPortions.add(dummyPortion1);
+		dummyPortions.add(dummyPortion2);
+		dummyPortions.add(dummyPortion3);
 
-		Meal dummy_meal = new Meal();
+		Meal dummyMeal = new Meal();
 
-		Menu menu = new Menu(dummy_meal, test_patient, dummy_portions);
+		Menu menu = new Menu(dummyMeal, testPatient, dummyPortions);
 		applicationMenuRepository.save(menu);
 
 		// Test User
-		UserCredentials test_user = applicationUserRepository.findByUsername("TestMenu");
-		assertThat(test_user).isNotNull();
-		assertThat(test_user.getId()).isEqualTo(userMenu.getId());
+		UserCredentials testUser = applicationUserRepository.findByUsername("TestMenu");
+		assertThat(testUser).isNotNull();
+		assertThat(testUser.getId()).isEqualTo(userMenu.getId());
 		applicationUserRepository.deleteById(userMenu.getId());
 
 		// Test Menu
-		Long menuId = menu.get_id();
+		Long menuId = menu.getId();
 		assertThat(menuId).isNotNull();
-		Optional<Menu> test_menu = applicationMenuRepository.findById(menuId);
-		assertThat(test_menu).isNotNull();
+		Optional<Menu> testMenu = applicationMenuRepository.findById(menuId);
+		assertThat(testMenu).isNotNull();
 
 		// Delete Data
-		for(Portion portion_element : dummy_portions)
+		for(Portion portionElement : dummyPortions)
 		{
-			applicationMenuRepository.deleteFoodFromRepository(portion_element.get_food().getId());
-			portion_element.set_food(null);
-			portion_element.set_quantity(0);
-			applicationMenuRepository.deletePortionFromRepository(portion_element.get_id());
+			applicationMenuRepository.deleteFoodFromRepository(portionElement.getFood().getId());
+			portionElement.setFood(null);
+			portionElement.setQuantity(0);
+			applicationMenuRepository.deletePortionFromRepository(portionElement.getId());
 		}
-		dummy_portions.clear();
+		dummyPortions.clear();
 
-		applicationMenuRepository.deleteMealFromRepository(menu.get_meal_type().getId());
-		menu.set_meal_type(null);
+		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		menu.setMealType(null);
 
-		menu.set_patient(null);
+		menu.setPatient(null);
 		applicationMenuRepository.save(menu);
 
 		applicationMenuRepository.deleteById(menuId);
 
-		userMenu.deletePatient(test_patient);
+		userMenu.deletePatient(testPatient);
 		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(test_patient.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
 		applicationUserRepository.deleteById(userMenu.getId());
 	}
 
@@ -217,4 +217,6 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
+
+
 }

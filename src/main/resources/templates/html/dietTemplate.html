@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<body>
+<h2 th:if="${#lists.size(breakfast) > 0}">Cafe da manha</h2>
+<table>
+    <tr>
+        <td>Opcoes</td>
+        <td>Grupo alimentar</td>
+        <td>Alimento</td>
+        <td>Quantidade</td>
+        <td>Medida caseira</td>
+        <td>Gramas</td>
+    </tr>
+</table>
+<table th:each="option : ${breakfast}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+<h2 th:if="${#lists.size(morningSnack) > 0}">Lanche</h2>
+<table th:each="option : ${morningSnack}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+<h2 th:if="${#lists.size(lunch) > 0}">Almoco</h2>
+<table th:each="option : ${lunch}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+<h2 th:if="${#lists.size(afternoonSnack) > 0}">Lanche da tarde</h2>
+<table th:each="option : ${afternoonSnack}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+<h2 th:if="${#lists.size(workoutSnack) > 0}">Lanche pre-treino</h2>
+<table th:each="option : ${workoutSnack}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+<h2 th:if="${#lists.size(dinner) > 0}">Janta</h2>
+<table th:each="option : ${dinner}">
+    <tr th:each="food : ${option.foods}">
+        <td th:text="${food.optionN}"></td>
+        <td th:text="${food.group}"></td>
+        <td th:text="${food.name}"></td>
+        <td th:text="${food.qty}"></td>
+        <td th:text="${food.measureType}"></td>
+        <td th:text="${food.grams * food.qty}"></td>
+    </tr>
+</table>
+</body>
+</html>
