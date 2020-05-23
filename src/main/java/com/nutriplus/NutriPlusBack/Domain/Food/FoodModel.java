@@ -1,13 +1,10 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 
 public abstract class FoodModel {
-
     @Id
     @GeneratedValue
     public Long id;
@@ -21,6 +18,6 @@ public abstract class FoodModel {
     boolean created;           // is this food a personal food created by some nutritionist?
     @Relationship(type = "CUSTOMIZE", direction = Relationship.OUTGOING)
     Food originalFood;         // null if custom = 0;
+    @Convert(NutritionFactsToGraph.class)
     NutritionFacts nutritionFacts;
-
 }
