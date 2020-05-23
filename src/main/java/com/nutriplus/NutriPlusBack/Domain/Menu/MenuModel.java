@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Menu;
 
+import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -19,6 +20,6 @@ public abstract class MenuModel {
     @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)
     Patient patient;
 
-    @Relationship(type = "PORTIONS", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "PORTION", direction = Relationship.UNDIRECTED)
     ArrayList<Portion> portions;
 }
