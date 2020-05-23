@@ -8,7 +8,7 @@ public class FoodHtml {
     public String name;
     public int qty;
     public String measureType;
-    public int measureAmount;
+    public double grams;
 
     public FoodHtml(Food food, int optionN, int qty)
     {
@@ -17,6 +17,6 @@ public class FoodHtml {
         this.name = food.getFoodName();
         this.qty = qty;
         this.measureType = food.getMeasureType();
-        this.measureAmount = food.getMeasureAmount();
+        this.grams = food.getMeasureTotalGrams();
     }
 }

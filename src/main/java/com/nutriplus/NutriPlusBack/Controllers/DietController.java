@@ -1,14 +1,13 @@
 package com.nutriplus.NutriPlusBack.Controllers;
 
-import com.nutriplus.NutriPlusBack.Domain.DTOs.DietDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.ErrorDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.MealOptionDTO;
-import com.nutriplus.NutriPlusBack.Domain.DTOs.PortionDTO;
+import com.github.jhonnymertz.wkhtmltopdf.wrapper.Pdf;
+import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.FoodHtml;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationFoodRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -122,7 +123,32 @@ public class DietController {
 
         final String htmlContent = this.nutriplusTemplateEngine.process(DIET_TEMPLATE, ctx);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ErrorDTO(htmlContent));
+        Pdf pdf = new Pdf();
+        pdf.addPageFromString(htmlContent);
+        String diretory = System.getProperty("user.dir");
+        String fileName = diretory + "/generatedFiles/" + String.valueOf(System.currentTimeMillis()) + ".pdf";
+        try
+        {
+            pdf.saveAs(fileName);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Failed to generate PDF at stage 1"));
+        }
+
+        File file = new File(fileName);
+        try
+        {
+            byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
+            FileDTO fileDTO = new FileDTO(new String(encoded, StandardCharsets.US_ASCII));
+            file.delete();
+            return ResponseEntity.status(HttpStatus.OK).body(fileDTO);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Failed to generate PDF at stage 2"));
+        }
 
     }
 }
