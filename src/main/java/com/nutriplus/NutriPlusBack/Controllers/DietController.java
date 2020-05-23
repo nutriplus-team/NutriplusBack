@@ -5,15 +5,17 @@ import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.FoodHtml;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
+import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationFoodRepository;
+import com.nutriplus.NutriPlusBack.Services.EmailService;
+import com.nutriplus.NutriPlusBack.Services.PdfRenderService;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -29,13 +31,14 @@ import java.util.Optional;
 public class DietController {
 
     private final ApplicationFoodRepository foodRepository;
-    private TemplateEngine nutriplusTemplateEngine;
-    private static final String DIET_TEMPLATE = "html/dietTemplate.html";
+    private PdfRenderService pdfRenderService;
+    private EmailService emailService;
 
-    public DietController(ApplicationFoodRepository foodRepository, TemplateEngine nutriplusTemplateEngine)
+    public DietController(ApplicationFoodRepository foodRepository, PdfRenderService pdfRenderService, EmailService emailService)
     {
         this.foodRepository = foodRepository;
-        this.nutriplusTemplateEngine = nutriplusTemplateEngine;
+        this.pdfRenderService = pdfRenderService;
+        this.emailService = emailService;
     }
 
     private ErrorDTO addToList(List<MealOptionDTO> from, List<MealOptionHtml> to)
@@ -65,6 +68,49 @@ public class DietController {
         return null;
     }
 
+    private ErrorDTO prepareLists(List<MealOptionHtml> breakfast, List<MealOptionHtml> morningSnack, List<MealOptionHtml> lunch,
+        List<MealOptionHtml> afternoonSnack, List<MealOptionHtml> workoutSnack, List<MealOptionHtml> dinner, DietDTO diet)
+    {
+        ErrorDTO errorDTO;
+        errorDTO = addToList(diet.breakfast, breakfast);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        errorDTO = addToList(diet.morningSnack, morningSnack);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        errorDTO = addToList(diet.lunch, lunch);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        errorDTO = addToList(diet.afternoonSnack, afternoonSnack);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        errorDTO = addToList(diet.workoutSnack, workoutSnack);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        errorDTO = addToList(diet.dinner, dinner);
+        if(errorDTO != null)
+        {
+            return errorDTO;
+        }
+
+        return null;
+    }
+
     @PostMapping("/generate-PDF/")
     public ResponseEntity<?> generateDietPdf(@RequestBody DietDTO diet)
     {
@@ -76,79 +122,38 @@ public class DietController {
         List<MealOptionHtml> dinner = new LinkedList<>();
 
         ErrorDTO errorDTO;
-        errorDTO = addToList(diet.breakfast, breakfast);
+        errorDTO = prepareLists(breakfast, morningSnack, lunch, afternoonSnack, workoutSnack, dinner, diet);
         if(errorDTO != null)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
         }
 
-        errorDTO = addToList(diet.morningSnack, morningSnack);
+
+    }
+
+    @PostMapping("sendEmailPDF/{patientId}/")
+    public ResponseEntity<?> sendDietViaEmail(@RequestBody DietDTO diet, @PathVariable Long patientId)
+    {
+
+        List<MealOptionHtml> breakfast = new LinkedList<>();
+        List<MealOptionHtml> morningSnack = new LinkedList<>();
+        List<MealOptionHtml> lunch = new LinkedList<>();
+        List<MealOptionHtml> afternoonSnack = new LinkedList<>();
+        List<MealOptionHtml> workoutSnack = new LinkedList<>();
+        List<MealOptionHtml> dinner = new LinkedList<>();
+
+        ErrorDTO errorDTO;
+        errorDTO = prepareLists(breakfast, morningSnack, lunch, afternoonSnack, workoutSnack, dinner, diet);
         if(errorDTO != null)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserCredentials user = (UserCredentials) authentication.getCredentials();
 
-        errorDTO = addToList(diet.lunch, lunch);
-        if(errorDTO != null)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+
+        try{
+            emailService.sendDietEmail(user.getFirstName(), )
         }
-
-        errorDTO = addToList(diet.afternoonSnack, afternoonSnack);
-        if(errorDTO != null)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
-        }
-
-        errorDTO = addToList(diet.workoutSnack, workoutSnack);
-        if(errorDTO != null)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
-        }
-
-        errorDTO = addToList(diet.dinner, dinner);
-        if(errorDTO != null)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
-        }
-
-        Locale local = new Locale("pt");
-        final Context ctx = new Context(local);
-        ctx.setVariable("breakfast", breakfast);
-        ctx.setVariable("morningSnack", morningSnack);
-        ctx.setVariable("lunch", lunch);
-        ctx.setVariable("afternoonSnack", afternoonSnack);
-        ctx.setVariable("workoutSnack", workoutSnack);
-        ctx.setVariable("dinner", dinner);
-
-        final String htmlContent = this.nutriplusTemplateEngine.process(DIET_TEMPLATE, ctx);
-
-        Pdf pdf = new Pdf();
-        pdf.addPageFromString(htmlContent);
-        String diretory = System.getProperty("user.dir");
-        String fileName = diretory + "/generatedFiles/" + String.valueOf(System.currentTimeMillis()) + ".pdf";
-        try
-        {
-            pdf.saveAs(fileName);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getLocalizedMessage());
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Failed to generate PDF at stage 1"));
-        }
-
-        File file = new File(fileName);
-        try
-        {
-            byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
-            FileDTO fileDTO = new FileDTO(new String(encoded, StandardCharsets.US_ASCII));
-            file.delete();
-            return ResponseEntity.status(HttpStatus.OK).body(fileDTO);
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Failed to generate PDF at stage 2"));
-        }
-
     }
 }
