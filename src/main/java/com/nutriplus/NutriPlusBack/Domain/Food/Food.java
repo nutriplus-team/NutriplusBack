@@ -9,16 +9,18 @@ import org.neo4j.ogm.annotation.NodeEntity;
 public class Food extends FoodModel {
     //Constructor
     public Food(){}
-    //public Food(@NotNull Food foodValue) {
+    //Copy a Food
     public Food(Food foodValue) {
         foodName            = foodValue.foodName;
         foodGroup           = foodValue.foodGroup;
         measureTotalGrams   = foodValue.measureTotalGrams;
         measureType         = foodValue.measureType;
         measureAmount       = foodValue.measureAmount;
-        custom = false;
+        custom              = foodValue.custom;
+        created             = foodValue.created;
         nutritionFacts      = new NutritionFacts(foodValue.nutritionFacts);
     }
+    //New Food
     public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
          int measureAmountValue, NutritionFacts nutritionFactsValue){
         foodName            = foodNameValue;
@@ -26,17 +28,35 @@ public class Food extends FoodModel {
         measureTotalGrams   = measureTotalGramsValue;
         measureType         = measureTypeValue;
         measureAmount       = measureAmountValue;
-        custom = false;
-        nutritionFacts      = new NutritionFacts(nutritionFactsValue);
+        custom              = false;
+        created             = false;
+        nutritionFacts      = nutritionFactsValue;
     }
-
-    // Custom Food
-    public Food createCustomBasedFood(UserCredentials owner) {
-        Food customFood = new Food(this.foodName, this.foodGroup, this.measureTotalGrams, this.measureType,
-                this.measureAmount, this.nutritionFacts);
-        customFood.setCustom(true);
-        owner.addCustomFood(customFood);
-        return customFood;
+    //New created food (requires nutritionist parameter)
+    public Food(UserCredentials owner, String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+                int measureAmountValue, NutritionFacts nutritionFactsValue){
+        foodName            = foodNameValue;
+        foodGroup           = foodGroupValue;
+        measureTotalGrams   = measureTotalGramsValue;
+        measureType         = measureTypeValue;
+        measureAmount       = measureAmountValue;
+        custom              = true;
+        created             = false;
+        nutritionFacts      = nutritionFactsValue;
+        owner.addCustomFood(this);
+    }
+    //New custom food overriding an existing one (requires nutritionist parameter and original food)
+    public Food(UserCredentials owner, Food originalFoodValue){
+        foodName            = originalFoodValue.getFoodName();
+        foodGroup           = originalFoodValue.getFoodGroup();
+        measureTotalGrams   = originalFoodValue.getMeasureTotalGrams();
+        measureType         = originalFoodValue.getMeasureType();
+        measureAmount       = originalFoodValue.getMeasureAmount();
+        custom              = false;
+        created             = true;
+        originalFood        = originalFoodValue;
+        nutritionFacts      = originalFoodValue.getNutritionFacts();
+        owner.addCustomFood(this);
     }
 
     // Setters
@@ -82,10 +102,13 @@ public class Food extends FoodModel {
         }
         nutritionFacts.fiber = fiberValue;
     }
-
     public void setCustom(boolean customValue) {
         custom = customValue;
     }
+    public void setCreated(boolean createdValue) {
+        created = createdValue;
+    }
+    public void setOriginalFood(Food originalValue) {originalFood = originalValue;}
 
 
     // Getters
