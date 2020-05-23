@@ -217,4 +217,6 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
+
+
 }
