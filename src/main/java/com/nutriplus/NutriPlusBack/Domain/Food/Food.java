@@ -27,15 +27,16 @@ public class Food extends FoodModel {
         nutritionFacts      = new NutritionFacts(nutritionFactsValue);
     }
 
-    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-                int measureAmountValue){
-        foodName            = foodNameValue;
-        foodGroup           = foodGroupValue;
-        measureTotalGrams   = measureTotalGramsValue;
-        measureType         = measureTypeValue;
-        measureAmount       = measureAmountValue;
-        nutritionFacts      = null;
-    }
+    //This was only for testing
+//    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+//                int measureAmountValue){
+//        foodName            = foodNameValue;
+//        foodGroup           = foodGroupValue;
+//        measureTotalGrams   = measureTotalGramsValue;
+//        measureType         = measureTypeValue;
+//        measureAmount       = measureAmountValue;
+//        nutritionFacts      = null;
+//    }
 
     // Setters
     public void setFoodName(String foodNameValue)                     { foodName = foodNameValue; }

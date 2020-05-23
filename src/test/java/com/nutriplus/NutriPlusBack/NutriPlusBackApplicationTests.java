@@ -218,37 +218,5 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
 
-	@Test
-	void addMockFood()
-	{
-		Food breakfastFood = new Food("ComidaOcimar", "Teresinense", 140, "Ocimares", 2);
-		Food morningSnack = new Food("ComidaMorad", "Indaiatubense", 130, "Felipes", 1);
-		Food lunch = new Food("ComidaToso", "Curitibano", 120, "Tosos", 1);
-		Food afternoonSnack = new Food("ComidaAvan", "Avaniandavense", 105.6, "Adrianos", 2);
-		Food workoutSnack = new Food("ComidaChen", "Chines", 132, "Chens", 1);
-		Food dinner = new Food("ComidaSte", "Catarinense", 152, "Stes", 7);
 
-		applicationFoodRepository.save(breakfastFood);
-		applicationFoodRepository.save(morningSnack);
-		applicationFoodRepository.save(lunch);
-		applicationFoodRepository.save(afternoonSnack);
-		applicationFoodRepository.save(workoutSnack);
-		applicationFoodRepository.save(dinner);
-	}
-
-	@Test
-	void addMockPatient()
-	{
-		Patient test = new Patient();
-
-		test.setName("TestPatient");
-		test.setCorporalMass((float)89.3);
-		test.setCpf("123456");
-		test.setEmail("lucas.steuernagel@ga.ita.br");
-		test.calculateMethabolicRate(Constants.TINSLEY);
-
-		UserCredentials user = applicationUserRepository.findByUsername("avan");
-		user.setPatient(test);
-		applicationUserRepository.save(user);
-	}
 }
