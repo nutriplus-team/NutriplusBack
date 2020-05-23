@@ -166,9 +166,8 @@ class NutriPlusBackApplicationTests {
 		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContaining("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
+			assertThat(someFood.getId()).isIn(testFood1.getId(), testFood2.getId());
 		}
-		assertThat(testFood1.getId()).isEqualTo(foodList.get(0).getId());
-		assertThat(testFood2.getId()).isEqualTo(foodList.get(1).getId());
 
 		// Delete data
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
