@@ -1,6 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 
 public class NutritionFacts extends NutritionFactsModel {
@@ -16,7 +16,7 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = fiberValue;
     }
 
-    public NutritionFacts(@NotNull NutritionFacts nutritionFactsValue)
+    public NutritionFacts(NutritionFacts nutritionFactsValue)
     {
         calories = nutritionFactsValue.calories;
         proteins = nutritionFactsValue.proteins;
@@ -25,7 +25,7 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = nutritionFactsValue.fiber;
     }
 
-    public void copy(@NotNull NutritionFacts nutritionFactsValue)
+    public void copy( NutritionFacts nutritionFactsValue)
     {
         calories = nutritionFactsValue.calories;
         proteins = nutritionFactsValue.proteins;
