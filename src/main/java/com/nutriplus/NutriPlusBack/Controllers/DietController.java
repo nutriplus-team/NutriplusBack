@@ -145,7 +145,7 @@ public class DietController {
 
     }
 
-    @PostMapping("sendEmailPDF/{patientId}/")
+    @PostMapping("send-email-PDF/{patientId}/")
     public ResponseEntity<?> sendDietViaEmail(@RequestBody DietDTO diet, @PathVariable Long patientId)
     {
 
