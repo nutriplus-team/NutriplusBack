@@ -77,7 +77,7 @@ public class UserCredentials {
 
     public void addCustomFood(Food food) {this.customFoods.add(food);}
 
-    public void deleteFood(Food food) {this.customFoods.remove(food);}
+    public void removeCustomFood(Food food) {this.customFoods.remove(food);}
 
     public Patient getPatient(String cpfPatient){
         for(Patient patient: this.patient_list){
