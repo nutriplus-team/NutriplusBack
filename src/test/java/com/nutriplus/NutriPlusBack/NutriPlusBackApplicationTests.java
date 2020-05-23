@@ -278,14 +278,13 @@ class NutriPlusBackApplicationTests {
 
 		// Add Custom Food
 		Food customFood = new Food(userMenu, testFood1);
-		Food createdFood = new Food(userMenu, "Hot Dog", "Grãos", 23.9,
+		Food createdFood = new Food(userMenu, "Açaí", "Grãos", 23.9,
 				"Colher de sopa", 5, testNutritionFacts1);
 		applicationFoodRepository.save(customFood);
 		applicationFoodRepository.save(createdFood);
 
 		testMeal.addFood(customFood);
 		testMeal.addFood(createdFood);
-		applicationMealRepository.save(testMeal);
 		applicationMealRepository.save(testMeal);
 
 		// Add data
@@ -305,9 +304,12 @@ class NutriPlusBackApplicationTests {
 
 		applicationUserRepository.save(userMenu);
 
-		Menu menu = new Menu(testMeal, testPatient, testFood1, 150f);
-		menu.addPortion(testFood2, 200f);
+		Menu menu = new Menu(testMeal, testPatient, testFood2, 150f);
+		menu.addPortion(customFood, 200f);
 		applicationMenuRepository.save(menu);
+
+		Menu menu2 = new Menu(testMeal, testPatient2, createdFood, 150f);
+		applicationMenuRepository.save(menu2);
 
 		// Test Menu
 		Long menuId = menu.getId();
@@ -316,20 +318,20 @@ class NutriPlusBackApplicationTests {
 		assertThat(test_menu).isNotNull();
 
 		// Delete data
-		applicationFoodRepository.delete(customFood);
-		applicationFoodRepository.delete(createdFood);
-		applicationMealRepository.deleteMealById(testMeal.getId());
-		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
-		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
-		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
-		menu.setMealType(null);
-		menu.setPatient(null);
-		applicationMenuRepository.save(menu);
-		applicationMenuRepository.deleteById(menuId);
-		userMenu.deletePatient(testPatient);
-		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
-		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
-		applicationUserRepository.deleteById(userMenu.getId());
+//		applicationFoodRepository.delete(customFood);
+//		applicationFoodRepository.delete(createdFood);
+//		applicationMealRepository.deleteMealById(testMeal.getId());
+//		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+//		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+//		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+//		menu.setMealType(null);
+//		menu.setPatient(null);
+//		applicationMenuRepository.save(menu);
+//		applicationMenuRepository.deleteById(menuId);
+//		userMenu.deletePatient(testPatient);
+//		applicationUserRepository.save(userMenu);
+//		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
+//		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
+//		applicationUserRepository.deleteById(userMenu.getId());
 	}
 }
