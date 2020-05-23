@@ -20,6 +20,8 @@ build/
 *.iml
 *.ipr
 out/
+lib/
+web/
 
 ### NetBeans ###
 /nbproject/private/
@@ -30,3 +32,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Dolphin ###
+.directory
