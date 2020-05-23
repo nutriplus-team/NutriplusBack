@@ -5,6 +5,7 @@ import com.nutriplus.NutriPlusBack.Domain.DTOs.ErrorDTO;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.FileDTO;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,9 +51,9 @@ public class PdfRenderService {
 
         pdf.saveAs(fileName);
         File file = new File(fileName);
-        byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
+        byte[] stream = Files.readAllBytes(file.toPath());
         file.delete();
 
-        return encoded;
+        return stream;
     }
 }

@@ -5,6 +5,7 @@ import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.FoodHtml;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
+import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationFoodRepository;
 import com.nutriplus.NutriPlusBack.Services.EmailService;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
@@ -128,6 +131,17 @@ public class DietController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
         }
 
+        try
+        {
+            byte[] fileStream = pdfRenderService.renderDiet(breakfast, morningSnack, lunch, afternoonSnack, workoutSnack, dinner);
+            String encoded = Base64.encodeBase64String(fileStream);
+            FileDTO fileDTO = new FileDTO(encoded);
+            return ResponseEntity.status(HttpStatus.OK).body(fileDTO);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Error generating PDF"));
+        }
 
     }
 
@@ -151,9 +165,22 @@ public class DietController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserCredentials user = (UserCredentials) authentication.getCredentials();
 
+        Patient patient = user.getPatientById(patientId);
+        if(patient == null)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Patient not found"));
+        }
 
         try{
-            emailService.sendDietEmail(user.getFirstName(), )
+            emailService.sendDietEmail(user.getFirstName(), patient.getEmail(), patient.getName(), breakfast, morningSnack, lunch,
+                    afternoonSnack, workoutSnack, dinner, diet);
         }
+        catch (Exception e)
+        {
+            System.out.println(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Error sending email"));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 }

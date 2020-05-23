@@ -235,4 +235,20 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.save(workoutSnack);
 		applicationFoodRepository.save(dinner);
 	}
+
+	@Test
+	void addMockPatient()
+	{
+		Patient test = new Patient();
+
+		test.setName("TestPatient");
+		test.setCorporalMass((float)89.3);
+		test.setCpf("123456");
+		test.setEmail("lucas.steuernagel@ga.ita.br");
+		test.calculateMethabolicRate(Constants.TINSLEY);
+
+		UserCredentials user = applicationUserRepository.findByUsername("avan");
+		user.setPatient(test);
+		applicationUserRepository.save(user);
+	}
 }

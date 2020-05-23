@@ -43,6 +43,10 @@ public class Patient extends PatientModel {
             foodRestrictions.add(food);
         }
     }
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
     public void setIsAthlete(boolean value){isAthlete = value;}
     public void setAge(int ageValue){age = ageValue;}
     public void setPhysicalActivityLevel(float physicalActivityLevelValue){physicalActivityLevel = physicalActivityLevelValue;}
@@ -77,6 +81,10 @@ public class Patient extends PatientModel {
 
     //Get Functions
 
+    public String getEmail()
+    {
+        return this.email;
+    }
     public Long getId() { return id; }
     public String getCpf(){
         return cpf;

@@ -3,6 +3,7 @@ package com.nutriplus.NutriPlusBack.Services;
 
 import com.nutriplus.NutriPlusBack.Domain.DTOs.DietDTO;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
@@ -15,6 +16,8 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -54,10 +57,12 @@ public class EmailService {
         final String htmlContent = this.nutriplusTemplateEngine.process(DIET_EMAIL_TEMPLATE, ctx);
         message.setText(htmlContent, true);
 
-        byte[] file = pdfRenderService.renderDiet(breakfast, morningSnack, lunch, afternoonSnack, workoutSnack, dinner);
+        byte[] stream = pdfRenderService.renderDiet(breakfast, morningSnack, lunch, afternoonSnack, workoutSnack, dinner);
 
-        final InputStreamSource attachmentSource = new ByteArrayResource(file);
-        message.addAttachment("dieta.pdf", attachmentSource,"pdf");
+        String path = System.getProperty("user.dir");
+        //FileUtils.writeByteArrayToFile(new File(path + "/dita.pdf"), stream);
+        final InputStreamSource attachmentSource = new ByteArrayResource(stream);
+        message.addAttachment("dieta.pdf", attachmentSource,"application/pdf");
 
         this.mailSender.send(mimeMessage);
 
