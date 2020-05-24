@@ -13,6 +13,7 @@ public abstract class PatientModel{
     public Long id;
     String cpf;
     String name;
+    protected String email;
 
     String dateOfBirth;
     short biologicalSex;   //0 equals female and 1 equals male

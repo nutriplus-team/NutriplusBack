@@ -14,7 +14,7 @@ public abstract class MenuModel {
     public Long id;
 
     @Relationship(type = "MEALTYPE", direction = Relationship.UNDIRECTED)
-    Meal meal_type;
+    Meal mealType;
 
     @Relationship(type = "PATIENT", direction = Relationship.UNDIRECTED)
     Patient patient;

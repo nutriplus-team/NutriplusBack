@@ -10,17 +10,17 @@ public class Portion extends PortionModel {
     public Portion() {
     }
 
-    public Portion(Food food_value, float quantity_value) {
-        food = food_value;
-        quantity = quantity_value;
+    public Portion(Food foodValue, float quantityValue) {
+        food = foodValue;
+        quantity = quantityValue;
     }
 
     // Setters
-    public void set_food(Food food_value) {food = food_value;}
-    public void set_quantity(float quantity_value) {quantity = quantity_value;}
+    public void setFood(Food foodValue) {food = foodValue;}
+    public void setQuantity(float quantityValue) {quantity = quantityValue;}
 
     // Getters
-    public Long get_id() {return id;}
-    public Food get_food() {return food;}
-    public float get_quantity() {return quantity;}
+    public Long getId() {return id;}
+    public Food getFood() {return food;}
+    public float getQuantity() {return quantity;}
 }
