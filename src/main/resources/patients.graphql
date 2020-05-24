@@ -1,0 +1,14 @@
+schema {
+    query: Query
+}
+
+type Query {
+    patient(cpf: String) : Patient
+}
+
+type Patient {
+     cpf:   String
+     name:  String
+     corporalMass: Float
+     methabolicRate: Float
+}
