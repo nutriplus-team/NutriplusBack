@@ -318,20 +318,21 @@ class NutriPlusBackApplicationTests {
 		assertThat(test_menu).isNotNull();
 
 		// Delete data
-//		applicationFoodRepository.delete(customFood);
-//		applicationFoodRepository.delete(createdFood);
-//		applicationMealRepository.deleteMealById(testMeal.getId());
-//		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
-//		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
-//		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
-//		menu.setMealType(null);
-//		menu.setPatient(null);
-//		applicationMenuRepository.save(menu);
-//		applicationMenuRepository.deleteById(menuId);
-//		userMenu.deletePatient(testPatient);
-//		applicationUserRepository.save(userMenu);
-//		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
-//		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
-//		applicationUserRepository.deleteById(userMenu.getId());
+		applicationFoodRepository.delete(customFood);
+		applicationFoodRepository.delete(createdFood);
+		applicationMealRepository.deleteMealById(testMeal.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		menu.setMealType(null);
+		menu.setPatient(null);
+		applicationMenuRepository.save(menu);
+		applicationMenuRepository.deleteById(menuId);
+		applicationMenuRepository.deleteById(menu2.getId());
+		userMenu.deletePatient(testPatient);
+		applicationUserRepository.save(userMenu);
+		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
+		applicationUserRepository.deleteById(userMenu.getId());
 	}
 }

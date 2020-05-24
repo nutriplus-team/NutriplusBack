@@ -40,7 +40,6 @@ public class UserCredentials {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    //TODO:Criar validadores para email e senha
 
 
     public Long getId()
@@ -64,6 +63,14 @@ public class UserCredentials {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public Patient getPatientById(Long id)
+    {
+        return patient_list.stream()
+                .filter(patient -> patient.getId().equals(id))
+                .findAny()
+                .orElse(null);
     }
 
     public void setEmail(String email) {

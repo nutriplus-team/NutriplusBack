@@ -1,10 +1,5 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-//import org.jetbrains.annotations.NotNull;
-
-
-import org.neo4j.ogm.typeconversion.AttributeConverter;
-
 public class NutritionFacts extends NutritionFactsModel {
     // Constructors
     public NutritionFacts(){}
