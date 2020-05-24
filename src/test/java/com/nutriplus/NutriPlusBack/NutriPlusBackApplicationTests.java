@@ -43,17 +43,17 @@ class NutriPlusBackApplicationTests {
 	@Test
 	void insertPatient(){
 
-		Patient test = new Patient();
-
-		test.setName("TestPatient");
-		test.setCorporalMass((float)89.3);
-		test.setCpf("123456");
-		test.calculateMethabolicRate(Constants.TINSLEY);
-
 		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
 		assertThat(test_user).isNotNull();
+		int limit = 100;
 
-		test_user.setPatient(test);
+		for(int i = 0; i < limit ; i++){
+			Patient test = new Patient();
+			String Name = "TestPatient" + i;
+			test.setName(Name);
+			test.setCorporalMass((float)i + 50);
+			test_user.setPatient(test);
+		}
 		applicationUserRepository.save(test_user);
 
 	}
