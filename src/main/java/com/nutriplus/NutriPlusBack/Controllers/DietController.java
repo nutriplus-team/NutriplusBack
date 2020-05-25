@@ -146,7 +146,7 @@ public class DietController {
     }
 
     @PostMapping("send-email-PDF/{patientId}/")
-    public ResponseEntity<?> sendDietViaEmail(@RequestBody DietDTO diet, @PathVariable Long patientId)
+    public ResponseEntity<?> sendDietViaEmail(@RequestBody DietDTO diet, @PathVariable String patientId)
     {
 
         List<MealOptionHtml> breakfast = new LinkedList<>();

@@ -18,6 +18,8 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
 
     @Query("MATCH (p:Portion) where ID(p)=$0 DETACH DELETE p")
     void deletePortionFromRepository(Long id);
+
+    Menu findByUuid(String uuid);
 }
 
 

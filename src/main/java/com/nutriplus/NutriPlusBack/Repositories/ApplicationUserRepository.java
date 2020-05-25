@@ -11,4 +11,6 @@ public interface ApplicationUserRepository extends Neo4jRepository<UserCredentia
 
     @Query("MATCH (p:Patient) where ID(p)=$0 DETACH DELETE p")
     void deletePatientFromRepository(Long id);
+
+    UserCredentials findByUuid(String uuid);
 }

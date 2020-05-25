@@ -66,10 +66,10 @@ public class UserCredentials extends AbstractEntity{
         return lastName;
     }
 
-    public Patient getPatientById(Long id)
+    public Patient getPatientById(String uuid)
     {
         return patient_list.stream()
-                .filter(patient -> patient.getId().equals(id))
+                .filter(patient -> patient.getUuid().equals(uuid))
                 .findAny()
                 .orElse(null);
     }
