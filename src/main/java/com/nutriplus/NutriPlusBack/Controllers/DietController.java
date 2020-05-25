@@ -4,6 +4,7 @@ import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.FoodHtml;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
+import com.nutriplus.NutriPlusBack.Domain.Meal.MealType;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationFoodRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -174,4 +176,28 @@ public class DietController {
 
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
+
+    @PostMapping("diet/generate/{patientId}/{meal}")
+    public ResponseEntity<?> generateDiet(@PathVariable String patientId, @RequestBody DietNumbersDTO numbers, @PathVariable int meal)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserCredentials user = (UserCredentials) authentication.getCredentials();
+
+        Patient patient = user.getPatientByUuid(patientId);
+        Optional<MealType> mealType = MealType.valueOf(meal);
+        if(patient == null)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Patient not found"));
+        }
+
+        if(!mealType.isPresent())
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Meal not found"));
+        }
+
+        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(patient.getFoodRestrictions(), mealType.get());
+
+        
+    }
+
 }
