@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Menu;
 
+import com.nutriplus.NutriPlusBack.Domain.AbstractEntity;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
@@ -9,7 +10,7 @@ import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
 
-public abstract class MenuModel {
+public abstract class MenuModel extends AbstractEntity {
     @Id
     @GeneratedValue
     public Long id;
@@ -22,4 +23,9 @@ public abstract class MenuModel {
 
     @Relationship(type = "PORTION", direction = Relationship.UNDIRECTED)
     ArrayList<Portion> portions;
+
+    public MenuModel()
+    {
+        super();
+    }
 }

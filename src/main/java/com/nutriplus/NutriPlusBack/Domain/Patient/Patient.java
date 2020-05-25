@@ -17,6 +17,7 @@ public class Patient extends PatientModel {
 
     //Constructor
     public Patient(){
+        super();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
     //Set Functions
@@ -38,10 +39,8 @@ public class Patient extends PatientModel {
     public void setNutritionist(String nutritionistValue){
         nutritionist = nutritionistValue;
     }
-    public void setFoodRestrictions(ArrayList<String> foodRestrictionsValue){
-        for(String food : foodRestrictionsValue){
-            foodRestrictions.add(food);
-        }
+    public void setFoodRestrictionsUUID(ArrayList<String> foodRestrictionsUUID){
+        foodRestrictions.addAll(foodRestrictionsUUID);
     }
     public void setEmail(String email)
     {

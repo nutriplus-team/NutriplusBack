@@ -10,14 +10,19 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
     @Override
     Optional<Menu> findById(Long aLong);
 
-    @Query("MATCH (f:Food) where ID(f)=$0 DETACH DELETE f")
-    void deleteFoodFromRepository(Long id);
+    @Query("MATCH (f:Food) where f.uuid=$0 DETACH DELETE f")
+    void deleteFoodFromRepository(String uuid);
 
-    @Query("MATCH (m:Meal) where ID(m)=$0 DETACH DELETE m")
-    void deleteMealFromRepository(Long id);
+    @Query("MATCH (m:Meal) where m.uuid=$0 DETACH DELETE m")
+    void deleteMealFromRepository(String uuid);
 
-    @Query("MATCH (p:Portion) where ID(p)=$0 DETACH DELETE p")
-    void deletePortionFromRepository(Long id);
+    @Query("MATCH (p:Portion) where p.uuid=$0 DETACH DELETE p")
+    void deletePortionFromRepository(String uuid);
+
+    @Query("MATCH (m:Menu) where m.uuid=$0 DETACH DELETE m")
+    void deleteByUuid(String uuid);
+
+    Optional<Menu> findByUuid(String uuid);
 }
 
 

@@ -1,10 +1,11 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
+import com.nutriplus.NutriPlusBack.Domain.AbstractEntity;
 import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 
-public abstract class FoodModel {
+public abstract class FoodModel extends AbstractEntity {
     @Id
     @GeneratedValue
     public Long id;
@@ -20,4 +21,9 @@ public abstract class FoodModel {
     Food originalFood;         // null if custom = 0;
     @Convert(NutritionFactsToGraph.class)
     NutritionFacts nutritionFacts;
+
+    public FoodModel()
+    {
+        super();
+    }
 }

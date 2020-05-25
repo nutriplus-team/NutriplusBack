@@ -8,9 +8,11 @@ public class Portion extends PortionModel {
     // Constructor
 
     public Portion() {
+        super();
     }
 
     public Portion(Menu menuValue, Food foodValue, float quantityValue) {
+        super();
         menu = menuValue;
         food = foodValue;
         quantity = quantityValue;

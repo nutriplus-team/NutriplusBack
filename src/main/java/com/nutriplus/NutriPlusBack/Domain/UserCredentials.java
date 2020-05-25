@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NodeEntity
-public class UserCredentials {
+public class UserCredentials extends AbstractEntity{
     @Id
     @GeneratedValue
     private Long id;
@@ -29,11 +29,12 @@ public class UserCredentials {
     private ArrayList<Food> customFoods = new ArrayList<Food>();
     public UserCredentials()
     {
-
+        super();
     }
 
     public UserCredentials(String username, String email, String password, String firstName, String lastName)
     {
+        super();
         this.username = username;
         this.email = email;
         this.password = password;
@@ -65,10 +66,10 @@ public class UserCredentials {
         return lastName;
     }
 
-    public Patient getPatientById(Long id)
+    public Patient getPatientByUuid(String uuid)
     {
         return patient_list.stream()
-                .filter(patient -> patient.getId().equals(id))
+                .filter(patient -> patient.getUuid().equals(uuid))
                 .findAny()
                 .orElse(null);
     }
