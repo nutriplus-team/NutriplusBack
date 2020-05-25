@@ -17,9 +17,19 @@ public class PatientDataFetcher {
 
     public DataFetcher<Patient> getPatient() {
         return dataFetchingEnvironment -> {
-            String cpfPatient = dataFetchingEnvironment.getArgument("cpf");
-            return applicationUserRepository.findByUsername("adriano").getPatient(cpfPatient);
+            Long idPatient = dataFetchingEnvironment.getArgument("idPatient");
+            Long idUser = dataFetchingEnvironment.getArgument("idUser");
+            return applicationUserRepository.findById(idUser).get().getPatientById(idPatient);
         };
-        //getPatient must be implemented in UserCredentials
+    }
+
+    public DataFetcher<ArrayList<Patient>> getPatients(){
+        return dataFetchingEnvironment -> {
+            Long idUser = dataFetchingEnvironment.getArgument("idUser");
+            int numberPage = dataFetchingEnvironment.getArgument("numberPage");
+            int sizePage = dataFetchingEnvironment.getArgument("sizePage");
+            numberPage = numberPage*sizePage;
+            return applicationUserRepository.findPatients(idUser,numberPage,sizePage);
+        };
     }
 }

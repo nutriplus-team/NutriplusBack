@@ -1,6 +1,5 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.neo4j.ogm.annotation.NodeEntity;
 
@@ -8,7 +7,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 public class Food extends FoodModel {
     //Constructor
     public Food(){}
-    //Copy a Food
+
     public Food(Food foodValue) {
         foodName            = foodValue.foodName;
         foodGroup           = foodValue.foodGroup;

@@ -17,7 +17,7 @@ public class PatientController {
     @Autowired
     GraphQLService graphQLService;
 
-    @PostMapping("/get")
+    @PostMapping("/get/")
     public ResponseEntity<Object> getPatient(@RequestBody String query) {
 
         ExecutionResult execute = graphQLService.getGraphQL().execute(query);
