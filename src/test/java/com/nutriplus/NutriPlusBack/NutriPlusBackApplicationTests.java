@@ -42,7 +42,6 @@ class NutriPlusBackApplicationTests {
 
 	@Test
 	void insertPatient(){
-
 		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
 		assertThat(test_user).isNotNull();
 		int limit = 100;
@@ -88,7 +87,7 @@ class NutriPlusBackApplicationTests {
 	void TestMenu(){
 		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
 
-		// Add data
+		// Add patient
 		Patient testPatient = new Patient();
 		testPatient.setName("TestMenuPatient");
 		testPatient.setCorporalMass((float)89.3);
@@ -97,18 +96,25 @@ class NutriPlusBackApplicationTests {
 		userMenu.setPatient(testPatient);
 		applicationUserRepository.save(userMenu);
 
-		Food dummyFood = new Food();
-		ArrayList<Portion> dummyPortions = new ArrayList<>();
-		Portion dummyPortion1 = new Portion(dummyFood, 21.2f);
-		Portion dummyPortion2 = new Portion(dummyFood, 2020.2f);
-		Portion dummyPortion3 = new Portion(dummyFood, 3.14f);
-		dummyPortions.add(dummyPortion1);
-		dummyPortions.add(dummyPortion2);
-		dummyPortions.add(dummyPortion3);
+		// Add food
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
 
-		Meal dummyMeal = new Meal();
 
-		Menu menu = new Menu(dummyMeal, testPatient, dummyPortions);
+		// Add meal type
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		foodList.add(testFood2);
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		applicationMealRepository.save(testMeal);
+
+		// Add menu
+		Menu menu = new Menu(testMeal, testPatient);
+		menu.addPortion(testFood1, 150);
 		applicationMenuRepository.save(menu);
 
 		// Test User
@@ -124,16 +130,7 @@ class NutriPlusBackApplicationTests {
 		assertThat(testMenu).isNotNull();
 
 		// Delete Data
-		for(Portion portionElement : dummyPortions)
-		{
-			applicationMenuRepository.deleteFoodFromRepository(portionElement.getFood().getId());
-			portionElement.setFood(null);
-			portionElement.setQuantity(0);
-			applicationMenuRepository.deletePortionFromRepository(portionElement.getId());
-		}
-		dummyPortions.clear();
-
-		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		applicationMenuRepository.deleteMealFromRepository(menuId);
 		menu.setMealType(null);
 
 		menu.setPatient(null);
@@ -145,6 +142,10 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.save(userMenu);
 		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
 		applicationUserRepository.deleteById(userMenu.getId());
+
+		applicationMealRepository.deleteMealById(testMeal.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 	}
 
 	@Test
@@ -182,7 +183,7 @@ class NutriPlusBackApplicationTests {
 		foodFound = applicationFoodRepository.getFoodById(testFood2.getId());
 		assertThat(testFood2.getId()).isEqualTo(foodFound.getId());
 
-		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContaining("Arroz");
+		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
 		}
@@ -194,8 +195,8 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 
-
 	}
+
 	@Test
 	void TestMeal(){
 		// Create foods
@@ -237,5 +238,93 @@ class NutriPlusBackApplicationTests {
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
 	}
 
+	@Test
+	void OverallTest(){
+		// Create foods
+		NutritionFacts testNutritionFacts1 = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		NutritionFacts testNutritionFacts2 = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts1);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts2);
 
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+
+		// Creat Meals
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		testMeal.addFood(testFood2);
+		applicationMealRepository.save(testMeal);
+
+		// Meal tests
+		Meal mealFound = applicationMealRepository.getMealById(testMeal.getId());
+		assertThat(mealFound.getId()).isNotNull();
+		assertThat(mealFound.getMealType()).isEqualTo(testMeal.getMealType());
+
+		// Add Nutricionista
+		UserCredentials userMenu = new UserCredentials("Nutricionista","test@email.com","senhaTest","Nutricionista","M");
+
+		// Add Custom Food
+		Food customFood = new Food(userMenu, testFood1);
+		Food createdFood = new Food(userMenu, "Açaí", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts1);
+		applicationFoodRepository.save(customFood);
+		applicationFoodRepository.save(createdFood);
+
+		testMeal.addFood(customFood);
+		testMeal.addFood(createdFood);
+		applicationMealRepository.save(testMeal);
+
+		// Add data
+		Patient testPatient = new Patient();
+		testPatient.setName("Toso");
+		testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
+
+		Patient testPatient2 = new Patient();
+		testPatient2.setName("Foo");
+		testPatient2.setCorporalMass((float)89.3);
+		testPatient2.setCpf("123466");
+		testPatient2.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient2);
+
+		applicationUserRepository.save(userMenu);
+
+		Menu menu = new Menu(testMeal, testPatient, testFood2, 150f);
+		menu.addPortion(customFood, 200f);
+		applicationMenuRepository.save(menu);
+
+		Menu menu2 = new Menu(testMeal, testPatient2, createdFood, 150f);
+		applicationMenuRepository.save(menu2);
+
+		// Test Menu
+		Long menuId = menu.getId();
+		assertThat(menuId).isNotNull();
+		Optional<Menu> test_menu = applicationMenuRepository.findById(menuId);
+		assertThat(test_menu).isNotNull();
+
+		// Delete data
+		applicationFoodRepository.delete(customFood);
+		applicationFoodRepository.delete(createdFood);
+		applicationMealRepository.deleteMealById(testMeal.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
+		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		menu.setMealType(null);
+		menu.setPatient(null);
+		applicationMenuRepository.save(menu);
+		applicationMenuRepository.deleteById(menuId);
+		applicationMenuRepository.deleteById(menu2.getId());
+		userMenu.deletePatient(testPatient);
+		applicationUserRepository.save(userMenu);
+		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
+		applicationUserRepository.deleteById(userMenu.getId());
+	}
 }

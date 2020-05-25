@@ -1,8 +1,5 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
-
-import javax.validation.constraints.NotNull;
-
 public class NutritionFacts extends NutritionFactsModel {
     // Constructors
     public NutritionFacts(){}
@@ -35,5 +32,11 @@ public class NutritionFacts extends NutritionFactsModel {
         lipids = nutritionFactsValue.lipids;
         fiber = nutritionFactsValue.fiber;
     }
+
+    double getCalories() {return calories;}
+    double getProteins() {return proteins;}
+    double getLipids() {return lipids;}
+    double getCarbohydrates() {return carbohydrates;}
+    double getFiber() {return fiber;}
 
 }
