@@ -1,15 +1,19 @@
 package com.nutriplus.NutriPlusBack.Domain.Food;
 
 
+import com.nutriplus.NutriPlusBack.Domain.AbstractEntity;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
 public class Food extends FoodModel {
     //Constructor
-    public Food(){}
+    public Food(){
+        super();
+    }
     //Copy a Food
     public Food(Food foodValue) {
+        super();
         foodName            = foodValue.foodName;
         foodGroup           = foodValue.foodGroup;
         measureTotalGrams   = foodValue.measureTotalGrams;
@@ -22,6 +26,7 @@ public class Food extends FoodModel {
     //New Food
     public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
          int measureAmountValue, NutritionFacts nutritionFactsValue){
+        super();
         foodName            = foodNameValue;
         foodGroup           = foodGroupValue;
         measureTotalGrams   = measureTotalGramsValue;
@@ -34,6 +39,7 @@ public class Food extends FoodModel {
     //New created food (requires nutritionist parameter)
     public Food(UserCredentials owner, String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
                 int measureAmountValue, NutritionFacts nutritionFactsValue){
+        super();
         foodName            = foodNameValue;
         foodGroup           = foodGroupValue;
         measureTotalGrams   = measureTotalGramsValue;
@@ -46,6 +52,7 @@ public class Food extends FoodModel {
     }
     //New custom food overriding an existing one (requires nutritionist parameter and original food)
     public Food(UserCredentials owner, Food originalFoodValue){
+        super();
         foodName            = originalFoodValue.getFoodName();
         foodGroup           = originalFoodValue.getFoodGroup();
         measureTotalGrams   = originalFoodValue.getMeasureTotalGrams();

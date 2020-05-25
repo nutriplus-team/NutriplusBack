@@ -10,15 +10,18 @@ import java.util.ArrayList;
 @NodeEntity
 public class Menu extends MenuModel{
     public Menu() {
+        super();
     }
 
     public Menu(Meal mealTypeValue, Patient patientValue) {
+        super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
     }
 
     public Menu(Meal mealTypeValue, Patient patientValue, Food foodValue, float quantityValue) {
+        super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();

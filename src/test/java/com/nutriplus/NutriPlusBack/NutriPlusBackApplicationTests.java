@@ -335,4 +335,25 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
 		applicationUserRepository.deleteById(userMenu.getId());
 	}
+
+	@Test
+	void foodRestrictionTest()
+	{
+		UserCredentials userMenu = new UserCredentials("Nutricionista","test@email.com","senhaTest","Nutricionista","M");
+		Patient testPatient = new Patient();
+		testPatient.setName("Toso");
+		testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
+
+		applicationUserRepository.save(userMenu);
+
+		ArrayList<String> vec = new ArrayList<>(Arrays.asList(
+				"Comida1", "Comida2"
+		));
+		testPatient.setFoodRestrictions(vec);
+		testPatient.setCpf("78910");
+		applicationUserRepository.save(userMenu);
+	}
 }

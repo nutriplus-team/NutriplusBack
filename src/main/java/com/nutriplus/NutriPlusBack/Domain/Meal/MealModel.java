@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Meal;
 
+import com.nutriplus.NutriPlusBack.Domain.AbstractEntity;
 import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class MealModel {
+public abstract class MealModel extends AbstractEntity {
     @Id
     @GeneratedValue
     public Long id;
@@ -18,4 +19,9 @@ public abstract class MealModel {
 
     @Relationship(type = "CONTAINS_FOOD")
     List<Food> foodList = new ArrayList<>();
+
+    public MealModel()
+    {
+        super();
+    }
 }
