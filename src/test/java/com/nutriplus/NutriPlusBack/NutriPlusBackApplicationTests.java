@@ -42,27 +42,19 @@ class NutriPlusBackApplicationTests {
 
 	@Test
 	void insertPatient(){
-
-		UserCredentials user = new UserCredentials("adriano","test@email.com","senhaTest","Test","P");
-		applicationUserRepository.save(user);
-		Patient test = new Patient();
-
-		test.setName("adriano");
-		test.setCorporalMass((float)89.3);
-		test.setCpf("123456");
-		test.calculateMethabolicRate(Constants.TINSLEY);
-
 		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
 		assertThat(test_user).isNotNull();
+		int limit = 100;
 
-		test_user.setPatient(test);
+		for(int i = 0; i < limit ; i++){
+			Patient test = new Patient();
+			String Name = "TestPatient" + i;
+			test.setName(Name);
+			test.setCorporalMass((float)i + 50);
+			test_user.setPatient(test);
+		}
 		applicationUserRepository.save(test_user);
 
-		//Delete Data
-		user.deletePatient(test);
-		applicationUserRepository.save(user);
-		applicationUserRepository.deletePatientFromRepository(test.getId());
-		applicationUserRepository.deleteById(user.getId());
 	}
 
 	@Test
@@ -87,7 +79,7 @@ class NutriPlusBackApplicationTests {
 		//Delete Data
 		user.deletePatient(test);
 		applicationUserRepository.save(user);
-		applicationUserRepository.deletePatientFromRepository(test.getId());
+		applicationUserRepository.deletePatientFromRepository(test.getUuid());
 		applicationUserRepository.deleteById(user.getId());
 	}
 
@@ -148,7 +140,7 @@ class NutriPlusBackApplicationTests {
 
 		userMenu.deletePatient(testPatient);
 		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
 		applicationUserRepository.deleteById(userMenu.getId());
 
 		applicationMealRepository.deleteMealById(testMeal.getId());
@@ -331,29 +323,23 @@ class NutriPlusBackApplicationTests {
 		applicationMenuRepository.deleteById(menu2.getId());
 		userMenu.deletePatient(testPatient);
 		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
-		applicationUserRepository.deletePatientFromRepository(testPatient2.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
+		applicationUserRepository.deletePatientFromRepository(testPatient2.getUuid());
 		applicationUserRepository.deleteById(userMenu.getId());
 	}
 
 	@Test
 	void foodRestrictionTest()
 	{
-		UserCredentials userMenu = new UserCredentials("Nutricionista","test@email.com","senhaTest","Nutricionista","M");
-		Patient testPatient = new Patient();
-		testPatient.setName("Toso");
-		testPatient.setCorporalMass((float)89.3);
-		testPatient.setCpf("123456");
-		testPatient.calculateMethabolicRate(Constants.TINSLEY);
-		userMenu.setPatient(testPatient);
-
-		applicationUserRepository.save(userMenu);
-
-		ArrayList<String> vec = new ArrayList<>(Arrays.asList(
-				"Comida1", "Comida2"
-		));
-		testPatient.setFoodRestrictions(vec);
-		testPatient.setCpf("78910");
-		applicationUserRepository.save(userMenu);
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food dummyFood = new Food();
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+		applicationFoodRepository.save(dummyFood);
 	}
 }

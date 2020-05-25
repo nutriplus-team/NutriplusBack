@@ -39,8 +39,8 @@ public class Patient extends PatientModel {
     public void setNutritionist(String nutritionistValue){
         nutritionist = nutritionistValue;
     }
-    public void setFoodRestrictions(ArrayList<String> foodRestrictionsValue){
-        foodRestrictions.addAll(foodRestrictionsValue);
+    public void setFoodRestrictionsUUID(ArrayList<String> foodRestrictionsUUID){
+        foodRestrictions.addAll(foodRestrictionsUUID);
     }
     public void setEmail(String email)
     {

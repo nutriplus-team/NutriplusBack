@@ -1,6 +1,5 @@
 package com.nutriplus.NutriPlusBack.Controllers;
 
-import com.github.jhonnymertz.wkhtmltopdf.wrapper.Pdf;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.*;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.FoodHtml;
 import com.nutriplus.NutriPlusBack.Domain.DTOs.htmlDtos.MealOptionHtml;
@@ -10,23 +9,15 @@ import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.ApplicationFoodRepository;
 import com.nutriplus.NutriPlusBack.Services.EmailService;
 import com.nutriplus.NutriPlusBack.Services.PdfRenderService;
-import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -165,7 +156,7 @@ public class DietController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserCredentials user = (UserCredentials) authentication.getCredentials();
 
-        Patient patient = user.getPatientById(patientId);
+        Patient patient = user.getPatientByUuid(patientId);
         if(patient == null)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Patient not found"));

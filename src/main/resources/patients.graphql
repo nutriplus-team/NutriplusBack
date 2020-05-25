@@ -3,7 +3,8 @@ schema {
 }
 
 type Query {
-    patient(cpf: String) : Patient
+    patient(idPatient: Long, idUser: Long) : Patient
+    patients(idUser: Long, numberPage: Int, sizePage: Int):[Patient]
 }
 
 type Patient {

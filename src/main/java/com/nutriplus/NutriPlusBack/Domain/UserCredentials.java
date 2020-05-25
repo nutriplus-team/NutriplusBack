@@ -66,7 +66,7 @@ public class UserCredentials extends AbstractEntity{
         return lastName;
     }
 
-    public Patient getPatientById(String uuid)
+    public Patient getPatientByUuid(String uuid)
     {
         return patient_list.stream()
                 .filter(patient -> patient.getUuid().equals(uuid))
@@ -82,18 +82,11 @@ public class UserCredentials extends AbstractEntity{
 
     public void deletePatient(Patient patient) {this.patient_list.remove(patient);}
 
-
     public void addCustomFood(Food food) {this.customFoods.add(food);}
 
     public void removeCustomFood(Food food) {this.customFoods.remove(food);}
 
-    public Patient getPatient(String cpfPatient){
-        for(Patient patient: this.patient_list){
-            if(patient.getCpf().equals(cpfPatient)) return patient;
-        }
-        return null;
-    }
-
+    
     public ArrayList<Patient> getPatientList(){return this.patient_list;}
 
     public void setFirstName(String firstName) {
