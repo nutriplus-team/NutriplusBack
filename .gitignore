@@ -22,6 +22,7 @@ build/
 out/
 lib/
 web/
+bin/
 
 ### NetBeans ###
 /nbproject/private/

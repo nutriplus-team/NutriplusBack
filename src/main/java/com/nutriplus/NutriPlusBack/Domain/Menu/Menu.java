@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.Menu;
 
+import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -9,12 +10,22 @@ import java.util.ArrayList;
 @NodeEntity
 public class Menu extends MenuModel{
     public Menu() {
+        super();
     }
 
-    public Menu(Meal mealTypeValue, Patient patientValue, ArrayList<Portion> portionsValue) {
+    public Menu(Meal mealTypeValue, Patient patientValue) {
+        super();
         mealType = mealTypeValue;
         patient = patientValue;
-        portions = portionsValue;
+        portions = new ArrayList<Portion>();
+    }
+
+    public Menu(Meal mealTypeValue, Patient patientValue, Food foodValue, float quantityValue) {
+        super();
+        mealType = mealTypeValue;
+        patient = patientValue;
+        portions = new ArrayList<Portion>();
+        addPortion(foodValue, quantityValue);
     }
 
     // Setters
@@ -22,10 +33,13 @@ public class Menu extends MenuModel{
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
-    public void addPortion(Portion portionValue) {portions.add(portionValue);}
+    public void addPortion(Food portionValue, float quantityValue) {
+        Portion portion = new Portion(this, portionValue, quantityValue);
+        portions.add(portion);
+    }
 
     // Removers
-    public void removePortion(Portion portionValue) {portions.remove(portionValue);}
+    public void removePortion(Food portionValue) {portions.remove(portionValue);}
 
     // Getters
     public Long getId() {return id;}

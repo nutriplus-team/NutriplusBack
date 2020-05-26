@@ -1,6 +1,7 @@
 package com.nutriplus.NutriPlusBack.Domain;
 
 import com.nutriplus.NutriPlusBack.Domain.DTOs.UserRegisterDTO;
+import com.nutriplus.NutriPlusBack.Domain.Food.Food;
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.Validators.Validator;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -13,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NodeEntity
-public class UserCredentials {
+public class UserCredentials extends AbstractEntity{
     @Id
     @GeneratedValue
     private Long id;
@@ -22,20 +23,23 @@ public class UserCredentials {
     private String password;
     private String firstName;
     private String lastName;
-    @Relationship(type = "IS_PATIENT", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_PATIENT", direction = Relationship.OUTGOING)
     private ArrayList<Patient> patient_list = new ArrayList<Patient>();
+    @Relationship(type = "CUSTOM_FOOD", direction = Relationship.OUTGOING)
+    private ArrayList<Food> customFoods = new ArrayList<Food>();
     public UserCredentials()
     {
-
+        super();
     }
 
     public UserCredentials(String username, String email, String password, String firstName, String lastName)
     {
+        super();
         this.username = username;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
-        this. lastName = lastName;
+        this.lastName = lastName;
     }
 
 
@@ -62,10 +66,10 @@ public class UserCredentials {
         return lastName;
     }
 
-    public Patient getPatientById(Long id)
+    public Patient getPatientByUuid(String uuid)
     {
         return patient_list.stream()
-                .filter(patient -> patient.getId().equals(id))
+                .filter(patient -> patient.getUuid().equals(uuid))
                 .findAny()
                 .orElse(null);
     }
@@ -77,6 +81,13 @@ public class UserCredentials {
     public void setPatient(Patient patient){this.patient_list.add(patient);}
 
     public void deletePatient(Patient patient) {this.patient_list.remove(patient);}
+
+    public void addCustomFood(Food food) {this.customFoods.add(food);}
+
+    public void removeCustomFood(Food food) {this.customFoods.remove(food);}
+
+    
+    public ArrayList<Patient> getPatientList(){return this.patient_list;}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

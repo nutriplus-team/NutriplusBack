@@ -6,7 +6,7 @@ public class UserDataDTO {
     public String email;
     public String firstName;
     public String lastName;
-    public long id;
+    public String id;
     public String username;
 
     private UserDataDTO()
@@ -21,7 +21,7 @@ public class UserDataDTO {
         userData.firstName = user.getFirstName();
         userData.lastName = user.getLastName();
         userData.username = user.getUsername();
-        userData.id = user.getId();
+        userData.id = user.getUuid();
 
         return userData;
     }

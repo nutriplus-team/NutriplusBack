@@ -11,6 +11,7 @@ import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.Repositories.*;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
@@ -33,8 +34,26 @@ class NutriPlusBackApplicationTests {
 	@Autowired
 	private ApplicationMealRepository applicationMealRepository;
 
+
 	@Test
 	void contextLoads() {
+
+	}
+
+	@Test
+	void insertPatient(){
+		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
+		assertThat(test_user).isNotNull();
+		int limit = 100;
+
+		for(int i = 0; i < limit ; i++){
+			Patient test = new Patient();
+			String Name = "TestPatient" + i;
+			test.setName(Name);
+			test.setCorporalMass((float)i + 50);
+			test_user.setPatient(test);
+		}
+		applicationUserRepository.save(test_user);
 
 	}
 
@@ -55,21 +74,20 @@ class NutriPlusBackApplicationTests {
 		UserCredentials testUser = applicationUserRepository.findByUsername("TestPatient");
 
 		assertThat(testUser).isNotNull();
-		assertThat(testUser.getId()).isEqualTo(user.getId());
+		assertThat(testUser.getUuid()).isEqualTo(user.getUuid());
 
-		// Delete Data
+		//Delete Data
 		user.deletePatient(test);
 		applicationUserRepository.save(user);
-		applicationUserRepository.deletePatientFromRepository(test.getId());
-		applicationUserRepository.deleteById(user.getId());
+		applicationUserRepository.deletePatientFromRepository(test.getUuid());
+		applicationUserRepository.deleteByUuid(user.getUuid());
 	}
-
 
 	@Test
 	void TestMenu(){
 		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
 
-		// Add data
+		// Add patient
 		Patient testPatient = new Patient();
 		testPatient.setName("TestMenuPatient");
 		testPatient.setCorporalMass((float)89.3);
@@ -78,54 +96,57 @@ class NutriPlusBackApplicationTests {
 		userMenu.setPatient(testPatient);
 		applicationUserRepository.save(userMenu);
 
-		Food dummyFood = new Food();
-		ArrayList<Portion> dummyPortions = new ArrayList<>();
-		Portion dummyPortion1 = new Portion(dummyFood, 21.2f);
-		Portion dummyPortion2 = new Portion(dummyFood, 2020.2f);
-		Portion dummyPortion3 = new Portion(dummyFood, 3.14f);
-		dummyPortions.add(dummyPortion1);
-		dummyPortions.add(dummyPortion2);
-		dummyPortions.add(dummyPortion3);
+		// Add food
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts);
 
 		Meal dummyMeal = new Meal();
 
-		Menu menu = new Menu(dummyMeal, testPatient, dummyPortions);
+		// Add meal type
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		foodList.add(testFood2);
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		applicationMealRepository.save(testMeal);
+
+		// Add menu
+		Menu menu = new Menu(testMeal, testPatient);
+		menu.addPortion(testFood1, 150);
 		applicationMenuRepository.save(menu);
 
 		// Test User
 		UserCredentials testUser = applicationUserRepository.findByUsername("TestMenu");
 		assertThat(testUser).isNotNull();
-		assertThat(testUser.getId()).isEqualTo(userMenu.getId());
-		applicationUserRepository.deleteById(userMenu.getId());
+		assertThat(testUser.getUuid()).isEqualTo(userMenu.getUuid());
+		applicationUserRepository.deleteByUuid(userMenu.getUuid());
 
 		// Test Menu
-		Long menuId = menu.getId();
+		String menuId = menu.getUuid();
 		assertThat(menuId).isNotNull();
-		Optional<Menu> testMenu = applicationMenuRepository.findById(menuId);
+		Optional<Menu> testMenu = applicationMenuRepository.findByUuid(menuId);
 		assertThat(testMenu).isNotNull();
 
 		// Delete Data
-		for(Portion portionElement : dummyPortions)
-		{
-			applicationMenuRepository.deleteFoodFromRepository(portionElement.getFood().getId());
-			portionElement.setFood(null);
-			portionElement.setQuantity(0);
-			applicationMenuRepository.deletePortionFromRepository(portionElement.getId());
-		}
-		dummyPortions.clear();
-
-		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getId());
+		applicationMenuRepository.deleteMealFromRepository(menuId);
 		menu.setMealType(null);
 
 		menu.setPatient(null);
 		applicationMenuRepository.save(menu);
 
-		applicationMenuRepository.deleteById(menuId);
+		applicationMenuRepository.deleteByUuid(menuId);
 
 		userMenu.deletePatient(testPatient);
 		applicationUserRepository.save(userMenu);
-		applicationUserRepository.deletePatientFromRepository(testPatient.getId());
-		applicationUserRepository.deleteById(userMenu.getId());
+		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
+		applicationUserRepository.deleteByUuid(userMenu.getUuid());
+
+		applicationMealRepository.deleteMealByUuid(testMeal.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 	}
 
 	@Test
@@ -158,24 +179,23 @@ class NutriPlusBackApplicationTests {
 
 		// Food tests
 		Food foodFound = applicationFoodRepository.getFoodByFoodName("Arroz branco");
-		assertThat(testFood1.getId()).isEqualTo(foodFound.getId());
+		assertThat(testFood1.getUuid()).isEqualTo(foodFound.getUuid());
 
-		foodFound = applicationFoodRepository.getFoodById(testFood2.getId());
-		assertThat(testFood2.getId()).isEqualTo(foodFound.getId());
+		foodFound = applicationFoodRepository.findByUuid(testFood2.getUuid());
+		assertThat(testFood2.getUuid()).isEqualTo(foodFound.getUuid());
 
-		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContaining("Arroz");
+		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
-			assertThat(someFood.getId()).isIn(testFood1.getId(), testFood2.getId());
+			assertThat(someFood.getUuid()).isIn(testFood1.getUuid(), testFood2.getUuid());
 		}
 
 		// Delete data
-		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
-		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
-		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
-
-
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
 	}
+
 	@Test
 	void TestMeal(){
 		// Create foods
@@ -205,17 +225,106 @@ class NutriPlusBackApplicationTests {
 		applicationMealRepository.save(testMeal);
 		applicationMealRepository.save(dummyMeal);
 		// Meal tests
-		Meal mealFound = applicationMealRepository.getMealById(testMeal.getId());
-		assertThat(mealFound.getId()).isNotNull();
+		Meal mealFound = applicationMealRepository.findByUuid(testMeal.getUuid());
+		assertThat(mealFound.getUuid()).isNotNull();
 		assertThat(mealFound.getMealType()).isEqualTo(testMeal.getMealType());
 
 		// Delete data
-		applicationMealRepository.deleteMealById(testMeal.getId());
-		applicationMealRepository.deleteMealById(dummyMeal.getId());
-		applicationFoodRepository.deleteFoodFromRepository(testFood1.getId());
-		applicationFoodRepository.deleteFoodFromRepository(testFood2.getId());
-		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getId());
+		applicationMealRepository.deleteMealByUuid(testMeal.getUuid());
+		applicationMealRepository.deleteMealByUuid(dummyMeal.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
 	}
 
+	@Test
+	void OverallTest(){
+		// Create foods
+		NutritionFacts testNutritionFacts1 = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		NutritionFacts testNutritionFacts2 = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts1);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts2);
+
+		applicationFoodRepository.save(testFood1);
+		applicationFoodRepository.save(testFood2);
+
+		// Creat Meals
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		testMeal.addFood(testFood2);
+		applicationMealRepository.save(testMeal);
+
+		// Meal tests
+		Meal mealFound = applicationMealRepository.findByUuid(testMeal.getUuid());
+		assertThat(mealFound.getUuid()).isNotNull();
+		assertThat(mealFound.getMealType()).isEqualTo(testMeal.getMealType());
+
+		// Add Nutricionista
+		UserCredentials userMenu = new UserCredentials("Nutricionista","test@email.com","senhaTest","Nutricionista","M");
+
+		// Add Custom Food
+		Food customFood = new Food(userMenu, testFood1);
+		Food createdFood = new Food(userMenu, "Açaí", "Grãos", 23.9,
+				"Colher de sopa", 5, testNutritionFacts1);
+		applicationFoodRepository.save(customFood);
+		applicationFoodRepository.save(createdFood);
+
+		testMeal.addFood(customFood);
+		testMeal.addFood(createdFood);
+		applicationMealRepository.save(testMeal);
+
+		// Add data
+		Patient testPatient = new Patient();
+		testPatient.setName("Toso");
+		testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
+
+		Patient testPatient2 = new Patient();
+		testPatient2.setName("Foo");
+		testPatient2.setCorporalMass((float)89.3);
+		testPatient2.setCpf("123466");
+		testPatient2.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient2);
+
+		applicationUserRepository.save(userMenu);
+
+		Menu menu = new Menu(testMeal, testPatient, testFood2, 150f);
+		menu.addPortion(customFood, 200f);
+		applicationMenuRepository.save(menu);
+
+		Menu menu2 = new Menu(testMeal, testPatient2, createdFood, 150f);
+		applicationMenuRepository.save(menu2);
+
+		// Test Menu
+		String menuId = menu.getUuid();
+		assertThat(menuId).isNotNull();
+		Optional<Menu> test_menu = applicationMenuRepository.findByUuid(menuId);
+		assertThat(test_menu).isNotNull();
+
+		// Delete data
+		applicationFoodRepository.delete(customFood);
+		applicationFoodRepository.delete(createdFood);
+		applicationMealRepository.deleteMealByUuid(testMeal.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
+		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
+		applicationMenuRepository.deleteMealFromRepository(menu.getMealType().getUuid());
+		menu.setMealType(null);
+		menu.setPatient(null);
+		applicationMenuRepository.save(menu);
+		applicationMenuRepository.deleteByUuid(menuId);
+		applicationMenuRepository.deleteByUuid(menu2.getUuid());
+		userMenu.deletePatient(testPatient);
+		applicationUserRepository.save(userMenu);
+		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
+		applicationUserRepository.deletePatientFromRepository(testPatient2.getUuid());
+		applicationUserRepository.deleteByUuid(userMenu.getUuid());
+	}
 
 }

@@ -1,0 +1,15 @@
+schema {
+    query: Query
+}
+
+type Query {
+    patient(idPatient: Long, idUser: Long) : Patient
+    patients(idUser: Long, numberPage: Int, sizePage: Int):[Patient]
+}
+
+type Patient {
+     cpf:   String
+     name:  String
+     corporalMass: Float
+     methabolicRate: Float
+}

@@ -1,12 +1,13 @@
 package com.nutriplus.NutriPlusBack.Domain.Patient;
 
+import com.nutriplus.NutriPlusBack.Domain.AbstractEntity;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
 
-public abstract class PatientModel{
+public abstract class PatientModel extends AbstractEntity {
 
     @Id
     @GeneratedValue
@@ -19,7 +20,8 @@ public abstract class PatientModel{
     short biologicalSex;   //0 equals female and 1 equals male
     float ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
 
-    ArrayList<String> foodRestrictions = new ArrayList<String>();
+    //Array of uuids
+    ArrayList<String> foodRestrictions = new ArrayList<>();
 
     String nutritionist;
 
@@ -55,4 +57,8 @@ public abstract class PatientModel{
     float methabolicRate;
     float energyRequirements;
 
+    public PatientModel()
+    {
+        super();
+    }
 }

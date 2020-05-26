@@ -9,8 +9,11 @@ import java.util.List;
 @NodeEntity
 public class Meal extends MealModel {
     //Constructor
-    public Meal(){}
+    public Meal(){
+        super();
+    }
     public Meal(MealType mealTypeValue, List<Food> foodListValue){
+        super();
         mealType = mealTypeValue;
         foodList = foodListValue;
     }
