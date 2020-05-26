@@ -46,7 +46,9 @@ public class GraphQLService {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
                         .dataFetcher("patient", patientsDataFetcher.getPatient())
-                        .dataFetcher("patients",patientsDataFetcher.getPatients()))
+                        .dataFetcher("patients",patientsDataFetcher.getPatients())
+                        .dataFetcher("lastRecord",patientsDataFetcher.getLastPatientRecord())
+                        .dataFetcher("allRecords",patientsDataFetcher.getAllPatientRecords()))
                 .build();
     }
 

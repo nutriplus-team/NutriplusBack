@@ -1,6 +1,7 @@
 package com.nutriplus.NutriPlusBack.Repositories;
 
 import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
+import com.nutriplus.NutriPlusBack.Domain.Patient.PatientRecord;
 import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,9 @@ public interface ApplicationUserRepository extends Neo4jRepository<UserCredentia
 
     @Query ("MATCH (p:Patient)<-[:IS_PATIENT]-(u:UserCredentials) WHERE u.uuid=$0 RETURN p SKIP $1 LIMIT $2")
     ArrayList<Patient> findPatients(String userCredentialsUuid, int numberPage, int sizePage);
+
+    @Query ("MATCH (r:PatientRecord)<-[:HAS_RECORD]-(p:Patient) WHERE p.uuid=$0 RETURN r SKIP $1 LIMIT $2")
+    ArrayList<PatientRecord> findPatientRecords(String patientUuid, int numberPage, int sizePage);
 
     UserCredentials findByUuid(String uuid);
 
