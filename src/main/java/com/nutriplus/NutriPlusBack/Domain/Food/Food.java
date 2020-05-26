@@ -15,7 +15,7 @@ public class Food extends FoodModel {
         nutritionFacts      = new NutritionFacts(foodValue.nutritionFacts);
     }
     public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-         int measureAmountValue, NutritionFacts nutritionFactsValue){
+         double measureAmountValue, NutritionFacts nutritionFactsValue){
         foodName            = foodNameValue;
         foodGroup           = foodGroupValue;
         measureTotalGrams   = measureTotalGramsValue;
@@ -26,7 +26,7 @@ public class Food extends FoodModel {
 
     //This was only for testing
 //    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-//                int measureAmountValue){
+//                double measureAmountValue){
 //        foodName            = foodNameValue;
 //        foodGroup           = foodGroupValue;
 //        measureTotalGrams   = measureTotalGramsValue;
@@ -40,7 +40,7 @@ public class Food extends FoodModel {
     public void setFoodGroup(String foodGroupValue)                   { foodGroup = foodGroupValue; }
     public void setMeasureTotalGrams(double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
     public void setMeasureType(String measureTypeValue)               { measureType = measureTypeValue; }
-    public void setMeasureAmount(int measureAmountValue)              { measureAmount = measureAmountValue; }
+    public void setMeasureAmount(double measureAmountValue)           { measureAmount = measureAmountValue; }
     public void setNutritionFacts(NutritionFacts nutritionFactsValue) {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
@@ -86,6 +86,6 @@ public class Food extends FoodModel {
     public String getFoodGroup()              { return foodGroup; }
     public double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
-    public int getMeasureAmount()             { return measureAmount; }
+    public double getMeasureAmount()          { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
 }
