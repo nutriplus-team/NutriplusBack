@@ -38,7 +38,7 @@ public class DietController {
     private ErrorDTO addToList(List<MealOptionDTO> from, List<MealOptionHtml> to)
     {
         MealOptionHtml option;
-        Optional<Food> food;
+        Food food;
         int optionCount = 0;
         if(from != null)
         {
@@ -47,13 +47,13 @@ public class DietController {
                 option.foods = new LinkedList<>();
                 optionCount++;
                 for (PortionDTO portion: item.portions ) {
-                    food = foodRepository.findById(portion.foodId);
-                    if(!food.isPresent())
+                    food = foodRepository.findByUuid(portion.foodId);
+                    if(food == null)
                     {
                         return new ErrorDTO("Food ID not found");
                     }
 
-                    option.foods.add(new FoodHtml(food.get(), optionCount, portion.portion));
+                    option.foods.add(new FoodHtml(food, optionCount, portion.portion));
                 }
                 to.add(option);
             }
