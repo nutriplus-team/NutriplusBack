@@ -1,6 +1,6 @@
 package com.nutriplus.NutriPlusBack.Domain.DTOs;
 
 public class PortionDTO {
-    public Long foodId;
+    public String foodId;
     public int portion;
 }
