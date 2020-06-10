@@ -1,9 +1,9 @@
 package com.nutriplus.NutriPlusBack.Domain.DTOs;
 
 public class DietNumbersDTO {
-    int calories;
-    int proteins;
-    int carbohydrates;
-    int lipids;
-    int fiber;
+    public int calories;
+    public int proteins;
+    public int carbohydrates;
+    public int lipids;
+    public int fiber;
 }

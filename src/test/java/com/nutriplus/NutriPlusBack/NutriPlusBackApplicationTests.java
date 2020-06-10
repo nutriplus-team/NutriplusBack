@@ -1,17 +1,15 @@
 package com.nutriplus.NutriPlusBack;
 
-import com.nutriplus.NutriPlusBack.Domain.Food.Food;
-import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
-import com.nutriplus.NutriPlusBack.Domain.Meal.MealType;
-import com.nutriplus.NutriPlusBack.Domain.Food.NutritionFacts;
-import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
-import com.nutriplus.NutriPlusBack.Domain.Menu.Portion;
-import com.nutriplus.NutriPlusBack.Domain.Patient.Constants;
-import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
-import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
-import com.nutriplus.NutriPlusBack.Repositories.*;
+import com.nutriplus.NutriPlusBack.domain.food.Food;
+import com.nutriplus.NutriPlusBack.domain.meal.Meal;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
+import com.nutriplus.NutriPlusBack.domain.food.NutritionFacts;
+import com.nutriplus.NutriPlusBack.domain.menu.Menu;
+import com.nutriplus.NutriPlusBack.domain.patient.Patient;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
+import com.nutriplus.NutriPlusBack.domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.repositories.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
@@ -41,18 +39,41 @@ class NutriPlusBackApplicationTests {
 	}
 
 	@Test
+	void insertRecords(){
+		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
+		assertThat(test_user).isNotNull();
+		int numberRecords = 10;
+
+		for(int i = 0; i < numberRecords ; i++){
+			PatientRecord testRecord1 = new PatientRecord();
+			testRecord1.setAbdominal((float) (1.28+i));
+			testRecord1.setAge(18+i);
+
+			PatientRecord testRecord2 = new PatientRecord();
+			testRecord2.setAbdominal((float) (128+i));
+			testRecord1.setAge(50+i);
+
+			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
+			test_user.getPatientList().get(i).setPatientRecord(testRecord2);
+			test_user.getPatientList().get(i).updateLastRecord();
+		}
+
+		applicationUserRepository.save(test_user);
+	}
+
+	@Test
 	void insertPatient(){
 		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
 		assertThat(test_user).isNotNull();
-		int limit = 100;
+		int limit = 10;
 
 		for(int i = 0; i < limit ; i++){
 			Patient test = new Patient();
 			String Name = "TestPatient" + i;
 			test.setName(Name);
-			test.setCorporalMass((float)i + 50);
 			test_user.setPatient(test);
 		}
+
 		applicationUserRepository.save(test_user);
 
 	}
@@ -64,9 +85,7 @@ class NutriPlusBackApplicationTests {
 		Patient test = new Patient();
 
 		test.setName("TestPatient");
-		test.setCorporalMass((float)89.3);
 		test.setCpf("123456");
-		test.calculateMethabolicRate(Constants.TINSLEY);
 
 		user.setPatient(test);
 		applicationUserRepository.save(user);
@@ -90,9 +109,9 @@ class NutriPlusBackApplicationTests {
 		// Add patient
 		Patient testPatient = new Patient();
 		testPatient.setName("TestMenuPatient");
-		testPatient.setCorporalMass((float)89.3);
+		//testPatient.setCorporalMass((float)89.3);
 		testPatient.setCpf("123456");
-		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient);
 		applicationUserRepository.save(userMenu);
 
@@ -282,16 +301,16 @@ class NutriPlusBackApplicationTests {
 		// Add data
 		Patient testPatient = new Patient();
 		testPatient.setName("Toso");
-		testPatient.setCorporalMass((float)89.3);
+		//testPatient.setCorporalMass((float)89.3);
 		testPatient.setCpf("123456");
-		testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient);
 
 		Patient testPatient2 = new Patient();
 		testPatient2.setName("Foo");
-		testPatient2.setCorporalMass((float)89.3);
+		//testPatient2.setCorporalMass((float)89.3);
 		testPatient2.setCpf("123466");
-		testPatient2.calculateMethabolicRate(Constants.TINSLEY);
+		//testPatient2.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient2);
 
 		applicationUserRepository.save(userMenu);
