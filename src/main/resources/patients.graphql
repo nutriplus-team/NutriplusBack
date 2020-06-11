@@ -3,13 +3,20 @@ schema {
 }
 
 type Query {
-    patient(idPatient: Long, idUser: Long) : Patient
-    patients(idUser: Long, numberPage: Int, sizePage: Int):[Patient]
+    patient(uuidPatient: String, uuidUser: String) : Patient
+    patients(uuidUser: String, numberPage: Int, sizePage: Int):[Patient]
+    lastRecord(uuidPatient: String,uuidUser: String) : PatientRecord
+    allRecords(uuidPatient: String,uuidUser: String,numberPage: Int, sizePage: Int) : [PatientRecord]
 }
 
 type Patient {
-     cpf:   String
+     uuid:   String
      name:  String
-     corporalMass: Float
-     methabolicRate: Float
+     ethnicGroup: Float
+}
+
+type PatientRecord{
+    corporalMass: Float
+    height: Float
+    abdominal: Float
 }
