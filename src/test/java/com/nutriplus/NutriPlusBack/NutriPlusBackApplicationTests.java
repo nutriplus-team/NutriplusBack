@@ -58,11 +58,27 @@ class NutriPlusBackApplicationTests {
 
 			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
 			test_user.getPatientList().get(i).setPatientRecord(testRecord2);
-			test_user.getPatientList().get(i).updateLastRecord();
 		}
 
 		applicationUserRepository.save(test_user);
 	}
+
+	@Test
+	void insertRecordsPatient(){
+		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
+		assertThat(test_user).isNotNull();
+		Patient patientTest = test_user.getPatientByUuid("732b0499b6094cf889c215d3a29a007a");
+		int numberRecords = 2;
+		for(int i = 0; i < numberRecords ; i++){
+			PatientRecord testRecord1 = new PatientRecord();
+			testRecord1.setAbdominal((float) (128+i));
+			testRecord1.setAge(20+i);
+			patientTest.setPatientRecord(testRecord1);
+		}
+
+		applicationUserRepository.save(test_user);
+	}
+
 
 	@Test
 	void insertPatient(){

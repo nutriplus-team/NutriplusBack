@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/patients")
+@RequestMapping("/patients")
 public class PatientController {
 
     @Autowired
@@ -24,5 +24,7 @@ public class PatientController {
 
         return new ResponseEntity<>(execute, HttpStatus.OK);
     }
+
+
 }
 

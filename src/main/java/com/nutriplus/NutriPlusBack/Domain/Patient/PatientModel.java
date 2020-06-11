@@ -19,7 +19,7 @@ public abstract class PatientModel extends AbstractEntity {
     String cpf;
     String dateOfBirth;
     short biologicalSex;   //0 equals female and 1 equals male
-    float ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
+    Double ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
 
     //Array of uuids
     ArrayList<String> foodRestrictions = new ArrayList<>();
@@ -28,7 +28,6 @@ public abstract class PatientModel extends AbstractEntity {
     ArrayList<PatientRecord> patientRecordList = new ArrayList<PatientRecord>();
 
     String nutritionist;
-    PatientRecord lastRecord;
 
     public PatientModel()
     {
