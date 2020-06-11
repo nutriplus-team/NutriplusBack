@@ -10,6 +10,7 @@ import com.nutriplus.NutriPlusBack.domain.food.NutritionFacts;
 import com.nutriplus.NutriPlusBack.domain.food.NutritionFactsDTO;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.menu.GeneratedMenuDTO;
+import com.nutriplus.NutriPlusBack.domain.menu.ReplaceDietDTO;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationFoodRepository;
@@ -145,7 +146,7 @@ public class DietController {
 
     }
 
-    @PostMapping("send-email-PDF/{patientId}/")
+    @PostMapping("/send-email-PDF/{patientId}/")
     public ResponseEntity<?> sendDietViaEmail(@RequestBody DietDTO diet, @PathVariable String patientId)
     {
 
@@ -184,7 +185,7 @@ public class DietController {
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
-    @PostMapping("diet/generate/{patientId}/{meal}")
+    @PostMapping("/generate/{patientId}/{meal}")
     public ResponseEntity<?> generateDiet(@PathVariable String patientId, @RequestBody DietNumbersDTO numbers, @PathVariable int meal)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -399,6 +400,144 @@ public class DietController {
                 }
             }
         }
+    }
+
+    @PostMapping("/replace/{patientId}/{mealId}/")
+    public ResponseEntity<?> replaceDiet(@PathVariable String patientId, @PathVariable int meal, @RequestBody ReplaceDietDTO replaceData)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserCredentials user = (UserCredentials) authentication.getCredentials();
+
+        Patient patient = user.getPatientByUuid(patientId);
+        Optional<MealType> mealType = MealType.valueOf(meal);
+        if(patient == null)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Patient not found"));
+        }
+
+        if(!mealType.isPresent())
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Meal not found"));
+        }
+
+        ArrayList<Food> solution = new ArrayList<>();
+        ArrayList<Double> quantities = new ArrayList<>();
+
+        int size = replaceData.foods.size();
+        if(size != replaceData.quantities.size())
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Lists must have the same size."));
+        }
+
+        double bestQty;
+        Food toChange;
+
+        for(int i=0; i< size; i++)
+        {
+            Food bestFood = new Food();
+            toChange = foodRepository.findByUuid(replaceData.foods.get(i));
+            if(toChange == null)
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Food not found."));
+            }
+            bestQty = findSubstitute(bestFood, patient, toChange, mealType.get(), replaceData.quantities.get(i));
+
+            solution.add(bestFood);
+            quantities.add(bestQty);
+        }
+
+        GeneratedMenuDTO generatedMenuDTO = new GeneratedMenuDTO();
+
+        generatedMenuDTO.quantities = quantities;
+        generatedMenuDTO.suggestions = solution.stream().map(this::convertFoodToDto).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(generatedMenuDTO);
+    }
+
+    private double findSubstitute(Food result, Patient patient, Food toChange, MealType mealType, double quantity)
+    {
+        ArrayList<String> forbiddenFood =  patient.getFoodRestrictions();
+        forbiddenFood.add(toChange.getUuid());
+        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(forbiddenFood, mealType);
+
+        Set<String> excluding = new HashSet<>();
+        ArrayList<Food> toEvaluate = new ArrayList<>();
+
+        int num;
+        Random random = new Random();
+        int similarSize = availableFoods.size();
+        Food checking;
+
+        if (similarSize > 0)
+        {
+            for(int i=0; i<10; i++)
+            {
+                num = random.nextInt(similarSize);
+                checking = availableFoods.get(num);
+                if(excluding.contains(checking.getUuid()))
+                {
+                    num = random.nextInt(similarSize);
+                }
+                else
+                {
+                    excluding.add(checking.getUuid());
+                }
+
+                toEvaluate.add(checking);
+            }
+        }
+        else
+        {
+            toEvaluate = availableFoods;
+        }
+
+        double[] foodProperties = {
+                toChange.getNutritionFacts().getCalories(),
+                toChange.getNutritionFacts().getProteins(),
+                toChange.getNutritionFacts().getCarbohydrates(),
+                toChange.getNutritionFacts().getLipids(),
+                toChange.getNutritionFacts().getFiber()
+        };
+
+        double[] weights = {
+                0.7, 10, 1, 1, 1
+        };
+
+        Arrays.parallelSetAll(foodProperties, i-> quantity*foodProperties[i]*weights[i]);
+
+        double[] options = {0.5, 1, 1.5, 2};
+
+        double minError = Math.pow(10, 20);
+
+        double bestQty= 0;
+
+        double[] elementProperties = new double[5];
+        double[] factoredProperties = new double[5];
+        double error;
+
+        for(Food element : toEvaluate)
+        {
+            elementProperties[0] = element.getNutritionFacts().getCalories();
+            elementProperties[1] = element.getNutritionFacts().getProteins();
+            elementProperties[2] = element.getNutritionFacts().getCarbohydrates();
+            elementProperties[3] = element.getNutritionFacts().getLipids();
+            elementProperties[4] = element.getNutritionFacts().getFiber();
+
+            for(double factor : options)
+            {
+                Arrays.parallelSetAll(factoredProperties, i -> factor*weights[i]*elementProperties[i]);
+                error = rmse(factoredProperties, foodProperties);
+
+                if(error <= minError)
+                {
+                    minError = error;
+                    result = element;
+                    bestQty = factor;
+                }
+            }
+        }
+
+        return bestQty;
     }
 
 }
