@@ -1,18 +1,15 @@
 package com.nutriplus.NutriPlusBack;
 
-import com.nutriplus.NutriPlusBack.Domain.Food.Food;
-import com.nutriplus.NutriPlusBack.Domain.Meal.Meal;
-import com.nutriplus.NutriPlusBack.Domain.Meal.MealType;
-import com.nutriplus.NutriPlusBack.Domain.Food.NutritionFacts;
-import com.nutriplus.NutriPlusBack.Domain.Menu.Menu;
-import com.nutriplus.NutriPlusBack.Domain.Menu.Portion;
-import com.nutriplus.NutriPlusBack.Domain.Patient.Constants;
-import com.nutriplus.NutriPlusBack.Domain.Patient.Patient;
-import com.nutriplus.NutriPlusBack.Domain.Patient.PatientRecord;
-import com.nutriplus.NutriPlusBack.Domain.UserCredentials;
-import com.nutriplus.NutriPlusBack.Repositories.*;
+import com.nutriplus.NutriPlusBack.domain.food.Food;
+import com.nutriplus.NutriPlusBack.domain.meal.Meal;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
+import com.nutriplus.NutriPlusBack.domain.food.NutritionFacts;
+import com.nutriplus.NutriPlusBack.domain.menu.Menu;
+import com.nutriplus.NutriPlusBack.domain.patient.Patient;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
+import com.nutriplus.NutriPlusBack.domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.repositories.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
