@@ -1,22 +1,101 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type Query {
-    patient(uuidPatient: String, uuidUser: String) : Patient
-    patients(uuidUser: String, numberPage: Int, sizePage: Int):[Patient]
-    lastRecord(uuidPatient: String,uuidUser: String) : PatientRecord
-    allRecords(uuidPatient: String,uuidUser: String,numberPage: Int, sizePage: Int) : [PatientRecord]
+    getPatientInfo(uuidPatient: String!, uuidUser: String!) : Patient
+    getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
+    getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
+    getSingleRecord(uuidRecord: String!) : PatientRecord
+}
+
+type Mutation{
+    createPatientRecord(uuidUser: String!, uuidPatient: String!,input: PatientRecordInput) : Boolean
+    removePatientRecord(uuidPatientRecord: String!): Boolean
+    updatePatientRecord(uuidPatientRecord: String!,input: PatientRecordInput): Boolean
+
+    createPatient(uuidUser: String!,input: PatientInput) : Boolean
+    removePatient(uuidPatient: String!, uuidUser: String!): Boolean
+    updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean
 }
 
 type Patient {
-     uuid:   String
+     uuid:  String
      name:  String
      ethnicGroup: Float
+     email: String
+     dateOfBirth: String
+     nutritionist: String
+     cpf: String
+     biologicalSex: Short
+}
+
+input PatientInput{
+       name:  String
+       ethnicGroup: Float
+       email: String
+       dateOfBirth: String
+       nutritionist: String
+       cpf: String
+       biologicalSex: Short
 }
 
 type PatientRecord{
+    uuidPatient: String
     corporalMass: Float
     height: Float
     abdominal: Float
+    isAthlete: Boolean
+    age: Int
+    physicalActivityLevel: Float
+    observations: String
+    subscapular: Float
+    triceps: Float
+    biceps: Float
+    chest: Float
+    axillary: Float
+    supriailiac: Float
+    thigh: Float
+    calf: Float
+    waistCirc: Float
+    abdominalCirc: Float
+    hipsCirc:   Float
+    rightArmCirc: Float
+    thighCirc:  Float
+    calfCirc:   Float
+    muscularMass: Float
+    corporalDensity: Float
+    bodyFat:    Float
+    methabolicRate: Float
+    energyRequirements: Float
+}
+
+input PatientRecordInput{
+        corporalMass: Float
+        height: Float
+        abdominal: Float
+        isAthlete: Boolean
+        age: Int
+        physicalActivityLevel: Float
+        observations: String
+        subscapular: Float
+        triceps: Float
+        biceps: Float
+        chest: Float
+        axillary: Float
+        supriailiac: Float
+        thigh: Float
+        calf: Float
+        waistCirc: Float
+        abdominalCirc: Float
+        hipsCirc:   Float
+        rightArmCirc: Float
+        thighCirc:  Float
+        calfCirc:   Float
+        muscularMass: Float
+        corporalDensity: Float
+        bodyFat:    Float
+        methabolicRate: Float
+        energyRequirements: Float
 }
