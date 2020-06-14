@@ -45,6 +45,18 @@ public class DietController {
         this.modelMapper = modelMapper;
     }
 
+    private class ChosenFood
+    {
+        public Food food;
+        public Double quantity;
+
+        public ChosenFood(Food food, Double quantity)
+        {
+            this.food = food;
+            this.quantity = quantity;
+        }
+    }
+
     private ErrorDTO addToList(List<MealOptionDTO> from, List<MealOptionHtml> to)
     {
         MealOptionHtml option;
@@ -178,14 +190,13 @@ public class DietController {
         }
         catch (Exception e)
         {
-            System.out.println(e.getLocalizedMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Error sending email"));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
-    @PostMapping("/generate/{patientId}/{meal}")
+    @PostMapping("/generate/{patientId}/{meal}/")
     public ResponseEntity<?> generateDiet(@PathVariable String patientId, @RequestBody DietNumbersDTO numbers, @PathVariable int meal)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -385,7 +396,6 @@ public class DietController {
                 test = power & (int)found[0];
                 if(test == power)
                 {
-                    System.out.println(i);
                     solution.add(items.get(i));
                     quantities.add(found[2]);
                 }
@@ -399,11 +409,9 @@ public class DietController {
             }
         }
 
-        System.out.println(found[0]);
-        System.out.println(found[1]);
     }
 
-    @PostMapping("/replace/{patientId}/{mealId}/")
+    @PostMapping("/replace/{patientId}/{meal}/")
     public ResponseEntity<?> replaceDiet(@PathVariable String patientId, @PathVariable int meal, @RequestBody ReplaceDietDTO replaceData)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -430,21 +438,22 @@ public class DietController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Lists must have the same size."));
         }
 
-        double bestQty;
         Food toChange;
 
+        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(patient.getFoodRestrictionsUUID(), mealType.get());
+
+        ChosenFood chosenFood;
         for(int i=0; i< size; i++)
         {
-            Food bestFood = new Food();
             toChange = foodRepository.findByUuid(replaceData.foods.get(i));
             if(toChange == null)
             {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Food not found."));
             }
-            bestQty = findSubstitute(bestFood, patient, toChange, mealType.get(), replaceData.quantities.get(i));
+            chosenFood = findSubstitute(toChange, replaceData.quantities.get(i), availableFoods);
 
-            solution.add(bestFood);
-            quantities.add(bestQty);
+            solution.add(chosenFood.food);
+            quantities.add(chosenFood.quantity);
         }
 
         GeneratedMenuDTO generatedMenuDTO = new GeneratedMenuDTO();
@@ -455,15 +464,13 @@ public class DietController {
         return ResponseEntity.status(HttpStatus.OK).body(generatedMenuDTO);
     }
 
-    private double findSubstitute(Food result, Patient patient, Food toChange, MealType mealType, double quantity)
+    private ChosenFood findSubstitute(Food toChange, double quantity, ArrayList<Food> availableFoods)
     {
-        ArrayList<String> forbiddenFood =  patient.getFoodRestrictionsUUID();
-        forbiddenFood.add(toChange.getUuid());
-        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(forbiddenFood, mealType);
-
         Set<String> excluding = new HashSet<>();
         ArrayList<Food> toEvaluate = new ArrayList<>();
+        Food result = null;
 
+        excluding.add(toChange.getUuid());
         int num;
         Random random = new Random();
         int similarSize = availableFoods.size();
@@ -508,9 +515,9 @@ public class DietController {
 
         double[] options = {0.5, 1, 1.5, 2};
 
-        double minError = Math.pow(10, 20);
+        double minError = Math.pow(10, 5);
 
-        double bestQty= 0;
+        double bestQty = 0;
 
         double[] elementProperties = new double[5];
         double[] factoredProperties = new double[5];
@@ -528,7 +535,6 @@ public class DietController {
             {
                 Arrays.parallelSetAll(factoredProperties, i -> factor*weights[i]*elementProperties[i]);
                 error = rmse(factoredProperties, foodProperties);
-
                 if(error <= minError)
                 {
                     minError = error;
@@ -538,7 +544,7 @@ public class DietController {
             }
         }
 
-        return bestQty;
+        return new ChosenFood(result, bestQty);
     }
 
 }
