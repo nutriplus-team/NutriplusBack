@@ -250,7 +250,7 @@ public class DietController {
         ArrayList<Food> solution = new ArrayList<>();
         ArrayList<Double> quantities = new ArrayList<>();
 
-        meetInTheMiddle(weights, itemsForMenu, solution, quantities);
+        meetInTheMiddle(weights, itemsForMenu, solution, quantities, target);
 
         GeneratedMenuDTO generatedMenuDTO = new GeneratedMenuDTO();
 
@@ -287,7 +287,7 @@ public class DietController {
         return Math.sqrt(mean);
     }
 
-    private void meetInTheMiddle(double[] weights, ArrayList<Food> items, ArrayList<Food> solution, ArrayList<Double> quantities)
+    private void meetInTheMiddle(double[] weights, ArrayList<Food> items, ArrayList<Food> solution, ArrayList<Double> quantities, double[] target)
     {
         double[][] group1 = new double[16][5];
         int test;
@@ -296,7 +296,7 @@ public class DietController {
         for(int i=0; i<16; i++)
         {
             Arrays.parallelSetAll(group1[i], p -> 0);
-            for(int j=1; j<5; j++)
+            for(int j=0; j<4; j++)
             {
                 power = (int)Math.pow(2, j);
                 test = power & i;
@@ -337,9 +337,7 @@ public class DietController {
         double[] options = {0.5, 1, 1.5, 2};
         double result;
 
-        double[] trial1 = new double[5];
-        double[] trial2 = new double[5];
-
+        double[] trial = new double[5];
         int finalOp;
         int finalGr;
         for(int i=0; i<16; i++)
@@ -348,15 +346,14 @@ public class DietController {
             {
                 for(int k=0; k<4; k++)
                 {
-                    for(int l=0; j<4; l++)
+                    for(int l=0; l<4; l++)
                     {
                         int finalK = k;
                         int finalI = i;
-                        Arrays.parallelSetAll(trial1, p-> options[finalK]*group1[finalI][p]);
                         int finalL = l;
                         int finalJ = j;
-                        Arrays.parallelSetAll(trial2, p-> options[finalL]*group2[finalJ][p]);
-                        result = rmse(trial1, trial2);
+                        Arrays.parallelSetAll(trial, p-> options[finalL]*group2[finalJ][p] + options[finalK]*group1[finalI][p]);
+                        result = rmse(trial, target);
                         if(begin)
                         {
                             better = result;
@@ -388,6 +385,7 @@ public class DietController {
                 test = power & (int)found[0];
                 if(test == power)
                 {
+                    System.out.println(i);
                     solution.add(items.get(i));
                     quantities.add(found[2]);
                 }
@@ -400,6 +398,9 @@ public class DietController {
                 }
             }
         }
+
+        System.out.println(found[0]);
+        System.out.println(found[1]);
     }
 
     @PostMapping("/replace/{patientId}/{mealId}/")

@@ -25,7 +25,7 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
             "DETACH DELETE n, f")
     void deleteFoodFromRepository(String uuid);
 
-    @Query("MATCH (:Meal {mealType: $1})--(f:Food) where not f.uuid in $0")
+    @Query("MATCH (:Meal {mealType: $1})--(f:Food) where not f.uuid in $0 RETURN f")
     ArrayList<Food> getPatientEatableFoodForMeal(ArrayList<String> uuids, MealType mealType);
 
 }
