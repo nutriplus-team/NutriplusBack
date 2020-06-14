@@ -203,7 +203,7 @@ public class DietController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Meal not found"));
         }
 
-        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(patient.getFoodRestrictions(), mealType.get());
+        ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(patient.getFoodRestrictionsUUID(), mealType.get());
 
         double[] weights = {0.7, 10, 1, 1, 1};
         if(numbers.calories == 0)
@@ -456,7 +456,7 @@ public class DietController {
 
     private double findSubstitute(Food result, Patient patient, Food toChange, MealType mealType, double quantity)
     {
-        ArrayList<String> forbiddenFood =  patient.getFoodRestrictions();
+        ArrayList<String> forbiddenFood =  patient.getFoodRestrictionsUUID();
         forbiddenFood.add(toChange.getUuid());
         ArrayList<Food> availableFoods = foodRepository.getPatientEatableFoodForMeal(forbiddenFood, mealType);
 
