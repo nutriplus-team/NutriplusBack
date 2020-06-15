@@ -66,7 +66,7 @@ public class Food extends FoodModel {
 
     //This was only for testing
 //    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-//                int measureAmountValue){
+//                Double measureAmountValue){
 //        foodName            = foodNameValue;
 //        foodGroup           = foodGroupValue;
 //        measureTotalGrams   = measureTotalGramsValue;

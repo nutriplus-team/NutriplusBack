@@ -3,6 +3,7 @@ package com.nutriplus.NutriPlusBack.domain.meal;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import org.neo4j.ogm.annotation.NodeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
@@ -15,6 +16,10 @@ public class Meal extends MealModel {
         super();
         mealType = mealTypeValue;
         foodList = foodListValue;
+    }
+    public Meal(MealType mealTypeValue){
+        mealType = mealTypeValue;
+        foodList = new ArrayList<>();
     }
 
     // Adders

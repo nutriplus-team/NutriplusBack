@@ -139,6 +139,7 @@ class NutriPlusBackApplicationTests {
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
 				"Colher de sopa", 5, testNutritionFacts);
 
+		Meal dummyMeal = new Meal();
 
 		// Add meal type
 		List<Food> foodList = new ArrayList<Food>();
@@ -221,15 +222,13 @@ class NutriPlusBackApplicationTests {
 		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
+			assertThat(someFood.getUuid()).isIn(testFood1.getUuid(), testFood2.getUuid());
 		}
-		assertThat(testFood1.getUuid()).isEqualTo(foodList.get(0).getUuid());
-		assertThat(testFood2.getUuid()).isEqualTo(foodList.get(1).getUuid());
 
 		// Delete data
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
-
 	}
 
 	@Test

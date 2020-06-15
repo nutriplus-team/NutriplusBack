@@ -22,6 +22,10 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
+	compile "org.neo4j:neo4j-ogm-core"
+	compile "org.neo4j:neo4j-ogm-http-driver"
+	compile 'org.neo4j:neo4j-ogm-bolt-driver'
+
 	implementation 'com.auth0:java-jwt:3.10.1'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.2.2.RELEASE'
