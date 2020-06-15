@@ -24,7 +24,7 @@ public class Food extends FoodModel {
     }
     //New Food
     public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-         double measureAmountValue, NutritionFacts nutritionFactsValue){
+         Double measureAmountValue, NutritionFacts nutritionFactsValue){
         super();
         foodName            = foodNameValue;
         foodGroup           = foodGroupValue;
@@ -37,7 +37,7 @@ public class Food extends FoodModel {
     }
     //New created food (requires nutritionist parameter)
     public Food(UserCredentials owner, String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-                int measureAmountValue, NutritionFacts nutritionFactsValue){
+                Double measureAmountValue, NutritionFacts nutritionFactsValue){
         super();
         foodName            = foodNameValue;
         foodGroup           = foodGroupValue;
@@ -66,7 +66,7 @@ public class Food extends FoodModel {
 
     //This was only for testing
 //    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
-//                double measureAmountValue){
+//                Double measureAmountValue){
 //        foodName            = foodNameValue;
 //        foodGroup           = foodGroupValue;
 //        measureTotalGrams   = measureTotalGramsValue;
@@ -80,7 +80,7 @@ public class Food extends FoodModel {
     public void setFoodGroup(String foodGroupValue)                   { foodGroup = foodGroupValue; }
     public void setMeasureTotalGrams(double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
     public void setMeasureType(String measureTypeValue)               { measureType = measureTypeValue; }
-    public void setMeasureAmount(double measureAmountValue)           { measureAmount = measureAmountValue; }
+    public void setMeasureAmount(Double measureAmountValue)              { measureAmount = measureAmountValue; }
     public void setNutritionFacts(NutritionFacts nutritionFactsValue) {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
@@ -133,6 +133,6 @@ public class Food extends FoodModel {
     public String getFoodGroup()              { return foodGroup; }
     public double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
-    public double getMeasureAmount()          { return measureAmount; }
+    public Double getMeasureAmount()             { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
 }

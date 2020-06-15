@@ -46,11 +46,11 @@ class NutriPlusBackApplicationTests {
 
 		for(int i = 0; i < numberRecords ; i++){
 			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal((float) (1.28+i));
+			testRecord1.setAbdominal((1.28+i));
 			testRecord1.setAge(18+i);
 
 			PatientRecord testRecord2 = new PatientRecord();
-			testRecord2.setAbdominal((float) (128+i));
+			testRecord2.setAbdominal(128.0 + i);
 			testRecord1.setAge(50+i);
 
 			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
@@ -68,7 +68,7 @@ class NutriPlusBackApplicationTests {
 		int numberRecords = 2;
 		for(int i = 0; i < numberRecords ; i++){
 			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal((float) (128+i));
+			testRecord1.setAbdominal(128.0+i);
 			testRecord1.setAge(20+i);
 			patientTest.setPatientRecord(testRecord1);
 		}
@@ -360,6 +360,24 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
 		applicationUserRepository.deletePatientFromRepository(testPatient2.getUuid());
 		applicationUserRepository.deleteByUuid(userMenu.getUuid());
+	}
+
+	@Test
+	void mockPatientData()
+	{
+		UserCredentials user = applicationUserRepository.findByUsername("ocimar");
+
+		Patient patient = new Patient();
+		patient.setName("Rodrigo Tanaka");
+		patient.setCpf("89767524577");
+		ArrayList<String> restrictions = new ArrayList<>();
+		restrictions.add("de11df48c2f8484b807a90bcf3b9a929");
+		restrictions.add("d085960c89954872a4fb8613d7cf250d");
+		patient.setFoodRestrictionsUUID(restrictions);
+		user.setPatient(patient);
+
+		applicationUserRepository.save(user);
+
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -31,5 +32,11 @@ public class NutriPlusBackApplication {
 		executor.setThreadNamePrefix("background-");
 		executor.initialize();
 		return executor;
+	}
+
+	@Bean
+	public ModelMapper modelMapper()
+	{
+		return new ModelMapper();
 	}
 }
