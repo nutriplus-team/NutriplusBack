@@ -135,9 +135,9 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 
 		Meal dummyMeal = new Meal();
 
@@ -190,7 +190,7 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food();
 		Food dummyFood = new Food();
 
@@ -199,7 +199,7 @@ class NutriPlusBackApplicationTests {
 		testFood2.setFoodGroup("Gãos");
 		testFood2.setMeasureTotalGrams(23.0);
 		testFood2.setMeasureType("Colher tipo concha");
-		testFood2.setMeasureAmount(1);
+		testFood2.setMeasureAmount(1.0);
 		testFood2.setNutritionFacts(testNutritionFacts);
 
 		testFood2.setCalories(1.2);
@@ -237,9 +237,9 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food dummyFood = new Food();
 		applicationFoodRepository.save(testFood1);
 		applicationFoodRepository.save(testFood2);
@@ -280,9 +280,9 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts2 = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts1);
+				"Colher de sopa", 5.0, testNutritionFacts1);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts2);
+				"Colher de sopa", 5.0, testNutritionFacts2);
 
 		applicationFoodRepository.save(testFood1);
 		applicationFoodRepository.save(testFood2);
@@ -305,7 +305,7 @@ class NutriPlusBackApplicationTests {
 		// Add Custom Food
 		Food customFood = new Food(userMenu, testFood1);
 		Food createdFood = new Food(userMenu, "Açaí", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts1);
+				"Colher de sopa", 5.0, testNutritionFacts1);
 		applicationFoodRepository.save(customFood);
 		applicationFoodRepository.save(createdFood);
 
