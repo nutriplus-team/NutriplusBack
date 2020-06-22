@@ -10,12 +10,15 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class GraphQLService {
@@ -23,8 +26,10 @@ public class GraphQLService {
     @Autowired
     ApplicationUserRepository applicationUserRepository;
 
-    @Value("classpath:static/patients.graphql")
-    Resource resource;
+    ClassPathResource resource = new ClassPathResource("patients.graphql");
+
+//    @Value("classpath:patients.graphql")
+//    Resource resource;
 
     private GraphQL graphQL;
     @Autowired
