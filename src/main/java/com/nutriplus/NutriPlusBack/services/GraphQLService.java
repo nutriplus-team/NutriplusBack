@@ -23,7 +23,7 @@ public class GraphQLService {
     @Autowired
     ApplicationUserRepository applicationUserRepository;
 
-    @Value("classpath:/patients.graphql")
+    @Value("classpath:static/patients.graphql")
     Resource resource;
 
     private GraphQL graphQL;
