@@ -13,7 +13,6 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = fiberValue;
     }
 
-    //public NutritionFacts(@NotNull NutritionFacts nutritionFactsValue)
     public NutritionFacts(NutritionFacts nutritionFactsValue)
     {
         calories = nutritionFactsValue.calories;
@@ -23,7 +22,6 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = nutritionFactsValue.fiber;
     }
 
-    //public void copy(@NotNull NutritionFacts nutritionFactsValue)
     public void copy(NutritionFacts nutritionFactsValue)
     {
         calories = nutritionFactsValue.calories;
@@ -33,10 +31,10 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = nutritionFactsValue.fiber;
     }
 
-    double getCalories() {return calories;}
-    double getProteins() {return proteins;}
-    double getLipids() {return lipids;}
-    double getCarbohydrates() {return carbohydrates;}
-    double getFiber() {return fiber;}
+    public double getCalories() {return calories;}
+    public double getProteins() {return proteins;}
+    public double getLipids() {return lipids;}
+    public double getCarbohydrates() {return carbohydrates;}
+    public double getFiber() {return fiber;}
 
 }

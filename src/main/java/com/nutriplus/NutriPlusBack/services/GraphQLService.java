@@ -23,7 +23,7 @@ import java.net.URL;
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Service
-public class GraphQLService {
+public class GraphQLService{
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
@@ -47,10 +47,17 @@ public class GraphQLService {
     private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("patient", patientsDataFetcher.getPatient())
-                        .dataFetcher("patients",patientsDataFetcher.getPatients())
-                        .dataFetcher("lastRecord",patientsDataFetcher.getLastPatientRecord())
-                        .dataFetcher("allRecords",patientsDataFetcher.getAllPatientRecords()))
+                        .dataFetcher("getPatientInfo", patientsDataFetcher.getPatient())
+                        .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
+                        .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
+                        .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords()))
+                .type("Mutation",typeWiring->typeWiring
+                        .dataFetcher("removePatient",patientsDataFetcher.removePatient())
+                        .dataFetcher("createPatient",patientsDataFetcher.createPatient())
+                        .dataFetcher("updatePatient",patientsDataFetcher.updatePatient())
+                        .dataFetcher("createPatientRecord",patientsDataFetcher.createPatientRecord())
+                        .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
+                        .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord()))
                 .build();
     }
 

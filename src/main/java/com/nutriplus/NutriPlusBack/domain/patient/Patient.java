@@ -1,8 +1,6 @@
 package com.nutriplus.NutriPlusBack.domain.patient;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -11,11 +9,7 @@ public class Patient extends PatientModel {
     //Constructor
     public Patient(){
         super();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
-
-    public void removePatientRecord(PatientRecord record){patientRecordList.remove(record);}
-    public void updateLastRecord(){lastRecord = getLastPatientRecord();}
 
     //Set Functions
     public void setPatientRecord(PatientRecord recordList){patientRecordList.add(recordList);}
@@ -28,12 +22,10 @@ public class Patient extends PatientModel {
     public void setDateOfBirth(String dateOfBirthValue){
         dateOfBirth = dateOfBirthValue;
     }
-    public void setBiologicalSex(short biologicalSexValue){
+    public void setBiologicalSex(Short biologicalSexValue){
         biologicalSex = biologicalSexValue;
     }
-    public void setEthnicGroup(float ethnicGroupValue){
-        ethnicGroup = ethnicGroupValue;
-    }
+    public void setEthnicGroup(Double ethnicGroupValue){ ethnicGroup = ethnicGroupValue; }
     public void setNutritionist(String nutritionistValue){
         nutritionist = nutritionistValue;
     }
@@ -46,7 +38,6 @@ public class Patient extends PatientModel {
     }
 
     //Get Functions
-
     public String getEmail()
     {
         return this.email;
@@ -61,21 +52,22 @@ public class Patient extends PatientModel {
     public String getDateOfBirth(){
         return dateOfBirth;
     }
-    public short getBiologicalSex(){
+    public Short getBiologicalSex(){
         return biologicalSex;
     }
-    public float getEthnicGroup(){
+    public Double getEthnicGroup(){
         return ethnicGroup;
     }
     public String getNutritionist(){
         return nutritionist;
     }
-    public ArrayList<String> getFoodRestrictions(){return foodRestrictions;}
+    public ArrayList<String> getFoodRestrictionsUUID(){return foodRestrictions;}
     public ArrayList<PatientRecord> getPatientRecordList(){return patientRecordList;}
     public PatientRecord getLastPatientRecord(){
-
-        if(!getPatientRecordList().isEmpty())
-            return getPatientRecordList().get(getPatientRecordList().size()-1);
+        int sizeList = getPatientRecordList().size();
+        if(sizeList>0) {
+            return getPatientRecordList().get(sizeList-1);
+        }
 
         else return null;
     }
