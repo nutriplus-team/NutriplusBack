@@ -9,6 +9,11 @@ public class UserDetailsDTO {
     public String email;
     public String username;
 
+    public UserDetailsDTO()
+    {
+
+    }
+
     public UserDetailsDTO(UserCredentials user)
     {
         this.id = user.getUuid();
