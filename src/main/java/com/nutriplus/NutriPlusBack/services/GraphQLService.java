@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack.services;
 
 import com.google.common.io.Resources;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.services.datafetcher.FoodDataFetcher;
 import com.nutriplus.NutriPlusBack.services.datafetcher.PatientDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -33,6 +34,9 @@ public class GraphQLService{
     @Autowired
     private PatientDataFetcher patientsDataFetcher;
 
+    @Autowired
+    private FoodDataFetcher foodDataFetcher;
+
     @PostConstruct
     private void loadSchema() throws IOException {
         URL url = Resources.getResource("patients.graphql");
@@ -57,7 +61,9 @@ public class GraphQLService{
                         .dataFetcher("updatePatient",patientsDataFetcher.updatePatient())
                         .dataFetcher("createPatientRecord",patientsDataFetcher.createPatientRecord())
                         .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
-                        .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord()))
+                        .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
+                        .dataFetcher("createFood", foodDataFetcher.createFood())
+                        .dataFetcher("customizeFood", foodDataFetcher.customizeFood()))
                 .build();
     }
 

@@ -12,7 +12,7 @@ public class FoodController {
     @Autowired
     GraphQLService graphQLService;
 
-    @PostMapping("/list")
+    @PostMapping("/graphql/")
     public ResponseEntity<Object> listFood(@RequestBody String query) {
         ExecutionResult execute = graphQLService.getGraphQL().execute(query);
         return new ResponseEntity<>(execute, HttpStatus.OK);

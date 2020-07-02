@@ -8,6 +8,7 @@ type Query {
     getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
     getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
     getSingleRecord(uuidRecord: String!) : PatientRecord
+    listFood(uuidUser: String!) : [FoodSimple]
 }
 
 type Mutation{
@@ -18,6 +19,9 @@ type Mutation{
     createPatient(uuidUser: String!,input: PatientInput) : Boolean
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean
     updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean
+
+    createFood(uuidUser: String!, foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
 }
 
 type Patient {
@@ -114,6 +118,7 @@ type FoodDetailed {
     foodGroup: String
     measureTotalGrams: Float
     measureType: String
+    measureAmountValue: Float
     custom: Boolean
     created: Boolean
     nutritionFacts: NutritionFacts
@@ -125,4 +130,26 @@ type NutritionFacts {
     carbohydrates: Float
     lipids: Float
     fiber: Float
+}
+
+input NewFoodInput {
+    foodName: String
+    foodGroup: String
+    measureTotalGrams: Float
+    measureType: String
+    measureAmountValue: Float
+}
+
+input CustomFoodInput {
+    measureTotalGrams: Float
+    measureType: String
+    measureAmountValue: Float
+}
+
+input NutritionFactsInput {
+        calories: Float
+        proteins: Float
+        carbohydrates: Float
+        lipids: Float
+        fiber: Float
 }

@@ -44,8 +44,8 @@ public class Food extends FoodModel {
         measureTotalGrams   = measureTotalGramsValue;
         measureType         = measureTypeValue;
         measureAmount       = measureAmountValue;
-        custom              = true;
-        created             = false;
+        custom              = false;
+        created             = true;
         nutritionFacts      = nutritionFactsValue;
         owner.addCustomFood(this);
     }
@@ -57,8 +57,8 @@ public class Food extends FoodModel {
         measureTotalGrams   = originalFoodValue.getMeasureTotalGrams();
         measureType         = originalFoodValue.getMeasureType();
         measureAmount       = originalFoodValue.getMeasureAmount();
-        custom              = false;
-        created             = true;
+        custom              = true;
+        created             = false;
         originalFood        = originalFoodValue;
         nutritionFacts      = originalFoodValue.getNutritionFacts();
         owner.addCustomFood(this);

@@ -46,36 +46,20 @@ class NutriPlusBackApplicationTests {
 
 		for(int i = 0; i < numberRecords ; i++){
 			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal((1.28+i));
+			testRecord1.setAbdominal((double) (1.28+i));
 			testRecord1.setAge(18+i);
 
 			PatientRecord testRecord2 = new PatientRecord();
-			testRecord2.setAbdominal(128.0 + i);
+			testRecord2.setAbdominal((double) (128+i));
 			testRecord1.setAge(50+i);
 
 			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
 			test_user.getPatientList().get(i).setPatientRecord(testRecord2);
+			//test_user.getPatientList().get(i).updateLastRecord();
 		}
 
 		applicationUserRepository.save(test_user);
 	}
-
-	@Test
-	void insertRecordsPatient(){
-		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
-		assertThat(test_user).isNotNull();
-		Patient patientTest = test_user.getPatientByUuid("732b0499b6094cf889c215d3a29a007a");
-		int numberRecords = 2;
-		for(int i = 0; i < numberRecords ; i++){
-			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal(128.0+i);
-			testRecord1.setAge(20+i);
-			patientTest.setPatientRecord(testRecord1);
-		}
-
-		applicationUserRepository.save(test_user);
-	}
-
 
 	@Test
 	void insertPatient(){
@@ -125,7 +109,7 @@ class NutriPlusBackApplicationTests {
 		// Add patient
 		Patient testPatient = new Patient();
 		testPatient.setName("TestMenuPatient");
-		//testPatient.setCorporalMass((float)89.3);
+		//testPatient.setCorporalMass((double)89.3);
 		testPatient.setCpf("123456");
 		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient);
@@ -139,7 +123,6 @@ class NutriPlusBackApplicationTests {
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
 				"Colher de sopa", 5.0, testNutritionFacts);
 
-		Meal dummyMeal = new Meal();
 
 		// Add meal type
 		List<Food> foodList = new ArrayList<Food>();
@@ -222,13 +205,15 @@ class NutriPlusBackApplicationTests {
 		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
-			assertThat(someFood.getUuid()).isIn(testFood1.getUuid(), testFood2.getUuid());
 		}
+		assertThat(testFood1.getUuid()).isEqualTo(foodList.get(0).getUuid());
+		assertThat(testFood2.getUuid()).isEqualTo(foodList.get(1).getUuid());
 
 		// Delete data
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
+
 	}
 
 	@Test
@@ -316,14 +301,14 @@ class NutriPlusBackApplicationTests {
 		// Add data
 		Patient testPatient = new Patient();
 		testPatient.setName("Toso");
-		//testPatient.setCorporalMass((float)89.3);
+		//testPatient.setCorporalMass((double)89.3);
 		testPatient.setCpf("123456");
 		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient);
 
 		Patient testPatient2 = new Patient();
 		testPatient2.setName("Foo");
-		//testPatient2.setCorporalMass((float)89.3);
+		//testPatient2.setCorporalMass((double)89.3);
 		testPatient2.setCpf("123466");
 		//testPatient2.calculateMethabolicRate(Constants.TINSLEY);
 		userMenu.setPatient(testPatient2);
@@ -360,24 +345,6 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
 		applicationUserRepository.deletePatientFromRepository(testPatient2.getUuid());
 		applicationUserRepository.deleteByUuid(userMenu.getUuid());
-	}
-
-	@Test
-	void mockPatientData()
-	{
-		UserCredentials user = applicationUserRepository.findByUsername("ocimar");
-
-		Patient patient = new Patient();
-		patient.setName("Rodrigo Tanaka");
-		patient.setCpf("89767524577");
-		ArrayList<String> restrictions = new ArrayList<>();
-		restrictions.add("de11df48c2f8484b807a90bcf3b9a929");
-		restrictions.add("d085960c89954872a4fb8613d7cf250d");
-		patient.setFoodRestrictionsUUID(restrictions);
-		user.setPatient(patient);
-
-		applicationUserRepository.save(user);
-
 	}
 
 }
