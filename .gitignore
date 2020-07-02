@@ -20,6 +20,8 @@ build/
 *.iml
 *.ipr
 out/
+lib/
+web/
 bin/
 
 ### NetBeans ###
@@ -31,3 +33,6 @@ bin/
 
 ### VS Code ###
 .vscode/
+
+### Dolphin ###
+.directory

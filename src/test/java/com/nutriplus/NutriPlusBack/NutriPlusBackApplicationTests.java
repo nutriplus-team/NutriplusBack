@@ -46,20 +46,36 @@ class NutriPlusBackApplicationTests {
 
 		for(int i = 0; i < numberRecords ; i++){
 			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal((float) (1.28+i));
+			testRecord1.setAbdominal((1.28+i));
 			testRecord1.setAge(18+i);
 
 			PatientRecord testRecord2 = new PatientRecord();
-			testRecord2.setAbdominal((float) (128+i));
+			testRecord2.setAbdominal(128.0 + i);
 			testRecord1.setAge(50+i);
 
 			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
 			test_user.getPatientList().get(i).setPatientRecord(testRecord2);
-			test_user.getPatientList().get(i).updateLastRecord();
 		}
 
 		applicationUserRepository.save(test_user);
 	}
+
+	@Test
+	void insertRecordsPatient(){
+		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
+		assertThat(test_user).isNotNull();
+		Patient patientTest = test_user.getPatientByUuid("732b0499b6094cf889c215d3a29a007a");
+		int numberRecords = 2;
+		for(int i = 0; i < numberRecords ; i++){
+			PatientRecord testRecord1 = new PatientRecord();
+			testRecord1.setAbdominal(128.0+i);
+			testRecord1.setAge(20+i);
+			patientTest.setPatientRecord(testRecord1);
+		}
+
+		applicationUserRepository.save(test_user);
+	}
+
 
 	@Test
 	void insertPatient(){
@@ -119,10 +135,11 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 
+		Meal dummyMeal = new Meal();
 
 		// Add meal type
 		List<Food> foodList = new ArrayList<Food>();
@@ -173,7 +190,7 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food();
 		Food dummyFood = new Food();
 
@@ -182,7 +199,7 @@ class NutriPlusBackApplicationTests {
 		testFood2.setFoodGroup("Gãos");
 		testFood2.setMeasureTotalGrams(23.0);
 		testFood2.setMeasureType("Colher tipo concha");
-		testFood2.setMeasureAmount(1);
+		testFood2.setMeasureAmount(1.0);
 		testFood2.setNutritionFacts(testNutritionFacts);
 
 		testFood2.setCalories(1.2);
@@ -205,15 +222,13 @@ class NutriPlusBackApplicationTests {
 		List<Food> foodList = applicationFoodRepository.findFoodByFoodNameContainingAndCustomIsFalse("Arroz");
 		for (Food someFood : foodList){
 			assertThat(someFood).isNotNull();
+			assertThat(someFood.getUuid()).isIn(testFood1.getUuid(), testFood2.getUuid());
 		}
-		assertThat(testFood1.getUuid()).isEqualTo(foodList.get(0).getUuid());
-		assertThat(testFood2.getUuid()).isEqualTo(foodList.get(1).getUuid());
 
 		// Delete data
 		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
-
 	}
 
 	@Test
@@ -222,9 +237,9 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts);
+				"Colher de sopa", 5.0, testNutritionFacts);
 		Food dummyFood = new Food();
 		applicationFoodRepository.save(testFood1);
 		applicationFoodRepository.save(testFood2);
@@ -265,9 +280,9 @@ class NutriPlusBackApplicationTests {
 		NutritionFacts testNutritionFacts2 = new NutritionFacts(1.1, 2.2, 3.3,
 				4.4, 5.5);
 		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts1);
+				"Colher de sopa", 5.0, testNutritionFacts1);
 		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts2);
+				"Colher de sopa", 5.0, testNutritionFacts2);
 
 		applicationFoodRepository.save(testFood1);
 		applicationFoodRepository.save(testFood2);
@@ -290,7 +305,7 @@ class NutriPlusBackApplicationTests {
 		// Add Custom Food
 		Food customFood = new Food(userMenu, testFood1);
 		Food createdFood = new Food(userMenu, "Açaí", "Grãos", 23.9,
-				"Colher de sopa", 5, testNutritionFacts1);
+				"Colher de sopa", 5.0, testNutritionFacts1);
 		applicationFoodRepository.save(customFood);
 		applicationFoodRepository.save(createdFood);
 
@@ -345,6 +360,24 @@ class NutriPlusBackApplicationTests {
 		applicationUserRepository.deletePatientFromRepository(testPatient.getUuid());
 		applicationUserRepository.deletePatientFromRepository(testPatient2.getUuid());
 		applicationUserRepository.deleteByUuid(userMenu.getUuid());
+	}
+
+	@Test
+	void mockPatientData()
+	{
+		UserCredentials user = applicationUserRepository.findByUsername("ocimar");
+
+		Patient patient = new Patient();
+		patient.setName("Rodrigo Tanaka");
+		patient.setCpf("89767524577");
+		ArrayList<String> restrictions = new ArrayList<>();
+		restrictions.add("de11df48c2f8484b807a90bcf3b9a929");
+		restrictions.add("d085960c89954872a4fb8613d7cf250d");
+		patient.setFoodRestrictionsUUID(restrictions);
+		user.setPatient(patient);
+
+		applicationUserRepository.save(user);
+
 	}
 
 }

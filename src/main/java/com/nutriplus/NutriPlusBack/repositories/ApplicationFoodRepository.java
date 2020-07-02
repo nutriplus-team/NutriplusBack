@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.repositories;
 
 import com.nutriplus.NutriPlusBack.domain.food.Food;
-import com.nutriplus.NutriPlusBack.domain.patient.Patient;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.stereotype.Repository;
@@ -26,5 +26,8 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
             "OPTIONAL MATCH (f:Food)-[]->(n:NutritionFacts)\n" +
             "DETACH DELETE n, f")
     void deleteFoodFromRepository(String uuid);
+
+    @Query("MATCH (:Meal {mealType: $1})--(f:Food) where not f.uuid in $0 RETURN f")
+    ArrayList<Food> getPatientEatableFoodForMeal(ArrayList<String> uuids, MealType mealType);
 
 }
