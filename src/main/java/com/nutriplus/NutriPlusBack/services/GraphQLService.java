@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.services;
 
+import com.google.common.io.Resources;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import com.nutriplus.NutriPlusBack.services.datafetcher.PatientDataFetcher;
 import graphql.GraphQL;
@@ -8,14 +9,18 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.apache.commons.codec.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
+import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Service
 public class GraphQLService{
@@ -23,20 +28,17 @@ public class GraphQLService{
     @Autowired
     ApplicationUserRepository applicationUserRepository;
 
-    @Value("classpath:patients.graphql")
-    Resource resource;
-
     private GraphQL graphQL;
+
     @Autowired
     private PatientDataFetcher patientsDataFetcher;
 
     @PostConstruct
     private void loadSchema() throws IOException {
-
-        // get the schema
-        File schemaFile = resource.getFile();
+        URL url = Resources.getResource("patients.graphql");
+        String sdl = Resources.toString(url, Charsets.UTF_8);
         // parse schema
-        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
+        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
         RuntimeWiring wiring = buildRuntimeWiring();
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
         graphQL = GraphQL.newGraphQL(schema).build();
