@@ -38,86 +38,6 @@ class NutriPlusBackApplicationTests {
 
 	}
 
-	@Test
-	void insertRecords(){
-		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
-		assertThat(test_user).isNotNull();
-		int numberRecords = 10;
-
-		for(int i = 0; i < numberRecords ; i++){
-			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal((1.28+i));
-			testRecord1.setAge(18+i);
-
-			PatientRecord testRecord2 = new PatientRecord();
-			testRecord2.setAbdominal(128.0 + i);
-			testRecord1.setAge(50+i);
-
-			test_user.getPatientList().get(i).setPatientRecord(testRecord1);
-			test_user.getPatientList().get(i).setPatientRecord(testRecord2);
-		}
-
-		applicationUserRepository.save(test_user);
-	}
-
-	@Test
-	void insertRecordsPatient(){
-		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
-		assertThat(test_user).isNotNull();
-		Patient patientTest = test_user.getPatientByUuid("732b0499b6094cf889c215d3a29a007a");
-		int numberRecords = 2;
-		for(int i = 0; i < numberRecords ; i++){
-			PatientRecord testRecord1 = new PatientRecord();
-			testRecord1.setAbdominal(128.0+i);
-			testRecord1.setAge(20+i);
-			patientTest.setPatientRecord(testRecord1);
-		}
-
-		applicationUserRepository.save(test_user);
-	}
-
-
-	@Test
-	void insertPatient(){
-		UserCredentials test_user = applicationUserRepository.findByUsername("adriano");
-		assertThat(test_user).isNotNull();
-		int limit = 10;
-
-		for(int i = 0; i < limit ; i++){
-			Patient test = new Patient();
-			String Name = "TestPatient" + i;
-			test.setName(Name);
-			test_user.setPatient(test);
-		}
-
-		applicationUserRepository.save(test_user);
-
-	}
-
-	@Test
-	void TestPatient(){
-
-		UserCredentials user = new UserCredentials("TestPatient","test@email.com","senhaTest","Test","P");
-		Patient test = new Patient();
-
-		test.setName("TestPatient");
-		test.setCpf("123456");
-
-		user.setPatient(test);
-		applicationUserRepository.save(user);
-
-		UserCredentials testUser = applicationUserRepository.findByUsername("TestPatient");
-
-		assertThat(testUser).isNotNull();
-		assertThat(testUser.getUuid()).isEqualTo(user.getUuid());
-
-		//Delete Data
-		user.deletePatient(test);
-		applicationUserRepository.save(user);
-		applicationUserRepository.deletePatientFromRepository(test.getUuid());
-		applicationUserRepository.deleteByUuid(user.getUuid());
-	}
-
 //	@Test
 //	void TestMenu(){
 //		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
@@ -183,7 +103,6 @@ class NutriPlusBackApplicationTests {
 //		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
 //		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 //	}
-//
 //	@Test
 //	void TestFood(){
 //		// Create data
@@ -230,7 +149,7 @@ class NutriPlusBackApplicationTests {
 //		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
 //		applicationFoodRepository.deleteFoodFromRepository(dummyFood.getUuid());
 //	}
-//
+
 //	@Test
 //	void TestMeal(){
 //		// Create foods
