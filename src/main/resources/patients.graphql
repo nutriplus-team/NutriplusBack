@@ -29,37 +29,37 @@ type Patient {
      dateOfBirth: String
      nutritionist: String
      cpf: String
-     biologicalSex: Short
+     biologicalSex: Int
 }
 
-type Food{
+type Food {
     uuid: String
     foodName: String
     foodGroup: String
-    measureTotalGrams: Double
+    measureTotalGrams: Float
     measureType: String
-    measureAmount: Double
+    measureAmount: Float
     custom: Boolean
     created: Boolean
     nutritionFacts: NutritionFacts
 }
 
 type NutritionFacts{
-    calories: Double
-    protein : Double
-    carbohydrates: Double
-    lipids: Double
-    fiber: Double
+    calories: Float
+    protein : Float
+    carbohydrates: Float
+    lipids: Float
+    fiber: Float
 }
 
-input PatientInput{
+input PatientInput {
        name:  String
        ethnicGroup: Float
        email: String
        dateOfBirth: String
        nutritionist: String
        cpf: String
-       biologicalSex: Short
+       biologicalSex: Int
 }
 
 type PatientRecord{
