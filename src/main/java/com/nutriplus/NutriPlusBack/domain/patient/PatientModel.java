@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class PatientModel extends AbstractEntity {
 
@@ -16,7 +17,7 @@ public abstract class PatientModel extends AbstractEntity {
     String name;
     protected String email;
     String cpf;
-    String dateOfBirth;
+    Date dateOfBirth;
     short biologicalSex;   //0 equals female and 1 equals male
     Double ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
 

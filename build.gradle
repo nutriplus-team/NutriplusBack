@@ -43,9 +43,9 @@ dependencies {
 
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.7'
 
-//	compile "org.neo4j:neo4j-ogm-core"
-//	compile "org.neo4j:neo4j-ogm-http-driver"
-//	compile 'org.neo4j:neo4j-ogm-bolt-driver'
+	compile "org.neo4j:neo4j-ogm-core"
+	compile "org.neo4j:neo4j-ogm-http-driver"
+	compile 'org.neo4j:neo4j-ogm-bolt-driver'
 }
 
 test {

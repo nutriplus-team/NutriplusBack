@@ -45,6 +45,7 @@ public class GraphQLService{
     private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("getFoodRestrictions",patientsDataFetcher.getFoodRestrictions())
                         .dataFetcher("getPatientInfo", patientsDataFetcher.getPatient())
                         .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())

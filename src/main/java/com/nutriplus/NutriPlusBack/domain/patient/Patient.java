@@ -1,6 +1,10 @@
 package com.nutriplus.NutriPlusBack.domain.patient;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -19,8 +23,12 @@ public class Patient extends PatientModel {
     public void setName(String nameValue){
         name = nameValue;
     }
-    public void setDateOfBirth(String dateOfBirthValue){
-        dateOfBirth = dateOfBirthValue;
+    public void setDateOfBirth(Integer day, Integer month, Integer year){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DATE, day);
+        dateOfBirth = calendar.getTime();
     }
     public void setBiologicalSex(Short biologicalSexValue){
         biologicalSex = biologicalSexValue;
@@ -49,9 +57,7 @@ public class Patient extends PatientModel {
     public String getName(){
         return name;
     }
-    public String getDateOfBirth(){
-        return dateOfBirth;
-    }
+    public String getDateOfBirth(){ return new SimpleDateFormat("dd/MM/yyyy").format(dateOfBirth); }
     public Short getBiologicalSex(){
         return biologicalSex;
     }

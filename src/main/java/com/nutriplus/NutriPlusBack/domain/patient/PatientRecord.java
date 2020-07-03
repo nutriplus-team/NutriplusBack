@@ -6,7 +6,10 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
 
 @NodeEntity
@@ -16,14 +19,12 @@ public class PatientRecord extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    DateTimeFormatter dateModified;
 
-    public PatientRecord(){
-        super();
-        dateModified = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    }
+    public PatientRecord(){ super(); }
 
     String uuidPatient;
+
+    Date dateModified;
 
     Boolean isAthlete ;
     Integer age;
@@ -60,7 +61,13 @@ public class PatientRecord extends AbstractEntity {
 
     //Set Functions
     public void setUuidPatient(String uuid){uuidPatient = uuid;}
-    public void setDateModified(DateTimeFormatter date){dateModified = date;}
+    public void setDateModified(Integer day, Integer month, Integer year){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DATE, day);
+        dateModified = calendar.getTime();
+    }
     public void setIsAthlete(Boolean value){isAthlete = value;}
     public void setAge(Integer ageValue){age = ageValue;}
     public void setPhysicalActivityLevel(Double physicalActivityLevelValue){physicalActivityLevel = physicalActivityLevelValue;}
@@ -95,7 +102,7 @@ public class PatientRecord extends AbstractEntity {
 
     //Get Functions
     public String getUuidPatient(){return uuidPatient;}
-    public DateTimeFormatter getDateModified(){return dateModified;}
+    public String getDateModified(){return new SimpleDateFormat("dd/MM/yyyy").format(dateModified);}
     public Boolean getIsAthlete(){return isAthlete;}
     public Integer getAge(){return age;}
     public Double getPhysicalActivityLevel(){return physicalActivityLevel;}
