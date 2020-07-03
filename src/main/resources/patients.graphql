@@ -4,6 +4,7 @@ schema {
 }
 
 type Query {
+    getFoodRestrictions(uuidPatient: String!, uuidUser: String!) : [Food]
     getPatientInfo(uuidPatient: String!, uuidUser: String!) : Patient
     getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
     getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
@@ -31,6 +32,26 @@ type Patient {
      biologicalSex: Short
 }
 
+type Food{
+    uuid: String
+    foodName: String
+    foodGroup: String
+    measureTotalGrams: Double
+    measureType: String
+    measureAmount: Double
+    custom: Boolean
+    created: Boolean
+    nutritionFacts: NutritionFacts
+}
+
+type NutritionFacts{
+    calories: Double
+    protein : Double
+    carbohydrates: Double
+    lipids: Double
+    fiber: Double
+}
+
 input PatientInput{
        name:  String
        ethnicGroup: Float
@@ -42,6 +63,7 @@ input PatientInput{
 }
 
 type PatientRecord{
+    uuid: String
     uuidPatient: String
     corporalMass: Float
     height: Float

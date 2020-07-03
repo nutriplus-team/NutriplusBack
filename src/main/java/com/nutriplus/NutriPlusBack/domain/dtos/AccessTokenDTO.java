@@ -10,6 +10,11 @@ import java.util.Date;
 public class AccessTokenDTO {
     public String access;
 
+    public AccessTokenDTO()
+    {
+
+    }
+
     public AccessTokenDTO(UserCredentials user)
     {
         Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET);
