@@ -4,9 +4,9 @@ public class FoodDTO {
     public String uuid;
     public String foodName;
     public String foodGroup;
-    public double measureTotalGramsValue;
+    public Double measureTotalGramsValue;
     public String measureType;
-    public int measureAmount;
+    public Double measureAmount;
     public NutritionFactsDTO nutritionFacts;
 
     public void setFoodGroup(String foodGroup) {
@@ -17,11 +17,11 @@ public class FoodDTO {
         this.foodName = foodName;
     }
 
-    public void setMeasureAmount(int measureAmount) {
+    public void setMeasureAmount(Double measureAmount) {
         this.measureAmount = measureAmount;
     }
 
-    public void setMeasureTotalGramsValue(double measureTotalGramsValue) {
+    public void setMeasureTotalGramsValue(Double measureTotalGramsValue) {
         this.measureTotalGramsValue = measureTotalGramsValue;
     }
 

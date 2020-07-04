@@ -3,8 +3,8 @@ package com.nutriplus.NutriPlusBack.domain.food;
 public class NutritionFacts extends NutritionFactsModel {
     // Constructors
     public NutritionFacts(){}
-    public NutritionFacts(double caloriesValue, double proteinsValue, double carbohydratesValue, double lipidsValue,
-                   double fiberValue)
+    public NutritionFacts(Double caloriesValue, Double proteinsValue, Double carbohydratesValue,Double lipidsValue,
+                   Double fiberValue)
     {
         calories = caloriesValue;
         proteins = proteinsValue;
@@ -31,10 +31,10 @@ public class NutritionFacts extends NutritionFactsModel {
         fiber = nutritionFactsValue.fiber;
     }
 
-    public double getCalories() {return calories;}
-    public double getProteins() {return proteins;}
-    public double getLipids() {return lipids;}
-    public double getCarbohydrates() {return carbohydrates;}
-    public double getFiber() {return fiber;}
+    public Double getCalories() {return calories;}
+    public Double getProteins() {return proteins;}
+    public Double getLipids() {return lipids;}
+    public Double getCarbohydrates() {return carbohydrates;}
+    public Double getFiber() {return fiber;}
 
 }
