@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack.services;
 
 import com.google.common.io.Resources;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.services.datafetcher.MenuDataFetcher;
 import com.nutriplus.NutriPlusBack.services.datafetcher.PatientDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -11,12 +12,8 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.apache.commons.codec.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -33,9 +30,12 @@ public class GraphQLService{
     @Autowired
     private PatientDataFetcher patientsDataFetcher;
 
+    @Autowired
+    private MenuDataFetcher menuDataFetcher;
+
     @PostConstruct
     private void loadSchema() throws IOException {
-        URL url = Resources.getResource("patients.graphql");
+        URL url = Resources.getResource("Types.graphql");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         // parse schema
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
@@ -51,7 +51,10 @@ public class GraphQLService{
                         .dataFetcher("getPatientInfo", patientsDataFetcher.getPatient())
                         .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
-                        .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords()))
+                        .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
+                        .dataFetcher("getMenu", menuDataFetcher.getMenu())
+                        .dataFetcher("getAllMenusForPatient", menuDataFetcher.getAllMenusForPatient())
+                        .dataFetcher("getMenusForMeal", menuDataFetcher.getMenusForMeal()))
                 .type("Mutation",typeWiring->typeWiring
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())
                         .dataFetcher("createPatient",patientsDataFetcher.createPatient())

@@ -9,6 +9,9 @@ type Query {
     getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
     getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
     getSingleRecord(uuidRecord: String!) : PatientRecord
+    getMenu(uuidMenu: String!, uuidPatient: String!): Menu
+    getAllMenusForPatient(uuidPatient: String!): [Menu]
+    getMenusForMeal(uuidPatient: String!, meal: Int!): [Menu]
 }
 
 type Mutation{
@@ -120,4 +123,15 @@ input PatientRecordInput{
         bodyFat:    Float
         methabolicRate: Float
         energyRequirements: Float
+}
+
+type Menu {
+    uuid: String
+    meal: Int
+    portions: [Portion]
+}
+
+type Portion {
+    quantity: Float
+    food: Food
 }

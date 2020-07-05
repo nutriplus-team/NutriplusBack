@@ -38,42 +38,42 @@ class NutriPlusBackApplicationTests {
 
 	}
 
-//	@Test
-//	void TestMenu(){
-//		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
-//
-//		// Add patient
-//		Patient testPatient = new Patient();
-//		testPatient.setName("TestMenuPatient");
-//		//testPatient.setCorporalMass((float)89.3);
-//		testPatient.setCpf("123456");
-//		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
-//		userMenu.setPatient(testPatient);
-//		applicationUserRepository.save(userMenu);
-//
-//		// Add food
-//		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
-//				4.4, 5.5);
-//		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
-//				"Colher de sopa", 5, testNutritionFacts);
-//		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
-//				"Colher de sopa", 5, testNutritionFacts);
-//
-//		Meal dummyMeal = new Meal();
-//
-//		// Add meal type
-//		List<Food> foodList = new ArrayList<Food>();
-//		foodList.add(testFood1);
-//		foodList.add(testFood2);
-//		Meal testMeal = new Meal(MealType.DINNER, foodList);
-//		applicationMealRepository.save(testMeal);
-//
-//		// Add menu
-//		Menu menu = new Menu(testMeal, testPatient);
-//		menu.addPortion(testFood1, 150);
-//		applicationMenuRepository.save(menu);
-//
-//		// Test User
+	@Test
+	void TestMenu(){
+		UserCredentials userMenu = new UserCredentials("TestMenu","test@email.com","senhaTest","Test","M");
+
+		// Add patient
+		Patient testPatient = new Patient();
+		testPatient.setName("TestMenuPatient");
+		//testPatient.setCorporalMass((float)89.3);
+		testPatient.setCpf("123456");
+		//testPatient.calculateMethabolicRate(Constants.TINSLEY);
+		userMenu.setPatient(testPatient);
+		applicationUserRepository.save(userMenu);
+
+		// Add food
+		NutritionFacts testNutritionFacts = new NutritionFacts(1.1, 2.2, 3.3,
+				4.4, 5.5);
+		Food testFood1 = new Food("Arroz branco", "Grãos", 23.9,
+				"Colher de sopa", 5.0, testNutritionFacts);
+		Food testFood2 = new Food("Arroz carioca", "Grãos", 23.9,
+				"Colher de sopa", 5.0, testNutritionFacts);
+
+		Meal dummyMeal = new Meal();
+
+		// Add meal type
+		List<Food> foodList = new ArrayList<Food>();
+		foodList.add(testFood1);
+		foodList.add(testFood2);
+		Meal testMeal = new Meal(MealType.DINNER, foodList);
+		applicationMealRepository.save(testMeal);
+
+		// Add menu
+		Menu menu = new Menu(testMeal, testPatient);
+		menu.addPortion(testFood1, 150);
+		applicationMenuRepository.save(menu);
+
+		// Test User
 //		UserCredentials testUser = applicationUserRepository.findByUsername("TestMenu");
 //		assertThat(testUser).isNotNull();
 //		assertThat(testUser.getUuid()).isEqualTo(userMenu.getUuid());
@@ -102,7 +102,7 @@ class NutriPlusBackApplicationTests {
 //		applicationMealRepository.deleteMealByUuid(testMeal.getUuid());
 //		applicationFoodRepository.deleteFoodFromRepository(testFood1.getUuid());
 //		applicationFoodRepository.deleteFoodFromRepository(testFood2.getUuid());
-//	}
+	}
 //	@Test
 //	void TestFood(){
 //		// Create data
