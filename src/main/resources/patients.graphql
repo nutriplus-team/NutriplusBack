@@ -97,6 +97,7 @@ type PatientRecord{
 input PatientRecordInput{
         corporalMass: Float
         height: Float
+        dateModified: String
         abdominal: Float
         isAthlete: Boolean
         age: Int
