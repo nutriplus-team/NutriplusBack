@@ -16,6 +16,8 @@ type Mutation{
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatientRecord: String!,input: PatientRecordInput): Boolean
 
+    updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String]): Boolean
+
     createPatient(uuidUser: String!,input: PatientInput) : Boolean
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean
     updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean

@@ -103,6 +103,25 @@ public class PatientDataFetcher {
         };
     }
 
+    public DataFetcher<Boolean> updateFoodRestrictions(){
+        return dataFetchingEnvironment -> {
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            ArrayList<String> restrictedFoods = dataFetchingEnvironment.getArgument("uuidFoods");
+
+            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+
+            for(String uuidFood : restrictedFoods){
+                patient.getFoodRestrictionsUUID().add(uuidFood);
+            }
+
+            if(patient.getUuid().equals(uuidPatient)) {
+                applicationUserRepository.updatePatientFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+                return true;
+            }else return false;
+        };
+    }
+
     public DataFetcher<Boolean> updatePatientRecord(){
         return dataFetchingEnvironment -> {
             String uuidPatientRecord = dataFetchingEnvironment.getArgument("uuidPatientRecord");
