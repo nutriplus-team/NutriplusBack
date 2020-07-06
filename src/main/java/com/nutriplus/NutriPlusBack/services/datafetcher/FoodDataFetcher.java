@@ -67,7 +67,6 @@ public class FoodDataFetcher {
 
     public DataFetcher<Boolean> customizeFood() {
         return dataFetchingEnvironment -> {
-            System.out.println("AAAAAA");
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
             HashMap<String, Object> customInput = dataFetchingEnvironment.getArgument("customInput");

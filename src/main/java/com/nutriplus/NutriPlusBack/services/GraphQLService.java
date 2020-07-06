@@ -55,7 +55,8 @@ public class GraphQLService{
                         .dataFetcher("getPatientInfo", patientsDataFetcher.getPatient())
                         .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
-                        .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords()))
+                        .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
+                        .dataFetcher("listFood",foodDataFetcher.listFood()))
                 .type("Mutation",typeWiring->typeWiring
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())
                         .dataFetcher("createPatient",patientsDataFetcher.createPatient())
@@ -64,7 +65,7 @@ public class GraphQLService{
                         .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
                         .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
                         .dataFetcher("createFood", foodDataFetcher.createFood())
-                        .dataFetcher("customizeFood", foodDataFetcher.customizegit fFood()))
+                        .dataFetcher("customizeFood", foodDataFetcher.customizeFood()))
                 .build();
     }
 
