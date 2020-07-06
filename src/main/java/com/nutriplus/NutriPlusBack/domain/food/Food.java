@@ -133,6 +133,8 @@ public class Food extends FoodModel {
     public String getFoodGroup()              { return foodGroup; }
     public Double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
-    public Double getMeasureAmount()             { return measureAmount; }
+    public Double getMeasureAmount()          { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
+    public Boolean getCreated()               { return created; }
+    public Boolean getCustom()                { return custom; }
 }
