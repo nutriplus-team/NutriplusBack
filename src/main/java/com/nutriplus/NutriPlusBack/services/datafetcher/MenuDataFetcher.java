@@ -22,10 +22,11 @@ public class MenuDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
-            Optional<Menu> menu = applicationMenuRepository.findByUuid(uuidMenu);
+            Optional<Menu> menu = applicationMenuRepository.getMenuWithPortions(uuidMenu);
             if(menu.isEmpty())
                 return null;
-            if(menu.get().getPatient().getUuid().equals(uuidMenu))
+
+            if(menu.get().getPatient().getUuid().equals(uuidPatient))
                 return menu.get();
 
             return null;

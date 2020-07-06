@@ -6,6 +6,7 @@ import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @NodeEntity
 public class Menu extends MenuModel{
@@ -43,7 +44,7 @@ public class Menu extends MenuModel{
 
     // Getters
     public Long getId() {return id;}
-    public Meal getMealType() {return mealType;}
+    public int getMealType() {return mealType.getMealType().getNumVal();}
     public Patient getPatient() {return patient;}
-    public ArrayList<Portion> getPortions() {return portions;}
+    public List<Portion> getPortions() {return portions;}
 }

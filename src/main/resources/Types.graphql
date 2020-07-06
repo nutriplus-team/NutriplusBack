@@ -127,7 +127,7 @@ input PatientRecordInput{
 
 type Menu {
     uuid: String
-    meal: Int
+    mealType: Int
     portions: [Portion]
 }
 
