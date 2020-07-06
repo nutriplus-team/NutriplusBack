@@ -11,6 +11,7 @@ import com.nutriplus.NutriPlusBack.domain.dtos.*;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.validators.Validator;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.services.EmailService;
 import com.nutriplus.NutriPlusBack.services.SecurityConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -30,17 +32,19 @@ import java.util.regex.Pattern;
 public class UserController {
 
     private final ApplicationUserRepository applicationUserRepository;
-
+    private EmailService emailService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserController(ApplicationUserRepository applicationUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder)
+    public UserController(ApplicationUserRepository applicationUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                          EmailService emailService)
     {
         this.applicationUserRepository = applicationUserRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register/")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterDTO userData)
+    public ResponseEntity<?> registerUser(@RequestBody UserRegisterDTO userData, @RequestHeader String host)
     {
         String error = UserCredentials.Validate(userData);
         if(error != null)
@@ -67,11 +71,55 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
         }
         UserCredentials user = new UserCredentials(userData.username, userData.email, bCryptPasswordEncoder.encode(userData.password1), userData.firstName, userData.lastName);
-        applicationUserRepository.save(user);
 
-        UserLoginDTO responseData = UserLoginDTO.Create(user);
+        try
+        {
+            emailService.sendRegistrationEmail(user, host, applicationUserRepository);
+        } catch (MessagingException e)
+        {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Could not send email."));
+        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("OK");
+    }
+
+    @GetMapping("/activate/{token}/")
+    public ResponseEntity<?> activateUser(@PathVariable String token)
+    {
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            Date expiresAt = jwt.getExpiresAt();
+
+            if(expiresAt.getTime() < System.currentTimeMillis())
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Url expirou.");
+            }
+
+            Map<String, Claim> claims = jwt.getClaims();
+            String uuid = claims.get("id").asString();
+            UserCredentials user = applicationUserRepository.findByUuid(uuid);
+            if(user != null)
+            {
+                if(user.getIsActive())
+                {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already active");
+                }
+                else
+                {
+                    user.setIsActive(true);
+                    applicationUserRepository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).body("OK");
+                }
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+        } catch (JWTVerificationException | java.lang.NullPointerException exception)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token.");
+        }
     }
 
     @PostMapping("/login/")
@@ -104,6 +152,12 @@ public class UserController {
         if(!bCryptPasswordEncoder.matches(userData.password, user.getPassword()))
         {
             ErrorDTO errorDTO = new ErrorDTO("Invalid Password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+        }
+
+        if(!user.getIsActive())
+        {
+            ErrorDTO errorDTO = new ErrorDTO("User not active");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
         }
 

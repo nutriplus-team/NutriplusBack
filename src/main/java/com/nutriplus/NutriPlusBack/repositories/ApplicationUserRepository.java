@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.repositories;
 
+import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
@@ -19,6 +20,9 @@ public interface ApplicationUserRepository extends Neo4jRepository<UserCredentia
 
     @Query("MATCH (r:PatientRecord) where r.uuid=$uuidPatientRecord DETACH DELETE r")
     void deletePatientRecordFromRepository(String uuidPatientRecord);
+
+    @Query("MATCH (f:Food) WHERE f.uuid in $0 RETURN f")
+    ArrayList<Food> findFoodRestrictions(ArrayList<String> uuids);
 
     @Query("MATCH (r:PatientRecord) where r.uuid=$uuidRecord SET r += $input ")
     void updatePatientRecordFromRepository(String uuidRecord, LinkedHashMap<String,Object> input);

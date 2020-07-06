@@ -13,7 +13,7 @@ public class UserLoginDTO {
     public String token;
     public UserDataDTO user;
 
-    private UserLoginDTO()
+    public UserLoginDTO()
     {
 
     }

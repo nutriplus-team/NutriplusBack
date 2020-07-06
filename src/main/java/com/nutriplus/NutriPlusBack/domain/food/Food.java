@@ -36,7 +36,7 @@ public class Food extends FoodModel {
         nutritionFacts      = nutritionFactsValue;
     }
     //New created food (requires nutritionist parameter)
-    public Food(UserCredentials owner, String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+    public Food(UserCredentials owner, String foodNameValue, String foodGroupValue, Double measureTotalGramsValue, String measureTypeValue,
                 Double measureAmountValue, NutritionFacts nutritionFactsValue){
         super();
         foodName            = foodNameValue;
@@ -78,7 +78,7 @@ public class Food extends FoodModel {
     // Setters
     public void setFoodName(String foodNameValue)                     { foodName = foodNameValue; }
     public void setFoodGroup(String foodGroupValue)                   { foodGroup = foodGroupValue; }
-    public void setMeasureTotalGrams(double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
+    public void setMeasureTotalGrams(Double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
     public void setMeasureType(String measureTypeValue)               { measureType = measureTypeValue; }
     public void setMeasureAmount(Double measureAmountValue)              { measureAmount = measureAmountValue; }
     public void setNutritionFacts(NutritionFacts nutritionFactsValue) {
@@ -88,40 +88,40 @@ public class Food extends FoodModel {
         nutritionFacts.copy(nutritionFactsValue);
     }
 
-    public void setCalories(double caloriesValue)              {
+    public void setCalories(Double caloriesValue)              {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.calories = caloriesValue;
     }
-    public void setProteins(double proteinsValue)              {
+    public void setProteins(Double proteinsValue)              {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.proteins = proteinsValue;
     }
-    public void setCarbohydrates(double carbohydratesValue)    {
+    public void setCarbohydrates(Double carbohydratesValue)    {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.carbohydrates = carbohydratesValue;
     }
-    public void setLipids(double lipidsValue)                  {
+    public void setLipids(Double lipidsValue)                  {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.lipids = lipidsValue;
     }
-    public void setFiber(double fiberValue)                    {
+    public void setFiber(Double fiberValue)                    {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
         }
         nutritionFacts.fiber = fiberValue;
     }
-    public void setCustom(boolean customValue) {
+    public void setCustom(Boolean customValue) {
         custom = customValue;
     }
-    public void setCreated(boolean createdValue) {
+    public void setCreated(Boolean createdValue) {
         created = createdValue;
     }
     public void setOriginalFood(Food originalValue) {originalFood = originalValue;}
@@ -131,7 +131,7 @@ public class Food extends FoodModel {
     public Long getId()                       { return id; }
     public String getFoodName()               { return foodName; }
     public String getFoodGroup()              { return foodGroup; }
-    public double getMeasureTotalGrams()      { return measureTotalGrams; }
+    public Double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
     public Double getMeasureAmount()             { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }

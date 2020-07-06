@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack.services.datafetcher;
 
 
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
+import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
@@ -26,6 +27,16 @@ public class PatientDataFetcher {
             return applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
         };
     }
+
+    public DataFetcher<ArrayList<Food>> getFoodRestrictions() {
+        return dataFetchingEnvironment -> {
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            ArrayList<String> listUuids = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient).getFoodRestrictionsUUID();
+            return applicationUserRepository.findFoodRestrictions(listUuids);
+        };
+    }
+
 
     public DataFetcher<Boolean> removePatient(){
         return dataFetchingEnvironment -> {
