@@ -66,7 +66,7 @@ public class PatientRecord extends AbstractEntity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             dateModified = sdf.parse(stringDate);
-        } catch (ParseException e) {
+        }catch (ParseException e) {
             e.printStackTrace();
         }
     }
