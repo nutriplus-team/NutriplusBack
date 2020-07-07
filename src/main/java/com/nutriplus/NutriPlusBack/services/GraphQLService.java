@@ -12,16 +12,10 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.apache.commons.codec.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
-import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Service
 public class GraphQLService{
@@ -65,7 +59,9 @@ public class GraphQLService{
                         .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
                         .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
                         .dataFetcher("createFood", foodDataFetcher.createFood())
-                        .dataFetcher("customizeFood", foodDataFetcher.customizeFood()))
+                        .dataFetcher("customizeFood", foodDataFetcher.customizeFood())
+                        .dataFetcher("updateFoodRestrictions",patientsDataFetcher.updateFoodRestrictions())
+                        .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord()))
                 .build();
     }
 

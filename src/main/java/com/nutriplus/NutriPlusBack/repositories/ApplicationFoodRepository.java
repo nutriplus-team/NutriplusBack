@@ -19,7 +19,7 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
     List<Food> findFoodByFoodNameContaining(String foodName);
     List<Food> findFoodByFoodNameContainingAndCustomIsFalse(String foodName);
 
-    @Query ("MATCH (u:UserCredentials) WHERE u.uuid=$0 WITH u MATCH (f:Food) WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND f.created=false AND f.custom=false RETURN f UNION MATCH (u:UserCredentials) WHERE u.uuid=$0 MATCH (f:Food)<-[:CUSTOM_FOOD]-(u) RETURN f ORDER BY f.foodName")
+    @Query ("MATCH (u:UserCredentials) WHERE u.uuid=$0 WITH u MATCH (f:Food) WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND f.created=false AND f.custom=false RETURN f UNION MATCH (u:UserCredentials) WHERE u.uuid=$0 MATCH (f:Food)<-[:CUSTOM_FOOD]-(u) RETURN f")
     ArrayList<Food> listFood(String nutritionistUuid);
 
     @Query("MATCH (f:Food) WHERE f.uuid = $0" +

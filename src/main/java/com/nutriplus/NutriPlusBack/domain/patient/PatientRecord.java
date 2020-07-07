@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -61,12 +62,13 @@ public class PatientRecord extends AbstractEntity {
 
     //Set Functions
     public void setUuidPatient(String uuid){uuidPatient = uuid;}
-    public void setDateModified(Integer day, Integer month, Integer year){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DATE, day);
-        dateModified = calendar.getTime();
+    public void setDateModified(String stringDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            dateModified = sdf.parse(stringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     public void setIsAthlete(Boolean value){isAthlete = value;}
     public void setAge(Integer ageValue){age = ageValue;}
