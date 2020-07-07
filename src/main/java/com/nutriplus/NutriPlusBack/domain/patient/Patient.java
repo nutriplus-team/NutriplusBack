@@ -23,7 +23,11 @@ public class Patient extends PatientModel {
     public void setName(String nameValue){
         name = nameValue;
     }
-    public void setDateOfBirth(Integer day, Integer month, Integer year){
+    public void setDateOfBirth(String date){
+        String[] values = date.split("/");
+        int day = Integer.parseInt(values[0]);
+        int month = Integer.parseInt(values[1]);
+        int year = Integer.parseInt(values[2]);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
