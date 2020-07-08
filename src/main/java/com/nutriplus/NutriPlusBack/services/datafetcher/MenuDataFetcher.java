@@ -47,9 +47,7 @@ public class MenuDataFetcher {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             int meal = dataFetchingEnvironment.getArgument("meal");
             Optional<MealType> mealType = MealType.valueOf(meal);
-            if(mealType.isEmpty())
-                return null;
-            return applicationMenuRepository.getMenusForMeal(uuidPatient, mealType.get());
+            return mealType.map(type -> applicationMenuRepository.getMenusForMeal(uuidPatient, type.name())).orElse(null);
         };
     }
 }

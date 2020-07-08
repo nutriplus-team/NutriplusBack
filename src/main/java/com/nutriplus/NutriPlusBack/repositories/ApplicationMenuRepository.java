@@ -27,8 +27,9 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
     @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:PORTION|MEALTYPE]->() where k.uuid=$0 return p")
     List<Menu> getMenuFromPatient(String patientUuid);
 
-    @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:PORTION|MEALTYPE]->(m:Meal) where k.uuid=$0 and m.MealType=$1 return p")
-    List<Menu> getMenusForMeal(String patientUuid, MealType meal);
+    @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:PORTION|:MEALTYPE]->() where k.uuid=$0 " +
+            "and exists((k)-[:HAS_MENU]->()-[:MEALTYPE]->(:Meal {mealType: $1})) return p")
+    List<Menu> getMenusForMeal(String patientUuid, String meal);
 
     Optional<Menu> findByUuid(String uuid);
 
