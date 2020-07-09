@@ -146,10 +146,10 @@ mutation {
 ###  2.2. <a name='patientsget'></a>/patients/get
 
 **Duvidas**: 
-* O que é o campo `nutritionist`?
-* Qual o mapa numério de `ethnicGroup`?
-* Qual o mapa numério de `biologicalSex`?
-* Qual o mapa numério de `physicalActivityLevel`?
+* O que é o campo `nutritionist`? Deve conter o nome do nutricionista relacionado ao paciente.
+* Qual o mapa numério de `ethnicGroup`? 0 para branco/hispânico e 1.1 para afrodescendentes.
+* Qual o mapa numério de `biologicalSex`? Variavel do tipo inteiro, onde 0 = feminino ou 1 = masculino.
+* Qual o mapa numério de `physicalActivityLevel`? 
 
 ####  2.2.1. <a name='Queries:-1'></a>Queries:
 
