@@ -51,6 +51,7 @@ public class GraphQLService{
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
                         .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
                         .dataFetcher("listFood",foodDataFetcher.listFood())
+                        .dataFetcher("getUnits",foodDataFetcher.getUnits())
                         .dataFetcher("getFoodMeals",foodDataFetcher.getFoodMeals())
                         .dataFetcher("getMeal",foodDataFetcher.getMeal()))
                 .type("Mutation",typeWiring->typeWiring

@@ -15,6 +15,7 @@ type Query {
     listFood(uuidUser: String!) : [FoodSimple]
     getFoodMeals(uuidFood: String!) : [MealType]
     getMeal(uuidUser: String!, mealType: String!) : Meal
+    getUnits(uuidFood: String!) : NutritionFacts
 }
 
 type Mutation{
@@ -138,9 +139,9 @@ type Food {
     nutritionFacts: NutritionFacts
 }
 
-type NutritionFacts{
+type NutritionFacts {
     calories: Float
-    protein : Float
+    proteins : Float
     carbohydrates: Float
     lipids: Float
     fiber: Float

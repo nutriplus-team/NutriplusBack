@@ -51,6 +51,14 @@ public class FoodDataFetcher {
         };
     }
 
+    public DataFetcher<NutritionFacts> getUnits(){
+        return dataFetchingEnvironment -> {
+            String foodUuid = dataFetchingEnvironment.getArgument("uuidFood");
+            Food selectedFood = applicationFoodRepository.findByUuid(foodUuid);
+            return selectedFood.getNutritionFacts();
+        };
+    }
+
     public DataFetcher<Boolean> createFood() {
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
