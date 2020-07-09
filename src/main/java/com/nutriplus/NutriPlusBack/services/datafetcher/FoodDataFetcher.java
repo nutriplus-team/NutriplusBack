@@ -130,4 +130,42 @@ public class FoodDataFetcher {
                 return false;
         };
     }
+    public DataFetcher<Boolean> startMeals(){
+        return dataFetchingEnvironment -> {
+
+            ArrayList<Meal> meals = applicationMealRepository.getAllMeals();
+
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.BREAKFAST)))
+            {
+                Meal breakfast = new Meal(MealType.BREAKFAST);
+                applicationMealRepository.save(breakfast);
+            }
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.MORNING_SNACK)))
+            {
+                Meal breakfast = new Meal(MealType.MORNING_SNACK);
+                applicationMealRepository.save(breakfast);
+            }
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.LUNCH)))
+            {
+                Meal breakfast = new Meal(MealType.LUNCH);
+                applicationMealRepository.save(breakfast);
+            }
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.AFTERNOON_SNACK)))
+            {
+                Meal breakfast = new Meal(MealType.AFTERNOON_SNACK);
+                applicationMealRepository.save(breakfast);
+            }
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.PRE_WORKOUT)))
+            {
+                Meal breakfast = new Meal(MealType.PRE_WORKOUT);
+                applicationMealRepository.save(breakfast);
+            }
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.DINNER)))
+            {
+                Meal breakfast = new Meal(MealType.DINNER);
+                applicationMealRepository.save(breakfast);
+            }
+            return true;
+        };
+    }
 }

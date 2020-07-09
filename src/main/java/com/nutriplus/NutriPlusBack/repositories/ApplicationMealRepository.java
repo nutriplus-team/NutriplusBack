@@ -34,6 +34,10 @@ public interface ApplicationMealRepository extends Neo4jRepository<Meal, Long> {
             "return m.mealType")
     ArrayList<String> getFoodMeals(String foodUuid);
 
+    @Query ("MATCH (m:Meal) RETURN m")
+    ArrayList<Meal> getAllMeals();
+
+
     @Query("MATCH (m:Meal) where m.uuid=$0 DETACH DELETE m")
     void deleteMealByUuid(String uuid);
 }
