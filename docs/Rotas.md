@@ -5,10 +5,10 @@
 * [REST](#REST)
 * [GraphQL (/graphql/get)](#GraphQL)
 	* [Food](#foodgraphql)
-		* [Queries:](#QueriesFood:)
-		* [Mutations:](#MutationsFood:)
+		* [Queries:](#QueriesFood)
+		* [Mutations:](#MutationsFood)
 	* [Patients](#patientsget)
-		* [Queries:](#QueriesPatients:)
+		* [Queries:](#QueriesPatients)
 		* [Mutations:](#MutationsPatients)
 
 <!-- vscode-markdown-toc-config
@@ -31,7 +31,7 @@ Todas as rotas pelo GraphQL usam a rota `/graphql/get/`
 
 ###  2.1. <a name='foodgraphql'></a>Food
 
-####  2.1.1. <a name='QueriesFood:'></a>Queries:
+####  2.1.1. <a name='QueriesFood'></a>Queries:
 
 ##### listFood
 Rota:
@@ -142,7 +142,7 @@ query {
 ```
 
 
-####  2.1.2. <a name='MutationsFood:'></a>Mutations:
+####  2.1.2. <a name='MutationsFood'></a>Mutations:
 
 ##### createFood
 Rota:
@@ -236,7 +236,7 @@ mutation {
 * Qual o mapa numério de `biologicalSex`? Variavel do tipo inteiro, onde 0 = feminino ou 1 = masculino.
 * Qual o mapa numério de `physicalActivityLevel`? 
 
-####  2.2.1. <a name='QueriesPatients:'></a>Queries:
+####  2.2.1. <a name='QueriesPatients'></a>Queries:
 
 ##### getPatientInfo
 Rota:
@@ -494,7 +494,7 @@ Exemplo:
 ```
 mutation {
     createPatientRecord(uuidUser: "ba179e310491460ebaa7260cf355180f", 
-                        uuidPatient: "TODO",
+                        uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                         input: {
                             corporalMass: 104.0,
                             height: 1.83,
@@ -530,14 +530,14 @@ mutation {
 Rota:
 ```
 mutation {
-    removePatientRecord(uuidRecord: String!)
+    removePatientRecord(uuidPatientRecord: String!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removePatientRecord(uuidRecord: "TODO")
+    removePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043")
 }
 ```
 
@@ -580,7 +580,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    updatePatientRecord(uuidPatientRecord: "TODO",
+    updatePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043",
                         input: {
                             corporalMass: 104.0,
                             height: 1.83,
@@ -634,12 +634,12 @@ Exemplo:
 mutation {
     createPatient(  uuidUser: "ba179e310491460ebaa7260cf355180f", 
                     input: {
-                        name:  "Francisco Carlos Eduardo Alves",
+                        name:  "Luís Iago José Lima",
                         ethnicGroup: 0,
-                        email: "franciscoalves@imobideal.com",
-                        dateOfBirth: "08/02/1954",
+                        email: "luisiagojoselima@metalplasma.com.br",
+                        dateOfBirth: "21/01/1957",
                         nutritionist: "Ocimar",
-                        cpf: "051.223.837-58",
+                        cpf: "412.281.778-13",
                         biologicalSex: 0,
                     })
 }
@@ -657,7 +657,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    removePatient(  uuidPatient: "TODO",
+    removePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                     uuidUser: "ba179e310491460ebaa7260cf355180f")
 }
 ```
@@ -683,14 +683,14 @@ mutation {
 Exemplo:
 ```
 mutation {
-    updatePatient(  uuidPatient: "TODO", 
+    updatePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8", 
                     uuidUser: "ba179e310491460ebaa7260cf355180f", 
                     input: {
                         name:  "Francisco Carlos Eduardo Alves",
-                        ethnicGroup: 0,
+                        ethnicGroup: 1.1,
                         email: "franciscoalves@imobideal.com",
                         dateOfBirth: "08/02/1954",
-                        nutritionist: "",
+                        nutritionist: "Ocimar",
                         cpf: "051.223.837-58",
                         biologicalSex: 0,
                     })
