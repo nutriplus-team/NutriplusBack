@@ -11,14 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 @Component
 public class PatientDataFetcher {
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
+
 
     public DataFetcher<Patient> getPatient() {
         return dataFetchingEnvironment -> {
@@ -67,9 +71,13 @@ public class PatientDataFetcher {
             if(user.getUuid().equals(uuidUser))
             {
                 for(String key:input.keySet()){
-                    Field field = patient.getClass().getSuperclass().getDeclaredField(key);
-                    field.setAccessible(true);
-                    field.set(patient, input.get(key));
+                    Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
+                            method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
+                    ).findAny();
+                    if(matchedMethod.isPresent())
+                    {
+                        matchedMethod.get().invoke(patient, input.get(key));
+                    }
                 }
                 user.setPatient(patient);
                 applicationUserRepository.save(user);
@@ -90,11 +98,9 @@ public class PatientDataFetcher {
             if(user.getUuid().equals(uuidUser))
             {
                 for(String key : input.keySet()){
-
                     Field field = PatientRecord.class.getDeclaredField(key);
                     field.setAccessible(true);
                     field.set(patientRecord, input.get(key));
-
                 }
                 patient.setPatientRecord(patientRecord);
                 applicationUserRepository.save(user);

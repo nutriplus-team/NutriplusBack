@@ -1,5 +1,6 @@
 package com.nutriplus.NutriPlusBack.domain.patient;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,15 +24,11 @@ public class Patient extends PatientModel {
     public void setName(String nameValue){
         name = nameValue;
     }
-    public void setDateOfBirth(Integer day, Integer month, Integer year){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DATE, day);
-        dateOfBirth = calendar.getTime();
+    public void setDateOfBirth(String date) throws ParseException {
+        dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(date);
     }
-    public void setBiologicalSex(Short biologicalSexValue){
-        biologicalSex = biologicalSexValue;
+    public void setBiologicalSex(Integer biologicalSexValue){
+        biologicalSex = biologicalSexValue.shortValue();
     }
     public void setEthnicGroup(Double ethnicGroupValue){ ethnicGroup = ethnicGroupValue; }
     public void setNutritionist(String nutritionistValue){
