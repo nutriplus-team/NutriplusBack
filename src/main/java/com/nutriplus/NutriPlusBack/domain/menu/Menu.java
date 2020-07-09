@@ -2,7 +2,9 @@ package com.nutriplus.NutriPlusBack.domain.menu;
 
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.meal.Meal;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
+import com.nutriplus.NutriPlusBack.domain.menu.Portion;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
@@ -14,23 +16,27 @@ public class Menu extends MenuModel{
         super();
     }
 
-    public Menu(Meal mealTypeValue, Patient patientValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
     }
 
-    public Menu(Meal mealTypeValue, Patient patientValue, Food foodValue, float quantityValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Float> quantityValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
-        addPortion(foodValue, quantityValue);
+        for (int i = 0; i < foodValue.size(); i++) {
+            Food food = foodValue.get(i);
+            Float qty = quantityValue.get(i);
+            addPortion(food, qty);
+        }
     }
 
     // Setters
-    public void setMealType(Meal mealValue) { mealType = mealValue;}
+    public void setMealType(MealType mealValue) { mealType = mealValue;}
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
@@ -44,7 +50,7 @@ public class Menu extends MenuModel{
 
     // Getters
     public Long getId() {return id;}
-    public int getMealType() {return mealType.getMealType().getNumVal();}
+    public MealType getMealType() {return mealType;}
     public Patient getPatient() {return patient;}
     public List<Portion> getPortions() {return portions;}
 }

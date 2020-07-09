@@ -65,11 +65,9 @@ class NutriPlusBackApplicationTests {
 		List<Food> foodList = new ArrayList<Food>();
 		foodList.add(testFood1);
 		foodList.add(testFood2);
-		Meal testMeal = new Meal(MealType.DINNER, foodList);
-		applicationMealRepository.save(testMeal);
 
 		// Add menu
-		Menu menu = new Menu(testMeal, testPatient);
+		Menu menu = new Menu(MealType.DINNER, testPatient);
 		menu.addPortion(testFood1, 150);
 		applicationMenuRepository.save(menu);
 
