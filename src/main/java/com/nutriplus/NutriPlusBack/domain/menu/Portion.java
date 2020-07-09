@@ -11,7 +11,7 @@ public class Portion extends PortionModel {
         super();
     }
 
-    public Portion(Menu menuValue, Food foodValue, float quantityValue) {
+    public Portion(Menu menuValue, Food foodValue, Double quantityValue) {
         super();
         menu = menuValue;
         food = foodValue;
@@ -20,12 +20,12 @@ public class Portion extends PortionModel {
 
     // Setters
     public void setFood(Food foodValue) {food = foodValue;}
-    public void setQuantity(float quantityValue) {quantity = quantityValue;}
+    public void setQuantity(Double quantityValue) {quantity = quantityValue;}
     public void setMenu(Menu menuValue) {menu = menuValue;}
 
     // Getters
     public Long getId() {return id;}
     public Food getFood() {return food;}
     public Menu getMenu() {return menu;}
-    public float getQuantity() {return quantity;}
+    public Double getQuantity() {return quantity;}
 }

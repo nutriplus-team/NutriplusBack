@@ -23,14 +23,14 @@ public class Menu extends MenuModel{
         portions = new ArrayList<Portion>();
     }
 
-    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Float> quantityValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
         for (int i = 0; i < foodValue.size(); i++) {
             Food food = foodValue.get(i);
-            Float qty = quantityValue.get(i);
+            Double qty = quantityValue.get(i);
             addPortion(food, qty);
         }
     }
@@ -40,7 +40,7 @@ public class Menu extends MenuModel{
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
-    public void addPortion(Food portionValue, float quantityValue) {
+    public void addPortion(Food portionValue, Double quantityValue) {
         Portion portion = new Portion(this, portionValue, quantityValue);
         portions.add(portion);
     }

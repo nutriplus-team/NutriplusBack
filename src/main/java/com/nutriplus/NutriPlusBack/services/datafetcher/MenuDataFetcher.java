@@ -72,9 +72,10 @@ public class MenuDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            MealType mealType = dataFetchingEnvironment.getArgument("mealType");
+            Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
+            MealType mealType = MealType.values()[mealTypeInt];
             ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
-            ArrayList<Float> quantities = dataFetchingEnvironment.getArgument("quantities");
+            ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
             UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
             Patient patient = user.getPatientByUuid(uuidPatient);
             // fetch foods:

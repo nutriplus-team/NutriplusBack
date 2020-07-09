@@ -10,7 +10,7 @@ public abstract class PortionModel extends AbstractEntity {
     public Long id;
 
     @Property
-    float quantity;
+    Double quantity;
 
     @StartNode Menu menu;
     @EndNode   Food food;
