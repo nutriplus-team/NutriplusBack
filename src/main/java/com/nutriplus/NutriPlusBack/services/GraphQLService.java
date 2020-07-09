@@ -50,7 +50,9 @@ public class GraphQLService{
                         .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
                         .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
-                        .dataFetcher("listFood",foodDataFetcher.listFood()))
+                        .dataFetcher("listFood",foodDataFetcher.listFood())
+                        .dataFetcher("listFoodMeals",foodDataFetcher.listFoodMeals())
+                        .dataFetcher("getMeal",foodDataFetcher.getMeal()))
                 .type("Mutation",typeWiring->typeWiring
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())
                         .dataFetcher("createPatient",patientsDataFetcher.createPatient())

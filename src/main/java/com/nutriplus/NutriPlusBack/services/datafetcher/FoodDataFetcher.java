@@ -3,6 +3,9 @@ package com.nutriplus.NutriPlusBack.services.datafetcher;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.food.NutritionFacts;
+import com.nutriplus.NutriPlusBack.domain.meal.Meal;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
+import com.nutriplus.NutriPlusBack.repositories.ApplicationMealRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationFoodRepository;
 import graphql.schema.DataFetcher;
@@ -11,11 +14,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 @Component
 public class FoodDataFetcher {
 
     @Autowired
     ApplicationFoodRepository applicationFoodRepository;
+
+    @Autowired
+    ApplicationMealRepository applicationMealRepository;
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
@@ -24,6 +32,21 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
             return applicationFoodRepository.listFood(nutritionistUuid);
+        };
+    }
+
+    public DataFetcher<ArrayList<MealType>> listFoodMeals(){
+        return dataFetchingEnvironment -> {
+            String foodUuid = dataFetchingEnvironment.getArgument("uuidFood");
+            return applicationMealRepository.listFoodMeals(foodUuid);
+        };
+    }
+
+    public DataFetcher<Meal> getMeal(){
+        return dataFetchingEnvironment -> {
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            String mealType = dataFetchingEnvironment.getArgument("mealType");
+            return applicationMealRepository.getMeal(uuidUser, mealType);
         };
     }
 

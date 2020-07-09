@@ -4,16 +4,21 @@ schema {
 }
 
 type Query {
+    # Patient
     getFoodRestrictions(uuidPatient: String!, uuidUser: String!) : [Food]
     getPatientInfo(uuidPatient: String!, uuidUser: String!) : Patient
     getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
     getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
     getSingleRecord(uuidRecord: String!) : PatientRecord
 
+    # Food
     listFood(uuidUser: String!) : [FoodSimple]
+#    listFoodMeals(uuidFood: String!) : [MealType]
+    getMeal(uuidUser: String!, mealType: String!) : Meal
 }
 
 type Mutation{
+    # Patient
     createPatientRecord(uuidUser: String!, uuidPatient: String!,input: PatientRecordInput) : Boolean
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatientRecord: String!,input: PatientRecordInput): Boolean
@@ -24,6 +29,7 @@ type Mutation{
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean
     updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean
 
+    # Food
     createFood(uuidUser: String!, foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
     customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
 }
@@ -60,13 +66,13 @@ type NutritionFacts{
 }
 
 input PatientInput {
-       name:  String
-       ethnicGroup: Float
-       email: String
-       dateOfBirth: String
-       nutritionist: String
-       cpf: String
-       biologicalSex: Int
+    name:  String
+    ethnicGroup: Float
+    email: String
+    dateOfBirth: String
+    nutritionist: String
+    cpf: String
+    biologicalSex: Int
 }
 
 type PatientRecord{
@@ -102,33 +108,33 @@ type PatientRecord{
 }
 
 input PatientRecordInput{
-        corporalMass: Float
-        height: Float
-        dateModified: String
-        abdominal: Float
-        isAthlete: Boolean
-        age: Int
-        physicalActivityLevel: Float
-        observations: String
-        subscapular: Float
-        triceps: Float
-        biceps: Float
-        chest: Float
-        axillary: Float
-        supriailiac: Float
-        thigh: Float
-        calf: Float
-        waistCirc: Float
-        abdominalCirc: Float
-        hipsCirc:   Float
-        rightArmCirc: Float
-        thighCirc:  Float
-        calfCirc:   Float
-        muscularMass: Float
-        corporalDensity: Float
-        bodyFat:    Float
-        methabolicRate: Float
-        energyRequirements: Float
+    corporalMass: Float
+    height: Float
+    dateModified: String
+    abdominal: Float
+    isAthlete: Boolean
+    age: Int
+    physicalActivityLevel: Float
+    observations: String
+    subscapular: Float
+    triceps: Float
+    biceps: Float
+    chest: Float
+    axillary: Float
+    supriailiac: Float
+    thigh: Float
+    calf: Float
+    waistCirc: Float
+    abdominalCirc: Float
+    hipsCirc:   Float
+    rightArmCirc: Float
+    thighCirc:  Float
+    calfCirc:   Float
+    muscularMass: Float
+    corporalDensity: Float
+    bodyFat:    Float
+    methabolicRate: Float
+    energyRequirements: Float
 }
 
 type FoodSimple {
@@ -172,3 +178,18 @@ input NutritionFactsInput {
     lipids: Float
     fiber: Float
 }
+
+type Meal{
+    mealType: MealType
+    foodList: [FoodSimple]
+}
+
+enum MealType {
+    BREAKFAST
+    MORNING_SNACK
+    LUNCH
+    AFTERNOON_SNACK
+    PRE_WORKOUT
+    DINNER
+}
+
