@@ -84,6 +84,7 @@ public class MenuDataFetcher {
                 foods.add(applicationFoodRepository.findByUuid(uuidFood));
             }
             Menu menu = new Menu(mealType, patient, foods, quantities);
+            return true;
         };
     }
 }
