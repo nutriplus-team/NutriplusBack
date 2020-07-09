@@ -3,13 +3,13 @@
 
 <!-- vscode-markdown-toc -->
 * [REST](#REST)
-* [GraphQL](#GraphQL)
-	* [/food/graphql](#foodgraphql)
-		* [Queries:](#Queries:)
-		* [Mutations:](#Mutations:)
-	* [/patients/get](#patientsget)
-		* [Queries:](#Queries:-1)
-		* [Mutation](#Mutation)
+* [GraphQL (/graphql/get)](#GraphQL)
+	* [Food](#foodgraphql)
+		* [Queries:](#QueriesFood:)
+		* [Mutations:](#MutationsFood:)
+	* [Patients](#patientsget)
+		* [Queries:](#QueriesPatients:)
+		* [Mutations:](#MutationsPatients)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
@@ -21,13 +21,17 @@
 
 ##  1. <a name='REST'></a>REST
 
+### 
+
 ##  2. <a name='GraphQL'></a>GraphQL
 
 *Bizu*: Os campos com exclamação `!` são obrigatórios, os demais podem ser omitidos se não forem relevantes para a _query_;
 
-###  2.1. <a name='foodgraphql'></a>/food/graphql
+Todas as rotas pelo GraphQL usam a rota `/graphql/get/`
 
-####  2.1.1. <a name='Queries:'></a>Queries:
+###  2.1. <a name='foodgraphql'></a>Food
+
+####  2.1.1. <a name='QueriesFood:'></a>Queries:
 
 ##### listFood
 Rota:
@@ -56,8 +60,89 @@ query {
 }
 ```
 
+##### listFoodPaginated
+Rota:
+``` 
+query {
+    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
 
-####  2.1.2. <a name='Mutations:'></a>Mutations:
+Exemplo:
+```
+query {
+    listFoodPaginated(uuidUser: "ba179e310491460ebaa7260cf355180f", indexPage: 0, sizePage: 10) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
+
+##### searchFood
+Rota:
+``` 
+query {
+    searchFood(uuidUser: String!, partialFoodName: String!) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    searchFood(uuidUser: "ba179e310491460ebaa7260cf355180f", partialFoodName: "arr") {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
+
+##### getUnits
+Rota:
+``` 
+query {
+    getUnits(uuidFood: String!) {
+        calories,
+        proteins,
+        carbohydrates,
+        lipids,
+        fiber,
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    getUnits(uuidFood: "f6bb76e0e06f4fe5b8d41d958c942a48") {
+		calories,
+    	proteins,
+    	carbohydrates,
+    	lipids,
+    	fiber,
+    }
+}
+```
+
+
+####  2.1.2. <a name='MutationsFood:'></a>Mutations:
 
 ##### createFood
 Rota:
@@ -143,7 +228,7 @@ mutation {
 ```
 
 
-###  2.2. <a name='patientsget'></a>/patients/get
+###  2.2. <a name='patientsget'></a>Patients
 
 **Duvidas**: 
 * O que é o campo `nutritionist`? Deve conter o nome do nutricionista relacionado ao paciente.
@@ -151,7 +236,7 @@ mutation {
 * Qual o mapa numério de `biologicalSex`? Variavel do tipo inteiro, onde 0 = feminino ou 1 = masculino.
 * Qual o mapa numério de `physicalActivityLevel`? 
 
-####  2.2.1. <a name='Queries:-1'></a>Queries:
+####  2.2.1. <a name='QueriesPatients:'></a>Queries:
 
 ##### getPatientInfo
 Rota:
@@ -366,7 +451,7 @@ query {
 }
 ```
 
-####  2.2.2. <a name='Mutation'></a>Mutation
+####  2.2.2. <a name='MutationsPatients'></a>Mutation
 
 ##### createPatientRecord
 Rota:
@@ -534,12 +619,12 @@ mutation {
     createPatient(  uuidUser: String!, 
                     input: {
                         name:  String,
-                        ethnicGroup: Float,
+                        ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
                         email: String,
                         dateOfBirth: String,
-                        nutritionist: String,
+                        nutritionist: String, // Deve conter o nome do nutricionista relacionado ao paciente.
                         cpf: String,
-                        biologicalSex: Int,
+                        biologicalSex: Int, // 0 = feminino ou 1 = masculino.
                     })
 }
 ```
@@ -553,7 +638,7 @@ mutation {
                         ethnicGroup: 0,
                         email: "franciscoalves@imobideal.com",
                         dateOfBirth: "08/02/1954",
-                        nutritionist: "",
+                        nutritionist: "Ocimar",
                         cpf: "051.223.837-58",
                         biologicalSex: 0,
                     })
@@ -585,12 +670,12 @@ mutation {
                     uuidUser: String!, 
                     input: {
                         name:  String,
-                        ethnicGroup: Float,
+                        ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
                         email: String,
                         dateOfBirth: String,
-                        nutritionist: String,
+                        nutritionist: String, // Deve conter o nome do nutricionista relacionado ao paciente.
                         cpf: String,
-                        biologicalSex: Int,
+                        biologicalSex: Int, // 0 = feminino ou 1 = masculino.
                     })
 }
 ```
