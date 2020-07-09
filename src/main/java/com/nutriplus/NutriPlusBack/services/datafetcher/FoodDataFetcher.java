@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +32,42 @@ public class FoodDataFetcher {
     public DataFetcher<ArrayList<Food>> listFood(){
         return dataFetchingEnvironment -> {
             String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
-            return applicationFoodRepository.listFood(nutritionistUuid);
+            ArrayList<Food> foodList = applicationFoodRepository.listFood(nutritionistUuid);
+            Collections.sort(foodList); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
+            return foodList;
+        };
+    }
+
+    public DataFetcher<List<Food>> listFoodPaginated(){
+        return dataFetchingEnvironment -> {
+            String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
+            ArrayList<Food> foodList = applicationFoodRepository.listFood(nutritionistUuid);
+            Collections.sort(foodList); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
+            int indexPage = dataFetchingEnvironment.getArgument("indexPage");
+            int sizePage = dataFetchingEnvironment.getArgument("sizePage");
+            indexPage = indexPage * sizePage;
+            int lastPage = indexPage + sizePage;
+            if (lastPage < foodList.size()) {
+                return foodList.subList(indexPage, lastPage);
+            }
+            else {
+                if (indexPage < foodList.size()) {
+                    return foodList.subList(indexPage, foodList.size());
+                }
+                else {
+                    return null;
+                }
+            }
+        };
+    }
+
+    public DataFetcher<ArrayList<Food>> searchFood(){
+        return dataFetchingEnvironment -> {
+            String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
+            String partialFoodName = dataFetchingEnvironment.getArgument("partialFoodName");
+            ArrayList<Food> searchResult = applicationFoodRepository.searchFood(nutritionistUuid, partialFoodName);
+            Collections.sort(searchResult); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
+            return searchResult;
         };
     }
 
@@ -46,7 +82,6 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             String mealType = dataFetchingEnvironment.getArgument("mealType");
-            System.out.println("oi oi");
             return applicationMealRepository.getMeal(uuidUser, mealType);
         };
     }

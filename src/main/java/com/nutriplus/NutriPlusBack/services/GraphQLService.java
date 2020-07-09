@@ -51,6 +51,8 @@ public class GraphQLService{
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
                         .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
                         .dataFetcher("listFood",foodDataFetcher.listFood())
+                        .dataFetcher("listFoodPaginated",foodDataFetcher.listFoodPaginated())
+                        .dataFetcher("searchFood",foodDataFetcher.searchFood())
                         .dataFetcher("getUnits",foodDataFetcher.getUnits())
                         .dataFetcher("getFoodMeals",foodDataFetcher.getFoodMeals())
                         .dataFetcher("getMeal",foodDataFetcher.getMeal()))

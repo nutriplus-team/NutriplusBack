@@ -5,7 +5,7 @@ import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
-public class Food extends FoodModel {
+public class Food extends FoodModel implements Comparable<Food> {
     //Constructor
     public Food(){
         super();
@@ -137,4 +137,9 @@ public class Food extends FoodModel {
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
     public Boolean getCreated()               { return created; }
     public Boolean getCustom()                { return custom; }
+
+    @Override
+    public int compareTo(Food food) {
+        return this.foodName.compareTo(food.foodName);
+    }
 }
