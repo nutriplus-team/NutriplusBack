@@ -13,7 +13,7 @@ type Query {
 
     # Food
     listFood(uuidUser: String!) : [FoodSimple]
-#    listFoodMeals(uuidFood: String!) : [MealType]
+    getFoodMeals(uuidFood: String!) : [MealType]
     getMeal(uuidUser: String!, mealType: String!) : Meal
 }
 
@@ -43,26 +43,6 @@ type Patient {
      nutritionist: String
      cpf: String
      biologicalSex: Int
-}
-
-type Food {
-    uuid: String
-    foodName: String
-    foodGroup: String
-    measureTotalGrams: Float
-    measureType: String
-    measureAmount: Float
-    custom: Boolean
-    created: Boolean
-    nutritionFacts: NutritionFacts
-}
-
-type NutritionFacts{
-    calories: Float
-    protein : Float
-    carbohydrates: Float
-    lipids: Float
-    fiber: Float
 }
 
 input PatientInput {
@@ -145,16 +125,24 @@ type FoodSimple {
     created: Boolean
 }
 
-type FoodDetailed {
+type Food {
     uuid: String
     foodName: String
     foodGroup: String
     measureTotalGrams: Float
     measureType: String
-    measureAmountValue: Float
+    measureAmount: Float
     custom: Boolean
     created: Boolean
     nutritionFacts: NutritionFacts
+}
+
+type NutritionFacts{
+    calories: Float
+    protein : Float
+    carbohydrates: Float
+    lipids: Float
+    fiber: Float
 }
 
 input NewFoodInput {

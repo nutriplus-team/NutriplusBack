@@ -35,10 +35,10 @@ public class FoodDataFetcher {
         };
     }
 
-    public DataFetcher<ArrayList<MealType>> listFoodMeals(){
+    public DataFetcher<ArrayList<String>> getFoodMeals(){
         return dataFetchingEnvironment -> {
             String foodUuid = dataFetchingEnvironment.getArgument("uuidFood");
-            return applicationMealRepository.listFoodMeals(foodUuid);
+            return applicationMealRepository.getFoodMeals(foodUuid);
         };
     }
 
@@ -46,6 +46,7 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             String mealType = dataFetchingEnvironment.getArgument("mealType");
+            System.out.println("oi oi");
             return applicationMealRepository.getMeal(uuidUser, mealType);
         };
     }
