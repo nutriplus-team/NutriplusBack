@@ -122,7 +122,7 @@ public class PatientDataFetcher {
             }
 
             if(patient.getUuid().equals(uuidPatient)) {
-                applicationUserRepository.updatePatientFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
                 return true;
             }else return false;
         };
@@ -149,24 +149,14 @@ public class PatientDataFetcher {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
-            Patient patient = user.getPatientByUuid(uuidPatient);
-            if(patient.getUuid().equals(uuidPatient)) {
 
-                for(String key:input.keySet()){
-                    Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
-                            method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
-                    ).findAny();
-                    if(matchedMethod.isPresent())
-                    {
-                        matchedMethod.get().invoke(patient, input.get(key));
-                    }
-                }
-                user.deletePatient(patient);
-                user.setPatient(patient);
-                applicationUserRepository.save(user);
+            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+
+            if(patient.getUuid().equals(uuidPatient)) {
+                applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
                 return true;
             }else return false;
+
         };
     }
 

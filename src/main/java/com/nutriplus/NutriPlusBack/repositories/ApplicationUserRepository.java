@@ -27,8 +27,11 @@ public interface ApplicationUserRepository extends Neo4jRepository<UserCredentia
     @Query("MATCH (r:PatientRecord) where r.uuid=$uuidRecord SET r += $input ")
     void updatePatientRecordFromRepository(String uuidRecord, LinkedHashMap<String,Object> input);
 
+    @Query("MATCH (p:Patient) where p.uuid=$uuidPatient SET r += $input ")
+    void updatePatientFromRepository(String uuidPatient, LinkedHashMap<String,Object> input);
+
     @Query("MATCH (p:Patient) where p.uuid=$uuidPatient SET p.foodRestrictions = $restrictionFoods ")
-    void updatePatientFromRepository(String uuidPatient, ArrayList<String> restrictionFoods);
+    void updatePatientFoodsRestrictionsFromRepository(String uuidPatient, ArrayList<String> restrictionFoods);
 
     @Query ("MATCH (p:Patient)<-[:HAS_PATIENT]-(u:UserCredentials) WHERE u.uuid=$0 RETURN p SKIP $1 LIMIT $2")
     ArrayList<Patient> findPatients(String userCredentialsUuid, int numberPage, int sizePage);
