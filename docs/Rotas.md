@@ -4,20 +4,32 @@
 <!-- vscode-markdown-toc -->
 * [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
-	* [[POST] Registro: /user/register/](#POSTRegistro:userregister)
-	* [[POST] Login: /user/login/](#POSTLogin:userlogin)
-	* [[POST] Refresh do token: /user/token/refresh/](#POSTRefreshdotoken:usertokenrefresh)
-	* [[POST] Geração de PDF: /diet/generate-PDF/](#POSTGeraodePDF:dietgenerate-PDF)
-	* [[POST] Enviar PDF por email: /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemail:dietsend-email-PDFPatientId)
-	* [[POST] Sugestão de dieta: /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedieta:dietgeneratepatientIdmealNumber)
-	* [[POST] Substituição de refeições: /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeies:dietreplacepatientIdmealNumber)
+	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
+	* [[POST] Login /user/login/](#POSTLoginuserlogin)
+	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
 	* [Food](#Food)
-		* [Queries:](#QueriesFood:)
-		* [Mutations:](#MutationsFood:)
+		* [listFood](#listFood)
+		* [listFoodPaginated](#listFoodPaginated)
+		* [searchFood](#searchFood)
+		* [getUnits](#getUnits)
+		* [createFood](#createFood)
+		* [customizeFood](#customizeFood)
 	* [Patients](#Patients)
-		* [Queries:](#QueriesPatients:)
-		* [Mutation](#MutationPatients:)
+		* [getPatientInfo](#getPatientInfo)
+		* [getAllPatients](#getAllPatients)
+		* [getPatientRecords](#getPatientRecords)
+		* [getSingleRecord](#getSingleRecord)
+		* [createPatientRecord](#createPatientRecord)
+		* [removePatientRecord](#removePatientRecord)
+		* [updatePatientRecord](#updatePatientRecord)
+		* [createPatient](#createPatient)
+		* [removePatient](#removePatient)
+		* [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -37,7 +49,7 @@ O token do usuário tem validade de cinco dias. Caso ele vença, utilizar o toke
 
 ## <a name='REST'></a>REST
 
-### <a name='POSTRegistro:userregister'></a>[POST] Registro: /user/register/
+### <a name='POSTRegistrouserregister'></a>[POST] Registro /user/register/
 Envio de JSON com campos:
 ```
 {
@@ -77,7 +89,7 @@ Retorno:
 }
 ```
 
-### <a name='POSTLogin:userlogin'></a>[POST] Login: /user/login/
+### <a name='POSTLoginuserlogin'></a>[POST] Login /user/login/
 Envio de JSON com campos:
 
 ```
@@ -110,7 +122,7 @@ Retorno:
 }
 ```
 
-### <a name='POSTRefreshdotoken:usertokenrefresh'></a>[POST] Refresh do token: /user/token/refresh/
+### <a name='POSTRefreshdotokenusertokenrefresh'></a>[POST] Refresh do token /user/token/refresh/
 Envio de JSON com campos:
 
 ```
@@ -137,7 +149,7 @@ Retorno:
 }
 ```
 
-### <a name='POSTGeraodePDF:dietgenerate-PDF'></a>[POST] Geração de PDF: /diet/generate-PDF/
+### <a name='POSTGeraodePDFdietgenerate-PDF'></a>[POST] Geração de PDF /diet/generate-PDF/
 Envio de JSON com campos:
 
 "Refeição": `[ Lista de opções ]`
@@ -229,7 +241,7 @@ Retorno:
 ```
 
 
-### <a name='POSTEnviarPDFporemail:dietsend-email-PDFPatientId'></a>[POST] Enviar PDF por email: /diet/send-email-PDF/{PatientId}/
+### <a name='POSTEnviarPDFporemaildietsend-email-PDFPatientId'></a>[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/
 
 PatientID é o id do paciente {String}
 
@@ -238,7 +250,7 @@ Deve ser enviado um JSON com o mesmo formato da geração do cardápio (Veja o t
 Se o envio do email funcionar, será retornado HTTP 200, caso contrario HTTP 417
 
 
-### <a name='POSTSugestodedieta:dietgeneratepatientIdmealNumber'></a>[POST] Sugestão de dieta: /diet/generate/{patientId}/{mealNumber}/
+### <a name='POSTSugestodedietadietgeneratepatientIdmealNumber'></a>[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/
 Para solicitar a sugestão de um cardápio, usa-se a url acima, enviando nela o id do paciente (string) e o número da refeição (0-breakfast, 1-morningSnack, 2-Lunch, 3-AfternoonSnack, 4-preWorkout, 5-dinner).
 
 O Post deve ser feito com um JSON como o abaixo. Se algum dos valores for zero, aquele item será desconsiderado para a sugestão do cardápio
@@ -298,7 +310,7 @@ Exemplo de Resposta:
 }
 ```
 
-### <a name='POSTSubstituioderefeies:dietreplacepatientIdmealNumber'></a>[POST] Substituição de refeições: /diet/replace/{patientId}/{mealNumber}/
+### <a name='POSTSubstituioderefeiesdietreplacepatientIdmealNumber'></a>[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/
 
 A sintaxe para solicitar um url de substituições de cardápios é a mesma do que a de solicitar uma sugestao de cardapio. É necessário enviar no url o id do paciente e o número da refeição (explicado em “Sugestão de alimentos a partir de valores nutritivos).
 
@@ -370,9 +382,7 @@ Todas as rotas pelo GraphQL usam a rota `/graphql/get/`
 
 ### <a name='Food'></a>Food
 
-#### <a name='QueriesFood:'></a>Queries:
-
-##### listFood
+#### <a name='listFood'></a>listFood
 Rota:
 ``` 
 query {
@@ -399,7 +409,7 @@ query {
 }
 ```
 
-##### listFoodPaginated
+#### <a name='listFoodPaginated'></a>listFoodPaginated
 Rota:
 ``` 
 query {
@@ -426,7 +436,7 @@ query {
 }
 ```
 
-##### searchFood
+#### <a name='searchFood'></a>searchFood
 Rota:
 ``` 
 query {
@@ -453,7 +463,7 @@ query {
 }
 ```
 
-##### getUnits
+#### <a name='getUnits'></a>getUnits
 Rota:
 ``` 
 query {
@@ -480,10 +490,7 @@ query {
 }
 ```
 
-
-#### <a name='MutationsFood:'></a>Mutations:
-
-##### createFood
+#### <a name='createFood'></a>createFood
 Rota:
 ```
 mutation {
@@ -527,7 +534,7 @@ mutation {
 ```
 
 
-##### customizeFood
+#### <a name='customizeFood'></a>customizeFood
 Rota:
 ```
 customizeFood(  uuidUser: String!, 
@@ -575,9 +582,7 @@ mutation {
 * Qual o mapa numério de `biologicalSex`? Variavel do tipo inteiro, onde 0 = feminino ou 1 = masculino.
 * Qual o mapa numério de `physicalActivityLevel`? 
 
-#### <a name='QueriesPatients:'></a>Queries:
-
-##### getPatientInfo
+#### <a name='getPatientInfo'></a>getPatientInfo
 Rota:
 ```
 query {
@@ -610,7 +615,7 @@ query {
 }
 ```
 
-##### getAllPatients
+#### <a name='getAllPatients'></a>getAllPatients
 
 Rota:
 ```
@@ -644,7 +649,7 @@ query {
 }
 ```
 
-##### getPatientRecords
+#### <a name='getPatientRecords'></a>getPatientRecords
 Rota:
 ```
 query {
@@ -717,7 +722,7 @@ query {
 }
 ```
 
-##### getSingleRecord
+#### <a name='getSingleRecord'></a>getSingleRecord
 Rota:
 ```
 query {
@@ -790,9 +795,7 @@ query {
 }
 ```
 
-#### <a name='MutationPatients:'></a>Mutation
-
-##### createPatientRecord
+#### <a name='createPatientRecord'></a>createPatientRecord
 Rota:
 ```
 mutation {
@@ -865,7 +868,7 @@ mutation {
 }
 ```
 
-##### removePatientRecord
+#### <a name='removePatientRecord'></a>removePatientRecord
 Rota:
 ```
 mutation {
@@ -880,7 +883,7 @@ mutation {
 }
 ```
 
-##### updatePatientRecord
+#### <a name='updatePatientRecord'></a>updatePatientRecord
 Rota:
 ```
 mutation {
@@ -951,7 +954,7 @@ mutation {
 }
 ```
 
-##### createPatient
+#### <a name='createPatient'></a>createPatient
 Rota:
 ```
 mutation {
@@ -984,7 +987,7 @@ mutation {
 }
 ```
 
-##### removePatient
+#### <a name='removePatient'></a>removePatient
 Rota:
 ```
 mutation {
@@ -1001,7 +1004,7 @@ mutation {
 }
 ```
 
-##### updatePatient
+#### <a name='updatePatient'></a>updatePatient
 Rota:
 ```
 mutation {
