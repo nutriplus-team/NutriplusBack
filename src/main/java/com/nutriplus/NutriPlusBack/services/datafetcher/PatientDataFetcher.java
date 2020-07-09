@@ -154,10 +154,13 @@ public class PatientDataFetcher {
             if(patient.getUuid().equals(uuidPatient)) {
 
                 for(String key:input.keySet()){
-
-                    Field field = patient.getClass().getSuperclass().getDeclaredField(key);
-                    field.setAccessible(true);
-                    field.set(patient, input.get(key));
+                    Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
+                            method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
+                    ).findAny();
+                    if(matchedMethod.isPresent())
+                    {
+                        matchedMethod.get().invoke(patient, input.get(key));
+                    }
                 }
                 user.deletePatient(patient);
                 user.setPatient(patient);
