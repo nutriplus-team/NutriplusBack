@@ -4,37 +4,40 @@
 <!-- vscode-markdown-toc -->
 * [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
-    * [[POST] Registro /user/register/](#POSTRegistrouserregister)
-    * [[POST] Login /user/login/](#POSTLoginuserlogin)
-    * [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
-    * [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
-    * [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
-    * [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
-    * [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
+	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
+	* [[POST] Login /user/login/](#POSTLoginuserlogin)
+	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
-    * [Food](#Food)
-        * [listFood](#listFood)
-        * [listFoodPaginated](#listFoodPaginated)
-        * [searchFood](#searchFood)
-        * [getUnits](#getUnits)
-        * [createFood](#createFood)
-        * [customizeFood](#customizeFood)
-    * [Patients](#Patients)
-        * [getPatientInfo](#getPatientInfo)
-        * [getAllPatients](#getAllPatients)
-        * [getPatientRecords](#getPatientRecords)
-        * [getSingleRecord](#getSingleRecord)
-        * [createPatientRecord](#createPatientRecord)
-        * [removePatientRecord](#removePatientRecord)
-        * [updatePatientRecord](#updatePatientRecord)
-        * [createPatient](#createPatient)
-        * [removePatient](#removePatient)
-        * [updatePatient](#updatePatient)
+	* [Food](#Food)
+		* [listFood](#listFood)
+		* [listFoodPaginated](#listFoodPaginated)
+		* [searchFood](#searchFood)
+		* [getUnits](#getUnits)
+		* [createFood](#createFood)
+		* [customizeFood](#customizeFood)
+		* [getMeal](#getMeal)
+		* [getFoodMeals](#getFoodMeals)
+		* [startMeals](#startMeals)
+	* [Patients](#Patients)
+		* [getPatientInfo](#getPatientInfo)
+		* [getAllPatients](#getAllPatients)
+		* [getPatientRecords](#getPatientRecords)
+		* [getSingleRecord](#getSingleRecord)
+		* [createPatientRecord](#createPatientRecord)
+		* [removePatientRecord](#removePatientRecord)
+		* [updatePatientRecord](#updatePatientRecord)
+		* [createPatient](#createPatient)
+		* [removePatient](#removePatient)
+		* [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
-    numbering=false
-    autoSave=true
-    /vscode-markdown-toc-config -->
+	numbering=false
+	autoSave=true
+	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
 ## <a name='AutorizaoToken'></a>Autorização / Token
@@ -572,7 +575,7 @@ mutation {
                     })
 }
 ```
-#### getMeal
+#### <a name='getMeal'></a>getMeal
 Rota:
 ``` 
 query {
@@ -613,25 +616,25 @@ AFTERNOON_SNACK
 PRE_WORKOUT
 DINNER
 ```
-#### getFoodMeals
+#### <a name='getFoodMeals'></a>getFoodMeals
 Descrição:
 Restorna uma lista contendo as meals (refeições) de um dada food (comida).
 
 Rota:
 ``` 
 query {
-getFoodMeals(uuidFood: String!)
+    getFoodMeals(uuidFood: String!)
 }
 ```
 
 Exemplo:
 ```
 query {
-getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
 }
 ```
 
-#### startMeals
+#### <a name='startMeals'></a>startMeals
 Descrição:
 Cria as meals (refeições) que não existem. Geralmente será usada só em caso de reinicialização da DB ou um delete acidental da meal.
 
