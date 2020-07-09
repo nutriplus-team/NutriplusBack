@@ -4,37 +4,37 @@
 <!-- vscode-markdown-toc -->
 * [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
-	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
-	* [[POST] Login /user/login/](#POSTLoginuserlogin)
-	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
-	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
-	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
-	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
-	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
+    * [[POST] Registro /user/register/](#POSTRegistrouserregister)
+    * [[POST] Login /user/login/](#POSTLoginuserlogin)
+    * [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+    * [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+    * [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+    * [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+    * [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
-	* [Food](#Food)
-		* [listFood](#listFood)
-		* [listFoodPaginated](#listFoodPaginated)
-		* [searchFood](#searchFood)
-		* [getUnits](#getUnits)
-		* [createFood](#createFood)
-		* [customizeFood](#customizeFood)
-	* [Patients](#Patients)
-		* [getPatientInfo](#getPatientInfo)
-		* [getAllPatients](#getAllPatients)
-		* [getPatientRecords](#getPatientRecords)
-		* [getSingleRecord](#getSingleRecord)
-		* [createPatientRecord](#createPatientRecord)
-		* [removePatientRecord](#removePatientRecord)
-		* [updatePatientRecord](#updatePatientRecord)
-		* [createPatient](#createPatient)
-		* [removePatient](#removePatient)
-		* [updatePatient](#updatePatient)
+    * [Food](#Food)
+        * [listFood](#listFood)
+        * [listFoodPaginated](#listFoodPaginated)
+        * [searchFood](#searchFood)
+        * [getUnits](#getUnits)
+        * [createFood](#createFood)
+        * [customizeFood](#customizeFood)
+    * [Patients](#Patients)
+        * [getPatientInfo](#getPatientInfo)
+        * [getAllPatients](#getAllPatients)
+        * [getPatientRecords](#getPatientRecords)
+        * [getSingleRecord](#getSingleRecord)
+        * [createPatientRecord](#createPatientRecord)
+        * [removePatientRecord](#removePatientRecord)
+        * [updatePatientRecord](#updatePatientRecord)
+        * [createPatient](#createPatient)
+        * [removePatient](#removePatient)
+        * [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
+    numbering=false
+    autoSave=true
+    /vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
 ## <a name='AutorizaoToken'></a>Autorização / Token
@@ -481,11 +481,11 @@ Exemplo:
 ```
 query {
     getUnits(uuidFood: "f6bb76e0e06f4fe5b8d41d958c942a48") {
-		calories,
-    	proteins,
-    	carbohydrates,
-    	lipids,
-    	fiber,
+        calories,
+        proteins,
+        carbohydrates,
+        lipids,
+        fiber,
     }
 }
 ```
@@ -572,7 +572,75 @@ mutation {
                     })
 }
 ```
+#### getMeal
+Rota:
+``` 
+query {
+    getMeal(uuidUser: String!, mealType: String!) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
 
+Exemplo:
+```
+query {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: "DINNER") {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+Opções de `mealType`:
+```
+BREAKFAST
+MORNING_SNACK
+LUNCH
+AFTERNOON_SNACK
+PRE_WORKOUT
+DINNER
+```
+#### getFoodMeals
+Descrição:
+Restorna uma lista contendo as meals (refeições) de um dada food (comida).
+
+Rota:
+``` 
+query {
+getFoodMeals(uuidFood: String!)
+}
+```
+
+Exemplo:
+```
+query {
+getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+}
+```
+
+#### startMeals
+Descrição:
+Cria as meals (refeições) que não existem. Geralmente será usada só em caso de reinicialização da DB ou um delete acidental da meal.
+
+Rota:
+``` 
+mutation {
+    startMeals
+}
+```
 
 ### <a name='Patients'></a>Patients
 
