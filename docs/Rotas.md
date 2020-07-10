@@ -2,34 +2,390 @@
 # Rotas
 
 <!-- vscode-markdown-toc -->
+* [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
+	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
+	* [[POST] Login /user/login/](#POSTLoginuserlogin)
+	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
-	* [/food/graphql](#foodgraphql)
-		* [Queries:](#Queries:)
-		* [Mutations:](#Mutations:)
-	* [/patients/get](#patientsget)
-		* [Queries:](#Queries:-1)
-		* [Mutation](#Mutation)
+	* [Food](#Food)
+		* [listFood](#listFood)
+		* [listFoodPaginated](#listFoodPaginated)
+		* [searchFood](#searchFood)
+		* [getUnits](#getUnits)
+		* [createFood](#createFood)
+		* [customizeFood](#customizeFood)
+		* [getMeal](#getMeal)
+		* [getFoodMeals](#getFoodMeals)
+		* [startMeals](#startMeals)
+	* [Patients](#Patients)
+		* [getPatientInfo](#getPatientInfo)
+		* [getAllPatients](#getAllPatients)
+		* [getPatientRecords](#getPatientRecords)
+		* [getSingleRecord](#getSingleRecord)
+		* [createPatientRecord](#createPatientRecord)
+		* [removePatientRecord](#removePatientRecord)
+		* [updatePatientRecord](#updatePatientRecord)
+		* [createPatient](#createPatient)
+		* [removePatient](#removePatient)
+		* [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
-	numbering=true
+	numbering=false
 	autoSave=true
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
+## <a name='AutorizaoToken'></a>Autorização / Token
+Instruções para acessar sites (que não sejam login e registro):
+
+Utilizar o token do usuário como header dessa forma: `"Authorization: Port <TOKEN>"`
+
+Sendo `<TOKEN>` o token recebido como resposta ao utilizar a rota de login.
+
+O token do usuário tem validade de cinco dias. Caso ele vença, utilizar o token de refresh para solicitar um novo (de acordo com o endereço mais abaixo). O token de refresh tem validade de dez dias.
 
 
-##  1. <a name='REST'></a>REST
+## <a name='REST'></a>REST
 
-##  2. <a name='GraphQL'></a>GraphQL
+### <a name='POSTRegistrouserregister'></a>[POST] Registro /user/register/
+Envio de JSON com campos:
+```
+{
+    "username": "nome do usuario",
+    "password1": "senha",
+    "password2": "repetir a mesma senha",
+    "firstName": "primeiro nome",
+    "lastName": "ultimo nome",
+    "email": "emaildapessoal@email.com"
+}
+```
+
+Exemplo:
+```
+{
+    "username": "bruno",
+    "password1": "#Um4S3nh4B04",
+    "password2": "#Um4S3nh4B04",
+    "firstName": "Bruno",
+    "lastName": "Moraes Perereira",
+    "email": "bruno@email.com"
+}
+```
+
+Retorno:
+```
+{
+    "refresh": "token de refresh",
+    "token": "token do usuario",
+    "user": {
+        "username": "nome do usuario",
+        "id": "id da base de dados - eh uma string",
+        "firstName": "primeiro nome",
+        "lastName": "ultimo nome",
+        "email": "emaildapessoal@email.com"
+    }
+}
+```
+
+### <a name='POSTLoginuserlogin'></a>[POST] Login /user/login/
+Envio de JSON com campos:
+
+```
+{
+    "usernameOrEmail": "nome do usuario ou email",
+    "password": "senha"
+}
+```
+
+Exemplo:
+```
+{
+    "usernameOrEmail": "bruno",
+    "password": "#Um4S3nh4B04"
+}
+```
+
+Retorno:
+```
+{
+    "refresh": "token de refresh",
+    "token": "token do usuario",
+    "user": {
+        "username": "nome do usuario",
+        "id": "id da base de dados - eh uma ",
+        "firstName": "primeiro nome",
+        "lastName": "ultimo nome",
+        "email": "emaildapessoal@email.com"
+    }
+}
+```
+
+### <a name='POSTRefreshdotokenusertokenrefresh'></a>[POST] Refresh do token /user/token/refresh/
+Envio de JSON com campos:
+
+```
+{
+    "refresh": "token de refresh"
+}
+```
+
+Exemplo:
+```
+{
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZWZyZXNoIjp0cnVlLCJpZCI6MTgsImV4cCI6MTU5NTE3MjIyNiwidXNlcm5hbWUiOiJvY2ltYXIifQ.xt6eGUbyDccnd5J0j9fNqsffJ62cwoDd8x7yjLEFfjA"
+}
+```
+
+Retorno:
+```
+{
+    "username": "nome do usuario",
+    "id": "id da base de dados",
+    "firstName": "primeiro nome",
+    "lastName": "ultimo nome",
+    "email": "emaildapessoal@email.com"
+}
+```
+
+### <a name='POSTGeraodePDFdietgenerate-PDF'></a>[POST] Geração de PDF /diet/generate-PDF/
+Envio de JSON com campos:
+
+"Refeição": `[ Lista de opções ]`
+Cada opção contém: `[Lista de porções]`
+Cada porção contém: `{"foodId": ID da comida (String), "Porção": inteiro}`
+
+Todas as refeições precisam estar no JSON. Caso uma refeição não seja incluída no cardápio, enviar uma lista vazia, como no exemplo abaixo em "workoutSnack":
+
+Exemplo:
+```
+{
+    "breakfast": [
+        {
+            "portions": [
+                {
+                    "foodId": "ef3bcc17085b4b2dacf2d41f262f4d33",
+                    "portion": 1
+                },
+                {
+                    "foodId": "f6bb76e0e06f4fe5b8d41d958c942a48",
+                    "portion": 5
+                }
+            ]
+        },
+        {
+            "portions": [
+                {
+                    "foodId": "fa47fdb959b44675adbfbc315fdc9fef",
+                    "portion": 2
+                }
+            ]
+        }
+    ],
+    "morningSnack": [
+        {
+            "portions": [
+                {
+                    "foodId": "94c0c57b98194c8ea8b40e6392d978be",
+                    "portion": 3
+                }
+            ]
+        }
+    ],
+    "lunch": [
+        {
+            "portions": [
+                {
+                    "foodId": "cac26dfbe1bd4d05aa357832b043e200",
+                    "portion": 100
+                },
+                {
+                    "foodId": "d9fed10b964142acbce8ca10c63d556d",
+                    "portion": 200
+                }
+            ]
+        }
+    ],
+    "afternoonSnack": [
+        {
+            "portions": [
+                {
+                    "foodId": "fcb0d9b0819e4e80a16d07acb0cd2089",
+                    "portion": 4
+                }
+            ]
+        }
+    ],
+    "workoutSnack": [
+        
+    ],
+    "dinner": [
+        {
+            "portions": [
+                {
+                    "foodId": "d81e3c40c9e541d4be50a92b9a53543b",
+                    "portion": 2
+                }
+            ]
+        }
+    ]
+}
+```
+
+Retorno:
+```
+{
+    "base64File": "arquivo pdf codificado em base64"
+}
+```
+
+
+### <a name='POSTEnviarPDFporemaildietsend-email-PDFPatientId'></a>[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/
+
+PatientID é o id do paciente {String}
+
+Deve ser enviado um JSON com o mesmo formato da geração do cardápio (Veja o tópico "Gerar PDF do cardapio: (POST)").
+
+Se o envio do email funcionar, será retornado HTTP 200, caso contrario HTTP 417
+
+
+### <a name='POSTSugestodedietadietgeneratepatientIdmealNumber'></a>[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/
+Para solicitar a sugestão de um cardápio, usa-se a url acima, enviando nela o id do paciente (string) e o número da refeição (0-breakfast, 1-morningSnack, 2-Lunch, 3-AfternoonSnack, 4-preWorkout, 5-dinner).
+
+O Post deve ser feito com um JSON como o abaixo. Se algum dos valores for zero, aquele item será desconsiderado para a sugestão do cardápio
+
+Exemplo:
+```
+{
+   "calories": 270,
+   "proteins": 30,
+   "carbohydrates": 15,
+   "lipids": 10,
+   "fiber": 5
+}
+```
+
+A reposta possui uma lista de comidas e uma lista com as quantidades de cada comida. A relação se faz com a ordem: quantidade da primeira comida = primeiro item da lista de quantidades.
+
+Exemplo de Resposta:
+```
+{
+   "suggestions": [
+       {
+           "uuid": "6fc8831abf78457c9f2fea5aec1be168",
+           "foodName": "Macarrão Integral",
+           "foodGroup": "Cereais, pães e massas",
+           "measureTotalGramsValue": 0.0,
+           "measureType": "Colher de sopa",
+           "measureAmount": 4,
+           "nutritionFacts": {
+               "calories": 146.0,
+               "proteins": 12.0,
+               "carbohydrates": 1.75,
+               "lipids": 29.4,
+               "fiber": 2.3
+           }
+       },
+       {
+           "uuid": "756465cf7e8449db99f07f7c596bc7ba",
+           "foodName": "Pupunha",
+           "foodGroup": " ",
+           "measureTotalGramsValue": 0.0,
+           "measureType": "Unidade",
+           "measureAmount": 2,
+           "nutritionFacts": {
+               "calories": 20.0,
+               "proteins": 1.0,
+               "carbohydrates": 1.0,
+               "lipids": 2.0,
+               "fiber": 0.8
+           }
+       }
+   ],
+   "quantities": [
+       2.0,
+       1.0
+   ]
+}
+```
+
+### <a name='POSTSubstituioderefeiesdietreplacepatientIdmealNumber'></a>[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/
+
+A sintaxe para solicitar um url de substituições de cardápios é a mesma do que a de solicitar uma sugestao de cardapio. É necessário enviar no url o id do paciente e o número da refeição (explicado em “Sugestão de alimentos a partir de valores nutritivos).
+
+O corpo da requisição deve conter um corpo com duas listas.
+
+* List<String> foods : contém os ids dos alimentos a serem substituídos.
+* List<Double> quantities: contém as quantidades de cada alimentos.
+
+O correlacionamento das duas listas é feito por ordem.
+
+Um exemplo do envio está mostrado abaixo:
+```
+{
+   "foods": ["5b4f1bfb6cc741918c3da1522c57b50d", "3f4d28aeff994f788458b857f32d6543"],
+   "quantities": [
+       0.5,
+       1.0
+   ]
+}
+```
+
+O retorno da solicitação é uma lista de sugestões e uma lista com suas quantidades. Novamente, o correlacionamento das duas listas é por ordem. Abaixo há um exemplo de retorno.
+```
+{
+   "suggestions": [
+       {
+           "uuid": "5b4f1bfb6cc741918c3da1522c57b50d",
+           "foodName": "Feijão Carioca",
+           "foodGroup": "Leguminosas",
+           "measureTotalGramsValue": 0.0,
+           "measureType": "Colher de sopa",
+           "measureAmount": 5,
+           "nutritionFacts": {
+               "calories": 76.0,
+               "proteins": 4.8,
+               "carbohydrates": 0.5,
+               "lipids": 15.0,
+               "fiber": 8.5
+           }
+       },
+       {
+           "uuid": "7442f5a87b9f47128e9ce43af8e094ec",
+           "foodName": "Queijo Cottage",
+           "foodGroup": "Leite e derivados",
+           "measureTotalGramsValue": 0.0,
+           "measureType": "Colher de sopa",
+           "measureAmount": 3,
+           "nutritionFacts": {
+               "calories": 98.0,
+               "proteins": 11.0,
+               "carbohydrates": 4.3,
+               "lipids": 3.4,
+               "fiber": 0.0
+           }
+       }
+   ],
+   "quantities": [
+       0.5,
+       2.0
+   ]
+}
+```
+
+## <a name='GraphQL'></a>GraphQL
 
 *Bizu*: Os campos com exclamação `!` são obrigatórios, os demais podem ser omitidos se não forem relevantes para a _query_;
 
-###  2.1. <a name='foodgraphql'></a>/food/graphql
+Todas as rotas pelo GraphQL usam a rota `/graphql/get/`
 
-####  2.1.1. <a name='Queries:'></a>Queries:
+### <a name='Food'></a>Food
 
-##### listFood
+#### <a name='listFood'></a>listFood
 Rota:
 ``` 
 query {
@@ -56,10 +412,88 @@ query {
 }
 ```
 
+#### <a name='listFoodPaginated'></a>listFoodPaginated
+Rota:
+``` 
+query {
+    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
 
-####  2.1.2. <a name='Mutations:'></a>Mutations:
+Exemplo:
+```
+query {
+    listFoodPaginated(uuidUser: "ba179e310491460ebaa7260cf355180f", indexPage: 0, sizePage: 10) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
 
-##### createFood
+#### <a name='searchFood'></a>searchFood
+Rota:
+``` 
+query {
+    searchFood(uuidUser: String!, partialFoodName: String!) {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    searchFood(uuidUser: "ba179e310491460ebaa7260cf355180f", partialFoodName: "arr") {
+        uuid,
+        foodName,
+        foodGroup,
+        custom,
+        created,
+    }
+}
+```
+
+#### <a name='getUnits'></a>getUnits
+Rota:
+``` 
+query {
+    getUnits(uuidFood: String!) {
+        calories,
+        proteins,
+        carbohydrates,
+        lipids,
+        fiber,
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    getUnits(uuidFood: "f6bb76e0e06f4fe5b8d41d958c942a48") {
+        calories,
+        proteins,
+        carbohydrates,
+        lipids,
+        fiber,
+    }
+}
+```
+
+#### <a name='createFood'></a>createFood
 Rota:
 ```
 mutation {
@@ -103,7 +537,7 @@ mutation {
 ```
 
 
-##### customizeFood
+#### <a name='customizeFood'></a>customizeFood
 Rota:
 ```
 customizeFood(  uuidUser: String!, 
@@ -141,9 +575,77 @@ mutation {
                     })
 }
 ```
+#### <a name='getMeal'></a>getMeal
+Rota:
+``` 
+query {
+    getMeal(uuidUser: String!, mealType: String!) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
 
+Exemplo:
+```
+query {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: "DINNER") {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+Opções de `mealType`:
+```
+BREAKFAST
+MORNING_SNACK
+LUNCH
+AFTERNOON_SNACK
+PRE_WORKOUT
+DINNER
+```
+#### <a name='getFoodMeals'></a>getFoodMeals
+Descrição:
+Restorna uma lista contendo as meals (refeições) de um dada food (comida).
 
-###  2.2. <a name='patientsget'></a>/patients/get
+Rota:
+``` 
+query {
+    getFoodMeals(uuidFood: String!)
+}
+```
+
+Exemplo:
+```
+query {
+    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+}
+```
+
+#### <a name='startMeals'></a>startMeals
+Descrição:
+Cria as meals (refeições) que não existem. Geralmente será usada só em caso de reinicialização da DB ou um delete acidental da meal.
+
+Rota:
+``` 
+mutation {
+    startMeals
+}
+```
+
+### <a name='Patients'></a>Patients
 
 **Duvidas**: 
 * O que é o campo `nutritionist`? Deve conter o nome do nutricionista relacionado ao paciente.
@@ -151,9 +653,7 @@ mutation {
 * Qual o mapa numério de `biologicalSex`? Variavel do tipo inteiro, onde 0 = feminino ou 1 = masculino.
 * Qual o mapa numério de `physicalActivityLevel`? 
 
-####  2.2.1. <a name='Queries:-1'></a>Queries:
-
-##### getPatientInfo
+#### <a name='getPatientInfo'></a>getPatientInfo
 Rota:
 ```
 query {
@@ -186,7 +686,7 @@ query {
 }
 ```
 
-##### getAllPatients
+#### <a name='getAllPatients'></a>getAllPatients
 
 Rota:
 ```
@@ -220,7 +720,7 @@ query {
 }
 ```
 
-##### getPatientRecords
+#### <a name='getPatientRecords'></a>getPatientRecords
 Rota:
 ```
 query {
@@ -293,7 +793,7 @@ query {
 }
 ```
 
-##### getSingleRecord
+#### <a name='getSingleRecord'></a>getSingleRecord
 Rota:
 ```
 query {
@@ -366,9 +866,7 @@ query {
 }
 ```
 
-####  2.2.2. <a name='Mutation'></a>Mutation
-
-##### createPatientRecord
+#### <a name='createPatientRecord'></a>createPatientRecord
 Rota:
 ```
 mutation {
@@ -409,7 +907,7 @@ Exemplo:
 ```
 mutation {
     createPatientRecord(uuidUser: "ba179e310491460ebaa7260cf355180f", 
-                        uuidPatient: "TODO",
+                        uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                         input: {
                             corporalMass: 104.0,
                             height: 1.83,
@@ -441,22 +939,22 @@ mutation {
 }
 ```
 
-##### removePatientRecord
+#### <a name='removePatientRecord'></a>removePatientRecord
 Rota:
 ```
 mutation {
-    removePatientRecord(uuidRecord: String!)
+    removePatientRecord(uuidPatientRecord: String!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removePatientRecord(uuidRecord: "TODO")
+    removePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043")
 }
 ```
 
-##### updatePatientRecord
+#### <a name='updatePatientRecord'></a>updatePatientRecord
 Rota:
 ```
 mutation {
@@ -495,7 +993,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    updatePatientRecord(uuidPatientRecord: "TODO",
+    updatePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043",
                         input: {
                             corporalMass: 104.0,
                             height: 1.83,
@@ -527,19 +1025,19 @@ mutation {
 }
 ```
 
-##### createPatient
+#### <a name='createPatient'></a>createPatient
 Rota:
 ```
 mutation {
     createPatient(  uuidUser: String!, 
                     input: {
                         name:  String,
-                        ethnicGroup: Float,
+                        ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
                         email: String,
                         dateOfBirth: String,
-                        nutritionist: String,
+                        nutritionist: String, // Deve conter o nome do nutricionista relacionado ao paciente.
                         cpf: String,
-                        biologicalSex: Int,
+                        biologicalSex: Int, // 0 = feminino ou 1 = masculino.
                     })
 }
 ```
@@ -549,18 +1047,18 @@ Exemplo:
 mutation {
     createPatient(  uuidUser: "ba179e310491460ebaa7260cf355180f", 
                     input: {
-                        name:  "Francisco Carlos Eduardo Alves",
+                        name:  "Luís Iago José Lima",
                         ethnicGroup: 0,
-                        email: "franciscoalves@imobideal.com",
-                        dateOfBirth: "08/02/1954",
-                        nutritionist: "",
-                        cpf: "051.223.837-58",
+                        email: "luisiagojoselima@metalplasma.com.br",
+                        dateOfBirth: "21/01/1957",
+                        nutritionist: "Ocimar",
+                        cpf: "412.281.778-13",
                         biologicalSex: 0,
                     })
 }
 ```
 
-##### removePatient
+#### <a name='removePatient'></a>removePatient
 Rota:
 ```
 mutation {
@@ -572,12 +1070,12 @@ mutation {
 Exemplo:
 ```
 mutation {
-    removePatient(  uuidPatient: "TODO",
+    removePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                     uuidUser: "ba179e310491460ebaa7260cf355180f")
 }
 ```
 
-##### updatePatient
+#### <a name='updatePatient'></a>updatePatient
 Rota:
 ```
 mutation {
@@ -585,12 +1083,12 @@ mutation {
                     uuidUser: String!, 
                     input: {
                         name:  String,
-                        ethnicGroup: Float,
+                        ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
                         email: String,
                         dateOfBirth: String,
-                        nutritionist: String,
+                        nutritionist: String, // Deve conter o nome do nutricionista relacionado ao paciente.
                         cpf: String,
-                        biologicalSex: Int,
+                        biologicalSex: Int, // 0 = feminino ou 1 = masculino.
                     })
 }
 ```
@@ -598,14 +1096,14 @@ mutation {
 Exemplo:
 ```
 mutation {
-    updatePatient(  uuidPatient: "TODO", 
+    updatePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8", 
                     uuidUser: "ba179e310491460ebaa7260cf355180f", 
                     input: {
                         name:  "Francisco Carlos Eduardo Alves",
-                        ethnicGroup: 0,
+                        ethnicGroup: 1.1,
                         email: "franciscoalves@imobideal.com",
                         dateOfBirth: "08/02/1954",
-                        nutritionist: "",
+                        nutritionist: "Ocimar",
                         cpf: "051.223.837-58",
                         biologicalSex: 0,
                     })
