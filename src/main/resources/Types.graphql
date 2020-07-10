@@ -23,6 +23,7 @@ type Mutation{
 
     addMenu(uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : Boolean
     removeMenu(uuidMenu: String!) : Boolean
+    editMenu(uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
 
     createPatient(uuidUser: String!,input: PatientInput) : Boolean
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean

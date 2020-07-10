@@ -3,6 +3,7 @@ package com.nutriplus.NutriPlusBack.services.datafetcher;
 import com.nutriplus.NutriPlusBack.domain.meal.Meal;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.menu.Menu;
+import com.nutriplus.NutriPlusBack.domain.menu.Portion;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
@@ -74,6 +75,7 @@ public class MenuDataFetcher {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
             MealType mealType = MealType.values()[mealTypeInt];
+            System.out.println(MealType.values()[mealTypeInt]);
             ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
             ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
             UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
@@ -95,6 +97,35 @@ public class MenuDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
             applicationMenuRepository.deleteByUuid(uuidMenu);
+            return true;
+        };
+    }
+
+    public DataFetcher<Boolean> editMenu()
+    {
+        return dataFetchingEnvironment -> {
+            String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
+            ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
+            ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
+            // fetch menu:
+            Menu menu = applicationMenuRepository.findByUuid(uuidMenu).get();
+            // fetch foods:
+            ArrayList<Food> foods = new ArrayList<>();
+            for(String uuidFood: uuidFoods)
+            {
+                foods.add(applicationFoodRepository.findByUuid(uuidFood));
+            }
+            // remove current portions:
+            for(Portion portion: menu.getPortions())
+            {
+                menu.removePortion(portion);
+            }
+            // add new portions:
+            for (int i = 0; i < foods.size(); i++) {
+                Food food = foods.get(i);
+                Double qty = quantities.get(i);
+                menu.addPortion(food, qty);
+            }
             return true;
         };
     }
