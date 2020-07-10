@@ -88,4 +88,14 @@ public class MenuDataFetcher {
             return true;
         };
     }
+
+    public DataFetcher<Boolean> removeMenu()
+    {
+        return dataFetchingEnvironment -> {
+            String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
+            applicationMenuRepository.deleteByUuid(uuidMenu);
+            return true;
+        };
+    }
+
 }
