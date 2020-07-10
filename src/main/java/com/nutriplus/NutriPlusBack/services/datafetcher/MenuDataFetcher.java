@@ -67,7 +67,7 @@ public class MenuDataFetcher {
         };
     }
 
-    public DataFetcher<Boolean> addMenu()
+    public DataFetcher<String> addMenu()
     {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
@@ -85,7 +85,8 @@ public class MenuDataFetcher {
                 foods.add(applicationFoodRepository.findByUuid(uuidFood));
             }
             Menu menu = new Menu(mealType, patient, foods, quantities);
-            return true;
+            applicationMenuRepository.save(menu);
+            return menu.getUuid();
         };
     }
 
