@@ -23,6 +23,7 @@ public class UserCredentials extends AbstractEntity{
     private String password;
     private String firstName;
     private String lastName;
+    private Boolean isActive;
     @Relationship(type = "HAS_PATIENT", direction = Relationship.OUTGOING)
     private ArrayList<Patient> patient_list = new ArrayList<Patient>();
     @Relationship(type = "CUSTOM_FOOD", direction = Relationship.OUTGOING)
@@ -40,6 +41,17 @@ public class UserCredentials extends AbstractEntity{
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.isActive = false;
+    }
+
+    public Boolean getIsActive()
+    {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean state)
+    {
+        this.isActive = state;
     }
 
 
@@ -128,9 +140,26 @@ public class UserCredentials extends AbstractEntity{
             return "Passwords not equal";
         }
 
+        if(userData.password1.length() < 8)
+        {
+            return "Password too short.";
+        }
+
+        if(userData.password1.contains("senha") || userData.password1.contains("password") || userData.password1.contains("1234"))
+        {
+            return "Password too weak";
+        }
+
+        Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(userData.password1);
+        if(!matcher.find())
+        {
+            return "Password has no special characters.";
+        }
+
         String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         Pattern patter = Pattern.compile(emailRegex);
-        Matcher matcher = patter.matcher(userData.email);
+        matcher = patter.matcher(userData.email);
         if(!matcher.matches())
         {
             return "Invalid email";
