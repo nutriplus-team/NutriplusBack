@@ -67,7 +67,8 @@ public class GraphQLService{
                         .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
                         .dataFetcher("createFood", foodDataFetcher.createFood())
                         .dataFetcher("customizeFood", foodDataFetcher.customizeFood())
-                        .dataFetcher("startMeals", foodDataFetcher.startMeals()))
+                        .dataFetcher("startMeals", foodDataFetcher.startMeals())
+                        .dataFetcher("addFoodToMeal", foodDataFetcher.addFoodToMeal()))
                 .build();
     }
 

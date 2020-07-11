@@ -212,4 +212,20 @@ public class FoodDataFetcher {
             return true;
         };
     }
+    public DataFetcher<Boolean> addFoodToMeal(){
+        return dataFetchingEnvironment -> {
+            try {
+                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
+                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+                String mealTypeName = MealType.values()[mealTypeInt].name();
+
+                applicationMealRepository.addFood(mealTypeName, uuidFood);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+    }
 }

@@ -17,9 +17,7 @@ public interface ApplicationMealRepository extends Neo4jRepository<Meal, Long> {
     @Query ("MATCH (u:UserCredentials) " +
             "WHERE u.uuid=$0 " +
             "WITH u MATCH p=(m:Meal {mealType: $1})-[:CONTAINS_FOOD]->(f:Food) " +
-            "WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) " +
-            "AND f.created=false " +
-            "AND f.custom=false " +
+            "WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND f.created=false AND f.custom=false " +
             "RETURN p " +
             "UNION " +
             "MATCH (u:UserCredentials) " +
@@ -36,6 +34,14 @@ public interface ApplicationMealRepository extends Neo4jRepository<Meal, Long> {
 
     @Query ("MATCH (m:Meal) RETURN m")
     ArrayList<Meal> getAllMeals();
+
+    @Query ("MATCH (m:Meal {mealType: $0 }) " +
+            "WITH m " +
+            "MATCH (f:Food {uuid: $1}) " +
+            "FOREACH (i in CASE WHEN (m)-[:CONTAINS_FOOD]->(f) THEN [] ELSE [1] END | " + // Verify if (m)-[:CONTAINS_FOOD]->(f) already exists
+            "    CREATE p=(m)-[r:CONTAINS_FOOD]->(f) " +
+            ")")
+    void addFood(String mealTypeName, String uuidFood);
 
 
     @Query("MATCH (m:Meal) where m.uuid=$0 DETACH DELETE m")
