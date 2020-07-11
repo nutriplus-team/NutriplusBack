@@ -660,7 +660,20 @@ mutation {
     addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
 }
 ```
+#### <a name='removeFoodFromMeal'></a>removeFoodFromMeal
+Rota:
+```
+mutation {
+    removeFoodFromMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+}
+```
 
+Exemplo:
+```
+mutation {
+    removeFoodFromMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+}
+```
 
 ### <a name='Patients'></a>Patients
 
