@@ -534,21 +534,19 @@ AFTERNOON_SNACK: 3
 PRE_WORKOUT: 4
 DINNER: 5
 ```
-#### <a name='getFoodMeals'></a>getFoodMeals
-Descrição:
-Restorna uma lista contendo as meals (refeições) de um dada food (comida).
+#### <a name='listMealsThatAFoodBelongsTo'></a>listMealsThatAFoodBelongsTo
 
 Rota:
 ``` 
 query {
-    getFoodMeals(uuidFood: String!)
+    listMealsThatAFoodBelongsTo(uuidFood: String!)
 }
 ```
 
 Exemplo:
 ```
 query {
-    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+    listMealsThatAFoodBelongsTo(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
 }
 ```
 
