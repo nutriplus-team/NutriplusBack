@@ -12,10 +12,7 @@ import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class FoodDataFetcher {
@@ -71,10 +68,15 @@ public class FoodDataFetcher {
         };
     }
 
-    public DataFetcher<ArrayList<String>> getFoodMeals(){
+    public DataFetcher<ArrayList<Integer>> listMealsThatAFoodBelongsTo(){
         return dataFetchingEnvironment -> {
             String foodUuid = dataFetchingEnvironment.getArgument("uuidFood");
-            return applicationMealRepository.getFoodMeals(foodUuid);
+            ArrayList<String> mealTypeNames = applicationMealRepository.getMealsThatAFoodBelongsTo(foodUuid);
+            ArrayList<Integer> mealTypeInts = new ArrayList<>();
+            for (String mealTypeName: mealTypeNames )
+                mealTypeInts.add(MealType.valueOf(mealTypeName).ordinal());
+
+            return mealTypeInts;
         };
     }
 
