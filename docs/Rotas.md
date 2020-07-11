@@ -687,6 +687,26 @@ mutation {
 }
 ```
 
+### <a name='Menu'></a>Menu
+
+#### <a name='addMenu'></a>addMenu
+Rota:
+```
+mutation
+{
+    addMenu( uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Int])
+}
+```
+
+Exemplo:
+```
+mutation
+{
+    addMenu( uuidUser: "fd09ddf65777455895b15807693adb57", mealType: 3, uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
+}
+```
+
+
 ### <a name='Patients'></a>Patients
 
 **Duvidas**: 
