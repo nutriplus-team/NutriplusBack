@@ -42,6 +42,9 @@ public interface ApplicationUserRepository extends Neo4jRepository<UserCredentia
     @Query ("MATCH (r:PatientRecord) where r.uuid=$uuidRecord RETURN r")
     PatientRecord findSingleRecord(String uuidRecord);
 
+    @Query ("MATCH (p:Patient) where p.uuid=$uuidPatient RETURN p")
+    Patient findSinglePatient(String uuidPatient);
+
     UserCredentials findByUuid(String uuid);
 
     @Query("MATCH (u:UserCredentials) WHERE u.uuid=$0 DETACH DELETE u")

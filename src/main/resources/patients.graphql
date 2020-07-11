@@ -20,7 +20,7 @@ type Mutation{
 
     createPatient(uuidUser: String!,input: PatientInput) : Boolean
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean
-    updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean
+    updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 }
 
 type Patient {
@@ -71,7 +71,6 @@ type PatientRecord{
     height: Float
     abdominal: Float
     isAthlete: Boolean
-    dateModified: String
     age: Int
     physicalActivityLevel: Float
     observations: String
