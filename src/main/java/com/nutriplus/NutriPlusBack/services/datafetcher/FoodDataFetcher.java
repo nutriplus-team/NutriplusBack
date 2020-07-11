@@ -174,6 +174,21 @@ public class FoodDataFetcher {
                 return false;
         };
     }
+
+    public DataFetcher<Boolean> removeFood() {
+        return dataFetchingEnvironment -> {
+            try {
+                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
+                applicationFoodRepository.deleteFoodFromRepository(uuidFood);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+    }
+
     public DataFetcher<Boolean> startMeals(){
         return dataFetchingEnvironment -> {
 

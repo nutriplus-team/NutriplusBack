@@ -45,11 +45,13 @@ public class GraphQLService{
     private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
+                        // Patient
                         .dataFetcher("getFoodRestrictions",patientsDataFetcher.getFoodRestrictions())
                         .dataFetcher("getPatientInfo", patientsDataFetcher.getPatient())
                         .dataFetcher("getSingleRecord",patientsDataFetcher.getSingleRecord())
                         .dataFetcher("getAllPatients",patientsDataFetcher.getPatients())
                         .dataFetcher("getPatientRecords",patientsDataFetcher.getAllPatientRecords())
+                        // Food
                         .dataFetcher("listFood",foodDataFetcher.listFood())
                         .dataFetcher("listFoodPaginated",foodDataFetcher.listFoodPaginated())
                         .dataFetcher("searchFood",foodDataFetcher.searchFood())
@@ -57,16 +59,22 @@ public class GraphQLService{
                         .dataFetcher("getFoodMeals",foodDataFetcher.getFoodMeals())
                         .dataFetcher("getMeal",foodDataFetcher.getMeal()))
                 .type("Mutation",typeWiring->typeWiring
+                        // Patient
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())
                         .dataFetcher("createPatient",patientsDataFetcher.createPatient())
                         .dataFetcher("updatePatient",patientsDataFetcher.updatePatient())
+
                         .dataFetcher("createPatientRecord",patientsDataFetcher.createPatientRecord())
                         .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
                         .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
+
                         .dataFetcher("updateFoodRestrictions",patientsDataFetcher.updateFoodRestrictions())
-                        .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
+
+                        // Food
                         .dataFetcher("createFood", foodDataFetcher.createFood())
                         .dataFetcher("customizeFood", foodDataFetcher.customizeFood())
+                        .dataFetcher("removeFood", foodDataFetcher.removeFood())
+
                         .dataFetcher("startMeals", foodDataFetcher.startMeals())
                         .dataFetcher("addFoodToMeal", foodDataFetcher.addFoodToMeal())
                         .dataFetcher("removeFoodFromMeal", foodDataFetcher.removeFoodFromMeal()))
