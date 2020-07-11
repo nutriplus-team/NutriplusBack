@@ -493,6 +493,65 @@ query {
 }
 ```
 
+#### <a name='getMeal'></a>getMeal
+Rota:
+``` 
+query {
+    getMeal(uuidUser: String!, mealTypeInt: Int!) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealTypeInt: 0) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+Opções de `mealTypeInt`:
+```
+BREAKFAST: 0
+MORNING_SNACK: 1
+LUNCH: 2
+AFTERNOON_SNACK: 3
+PRE_WORKOUT: 4
+DINNER: 5
+```
+#### <a name='getFoodMeals'></a>getFoodMeals
+Descrição:
+Restorna uma lista contendo as meals (refeições) de um dada food (comida).
+
+Rota:
+``` 
+query {
+    getFoodMeals(uuidFood: String!)
+}
+```
+
+Exemplo:
+```
+query {
+    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+}
+```
+
 #### <a name='createFood'></a>createFood
 Rota:
 ```
@@ -575,64 +634,6 @@ mutation {
                     })
 }
 ```
-#### <a name='getMeal'></a>getMeal
-Rota:
-``` 
-query {
-    getMeal(uuidUser: String!, mealTypeInt: Int!) {
-        mealType, 
-        foodList{
-            uuid
-            foodName,
-            foodGroup,
-            custom,
-            created
-        }
-    }
-}
-```
-
-Exemplo:
-```
-query {
-    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealTypeInt: 0) {
-        mealType, 
-        foodList{
-            uuid
-            foodName,
-            foodGroup,
-            custom,
-            created
-        }
-    }
-}
-```
-Opções de `mealTypeInt`:
-```
-BREAKFAST: 0
-MORNING_SNACK: 1
-LUNCH: 2
-AFTERNOON_SNACK: 3
-PRE_WORKOUT: 4
-DINNER: 5
-```
-#### <a name='getFoodMeals'></a>getFoodMeals
-Descrição:
-Restorna uma lista contendo as meals (refeições) de um dada food (comida).
-
-Rota:
-``` 
-query {
-    getFoodMeals(uuidFood: String!)
-}
-```
-
-Exemplo:
-```
-query {
-    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
-}
-```
 
 #### <a name='startMeals'></a>startMeals
 Descrição:
@@ -644,6 +645,22 @@ mutation {
     startMeals
 }
 ```
+
+#### <a name='addFoodToMeal'></a>addFoodToMeal
+Rota:
+```
+mutation {
+    addFoodToMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+}
+```
+
+Exemplo:
+```
+mutation {
+    addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+}
+```
+
 
 ### <a name='Patients'></a>Patients
 
