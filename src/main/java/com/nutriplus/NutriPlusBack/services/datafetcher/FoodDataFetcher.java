@@ -81,8 +81,9 @@ public class FoodDataFetcher {
     public DataFetcher<Meal> getMeal(){
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            String mealType = dataFetchingEnvironment.getArgument("mealType");
-            return applicationMealRepository.getMeal(uuidUser, mealType);
+            Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+            String mealTypeName = MealType.values()[mealTypeInt].name();
+            return applicationMealRepository.getMeal(uuidUser, mealTypeName);
         };
     }
 

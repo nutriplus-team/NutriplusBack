@@ -27,7 +27,7 @@ public interface ApplicationMealRepository extends Neo4jRepository<Meal, Long> {
             "MATCH p=(m:Meal {mealType: $1})-[:CONTAINS_FOOD]->(f:Food) " +
             "WHERE (f:Food)<-[:CUSTOM_FOOD]-(u) " +
             "RETURN p")
-    Meal getMeal(String uuidUser, String mealType);
+    Meal getMeal(String uuidUser, String mealTypeName);
 
     @Query ("MATCH (m:Meal)-[:CONTAINS_FOOD]->(f:Food)" +
             "where f.uuid=$0" +
