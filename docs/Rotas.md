@@ -634,6 +634,20 @@ mutation {
                     })
 }
 ```
+#### <a name='removeFood'></a>removeFood
+Rota:
+```
+mutation {
+    removeFood (uuidUser: String!, uuidFood: String!)
+}
+```
+
+Exemplo:
+```
+mutation {
+    removeFood(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+}
+```
 
 #### <a name='startMeals'></a>startMeals
 Descrição:
