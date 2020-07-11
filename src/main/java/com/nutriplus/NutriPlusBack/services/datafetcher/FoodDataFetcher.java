@@ -228,4 +228,21 @@ public class FoodDataFetcher {
             }
         };
     }
+
+    public DataFetcher<Boolean> removeFoodFromMeal(){
+        return dataFetchingEnvironment -> {
+            try {
+                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
+                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+                String mealTypeName = MealType.values()[mealTypeInt].name();
+
+                applicationMealRepository.removeFood(mealTypeName, uuidFood);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+    }
 }

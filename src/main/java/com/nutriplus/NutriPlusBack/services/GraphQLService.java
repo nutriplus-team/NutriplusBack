@@ -68,7 +68,8 @@ public class GraphQLService{
                         .dataFetcher("createFood", foodDataFetcher.createFood())
                         .dataFetcher("customizeFood", foodDataFetcher.customizeFood())
                         .dataFetcher("startMeals", foodDataFetcher.startMeals())
-                        .dataFetcher("addFoodToMeal", foodDataFetcher.addFoodToMeal()))
+                        .dataFetcher("addFoodToMeal", foodDataFetcher.addFoodToMeal())
+                        .dataFetcher("removeFoodFromMeal", foodDataFetcher.removeFoodFromMeal()))
                 .build();
     }
 

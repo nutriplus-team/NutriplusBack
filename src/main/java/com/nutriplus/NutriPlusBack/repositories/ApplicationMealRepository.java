@@ -43,6 +43,8 @@ public interface ApplicationMealRepository extends Neo4jRepository<Meal, Long> {
             ")")
     void addFood(String mealTypeName, String uuidFood);
 
+    @Query ("MATCH (m:Meal {mealType: $0})-[r:CONTAINS_FOOD]->(f:Food {uuid: $1}) DELETE r")
+    void removeFood(String mealTypeName, String uuidFood);
 
     @Query("MATCH (m:Meal) where m.uuid=$0 DETACH DELETE m")
     void deleteMealByUuid(String uuid);

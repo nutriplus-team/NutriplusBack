@@ -37,6 +37,7 @@ type Mutation{
     customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
     startMeals : Boolean
     addFoodToMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
+    removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
 }
 
 type Patient {
