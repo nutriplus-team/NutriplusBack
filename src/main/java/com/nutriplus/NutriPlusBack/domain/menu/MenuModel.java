@@ -16,7 +16,7 @@ public abstract class MenuModel extends AbstractEntity {
     @GeneratedValue
     public Long id;
 
-    @Relationship(type = "MEALTYPE", direction = Relationship.UNDIRECTED)
+//    @Relationship(type = "MEALTYPE", direction = Relationship.UNDIRECTED) -> Causando o erro: Field with primary id is null for entity "MealType.name()"; nested exception is org.neo4j.ogm.exception.core.MappingException
     MealType mealType;
 
     @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)

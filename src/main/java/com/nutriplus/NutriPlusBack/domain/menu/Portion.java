@@ -3,7 +3,7 @@ package com.nutriplus.NutriPlusBack.domain.menu;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 
-@RelationshipEntity(type="PORTION")
+//@RelationshipEntity(type="PORTION") -> Causando o erro:  Relationship entity com.nutriplus.NutriPlusBack.domain.menu.Portion@6da488ed cannot have a missing start or end node
 public class Portion extends PortionModel {
     // Constructor
 
