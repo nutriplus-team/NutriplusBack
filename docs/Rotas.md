@@ -4,40 +4,40 @@
 <!-- vscode-markdown-toc -->
 * [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
-	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
-	* [[POST] Login /user/login/](#POSTLoginuserlogin)
-	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
-	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
-	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
-	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
-	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
+    * [[POST] Registro /user/register/](#POSTRegistrouserregister)
+    * [[POST] Login /user/login/](#POSTLoginuserlogin)
+    * [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+    * [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+    * [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+    * [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+    * [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
-	* [Food](#Food)
-		* [listFood](#listFood)
-		* [listFoodPaginated](#listFoodPaginated)
-		* [searchFood](#searchFood)
-		* [getUnits](#getUnits)
-		* [createFood](#createFood)
-		* [customizeFood](#customizeFood)
-		* [getMeal](#getMeal)
-		* [getFoodMeals](#getFoodMeals)
-		* [startMeals](#startMeals)
-	* [Patients](#Patients)
-		* [getPatientInfo](#getPatientInfo)
-		* [getAllPatients](#getAllPatients)
-		* [getPatientRecords](#getPatientRecords)
-		* [getSingleRecord](#getSingleRecord)
-		* [createPatientRecord](#createPatientRecord)
-		* [removePatientRecord](#removePatientRecord)
-		* [updatePatientRecord](#updatePatientRecord)
-		* [createPatient](#createPatient)
-		* [removePatient](#removePatient)
-		* [updatePatient](#updatePatient)
+    * [Food](#Food)
+        * [listFood](#listFood)
+        * [listFoodPaginated](#listFoodPaginated)
+        * [searchFood](#searchFood)
+        * [getUnits](#getUnits)
+        * [createFood](#createFood)
+        * [customizeFood](#customizeFood)
+        * [getMeal](#getMeal)
+        * [getFoodMeals](#getFoodMeals)
+        * [startMeals](#startMeals)
+    * [Patients](#Patients)
+        * [getPatientInfo](#getPatientInfo)
+        * [getAllPatients](#getAllPatients)
+        * [getPatientRecords](#getPatientRecords)
+        * [getSingleRecord](#getSingleRecord)
+        * [createPatientRecord](#createPatientRecord)
+        * [removePatientRecord](#removePatientRecord)
+        * [updatePatientRecord](#updatePatientRecord)
+        * [createPatient](#createPatient)
+        * [removePatient](#removePatient)
+        * [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
+    numbering=false
+    autoSave=true
+    /vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
 ## <a name='AutorizaoToken'></a>Autorização / Token
@@ -579,7 +579,7 @@ mutation {
 Rota:
 ``` 
 query {
-    getMeal(uuidUser: String!, mealType: String!) {
+    getMeal(uuidUser: String!, mealTypeInt: Int!) {
         mealType, 
         foodList{
             uuid
@@ -595,7 +595,7 @@ query {
 Exemplo:
 ```
 query {
-    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: "DINNER") {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealTypeInt: 0) {
         mealType, 
         foodList{
             uuid
@@ -607,14 +607,14 @@ query {
     }
 }
 ```
-Opções de `mealType`:
+Opções de `mealTypeInt`:
 ```
-BREAKFAST
-MORNING_SNACK
-LUNCH
-AFTERNOON_SNACK
-PRE_WORKOUT
-DINNER
+BREAKFAST: 0
+MORNING_SNACK: 1
+LUNCH: 2
+AFTERNOON_SNACK: 3
+PRE_WORKOUT: 4
+DINNER: 5
 ```
 #### <a name='getFoodMeals'></a>getFoodMeals
 Descrição:
