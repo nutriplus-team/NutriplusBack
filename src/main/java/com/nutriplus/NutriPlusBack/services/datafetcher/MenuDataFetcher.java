@@ -71,30 +71,37 @@ public class MenuDataFetcher {
     public DataFetcher<String> addMenu()
     {
         return dataFetchingEnvironment -> {
-            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
-            MealType mealType = MealType.values()[mealTypeInt];
-            ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
-            ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
-            Patient patient = user.getPatientByUuid(uuidPatient);
-            // fetch foods:
-            ArrayList<Food> foods = new ArrayList<>();
-            for(String uuidFood: uuidFoods)
-            {
-                foods.add(applicationFoodRepository.findByUuid(uuidFood));
-            }
+            try {
+                String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
+                MealType mealType = MealType.values()[mealTypeInt];
+                ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
+                ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
+                UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
+                Patient patient = user.getPatientByUuid(uuidPatient);
+                // fetch foods:
+                ArrayList<Food> foodList = new ArrayList<>();
+                for (String uuidFood : uuidFoods) {
+                    System.out.println(uuidFoods.get(0));
+                    Food food = applicationFoodRepository.findByUuid(uuidFood);
+                    foodList.add(food);
+                }
 
-            Menu menu = new Menu(mealType, patient, foods, quantities);
-            applicationMenuRepository.save(menu);
-            return menu.getUuid();
+                Menu menu = new Menu(mealType, patient, foodList, quantities);
+                applicationMenuRepository.save(menu);
+                return menu.getUuid();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "ERROR";
+            }
         };
     }
 
     public DataFetcher<Boolean> removeMenu()
     {
         return dataFetchingEnvironment -> {
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
             applicationMenuRepository.deleteByUuid(uuidMenu);
             return true;

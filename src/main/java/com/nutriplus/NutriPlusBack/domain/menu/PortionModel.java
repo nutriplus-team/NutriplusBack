@@ -12,8 +12,11 @@ public abstract class PortionModel extends AbstractEntity {
     @Property
     Double quantity;
 
-    @StartNode Menu menu;
-    @EndNode   Food food;
+    @StartNode
+    Menu menu;
+
+    @EndNode
+    Food food;
 
     public PortionModel()
     {

@@ -40,8 +40,8 @@ public class Menu extends MenuModel{
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
-    public void addPortion(Food portionValue, Double quantityValue) {
-        Portion portion = new Portion(this, portionValue, quantityValue);
+    public void addPortion(Food foodValue, Double quantityValue) {
+        Portion portion = new Portion(this, foodValue, quantityValue);
         portions.add(portion);
     }
 

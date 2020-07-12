@@ -22,8 +22,8 @@ type Mutation{
     updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String]): Boolean
 
     addMenu(uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
-    removeMenu(uuidMenu: String!) : Boolean
-    editMenu(uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
+    removeMenu(uuidUser: String!, uuidMenu: String!) : Boolean
+    editMenu(uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
 
     createPatient(uuidUser: String!,input: PatientInput) : Boolean
     removePatient(uuidPatient: String!, uuidUser: String!): Boolean
