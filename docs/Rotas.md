@@ -695,7 +695,7 @@ Rota:
 ```
 mutation
 {
-    addMenu( uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Int])
+    addMenu( uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
 }
 ```
 
@@ -721,6 +721,22 @@ Exemplo:
 mutation
 {
     removeMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "13f9ff7a50aa418ebffc4678d921afd0")
+}
+```
+#### <a name='editMenu'></a>editMenu
+Rota:
+```
+mutation
+{
+    editMenu( uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float])
+}
+```
+
+Exemplo:
+```
+mutation
+{
+    editMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "18542bee724c4f20a93ddc14f4a79acc", uuidFoods: ["69c009161eda40048dc6be1b93a1793e"], quantities: [2.0])
 }
 ```
 
