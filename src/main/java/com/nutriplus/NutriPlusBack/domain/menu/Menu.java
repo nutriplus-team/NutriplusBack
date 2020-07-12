@@ -46,8 +46,10 @@ public class Menu extends MenuModel{
     }
 
     // Removers
-    public void removePortion(Food food) {portions.remove(portions.stream().filter(o->o.getFood().equals(food)).findFirst().orElse(null));}
+    public void removePortion(Food food) {
+        portions.remove(portions.stream().filter(o->o.getFood().equals(food)).findFirst().orElse(null));}
     public void removePortion(Portion portion) {portions.remove(portion);}
+    public void removeAllPortion() {portions.clear();}
 
     // Getters
     public Long getId() {return id;}

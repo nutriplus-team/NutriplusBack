@@ -82,8 +82,8 @@ public class MenuDataFetcher {
                 Patient patient = user.getPatientByUuid(uuidPatient);
                 // fetch foods:
                 ArrayList<Food> foodList = new ArrayList<>();
-                for (String uuidFood : uuidFoods) {
-                    System.out.println(uuidFoods.get(0));
+                for (String uuidFood : uuidFoods)
+                {
                     Food food = applicationFoodRepository.findByUuid(uuidFood);
                     foodList.add(food);
                 }
@@ -101,39 +101,38 @@ public class MenuDataFetcher {
     public DataFetcher<Boolean> removeMenu()
     {
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
-            applicationMenuRepository.deleteByUuid(uuidMenu);
-            return true;
+            try{
+                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
+                applicationMenuRepository.deleteByUuid(uuidMenu);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         };
     }
 
     public DataFetcher<Boolean> editMenu()
     {
         return dataFetchingEnvironment -> {
-            String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
-            ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
-            ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
-            // fetch menu:
-            Menu menu = applicationMenuRepository.findByUuid(uuidMenu).get();
-            // fetch foods:
-            ArrayList<Food> foods = new ArrayList<>();
-            for(String uuidFood: uuidFoods)
-            {
-                foods.add(applicationFoodRepository.findByUuid(uuidFood));
+            try{
+                String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
+                ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
+                ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
+                // remove current portions:
+                applicationMenuRepository.removeAllPortions(uuidMenu);
+                // add new portions:
+                for (int i = 0; i < uuidFoods.size(); i++)
+                {
+                    Portion portion = new Portion();
+                    applicationMenuRepository.addPortion(portion.getUuid(), uuidMenu, uuidFoods.get(i), quantities.get(i));
+                }
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
-            // remove current portions:
-            for(Portion portion: menu.getPortions())
-            {
-                menu.removePortion(portion);
-            }
-            // add new portions:
-            for (int i = 0; i < foods.size(); i++) {
-                Food food = foods.get(i);
-                Double qty = quantities.get(i);
-                menu.addPortion(food, qty);
-            }
-            return true;
         };
     }
 
