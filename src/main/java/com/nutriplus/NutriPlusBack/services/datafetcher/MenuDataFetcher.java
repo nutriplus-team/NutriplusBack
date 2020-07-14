@@ -43,7 +43,6 @@ public class MenuDataFetcher {
             if(menu.isEmpty())
                 return null;
 
-            //System.out.println(menu.get().getMealType().getNumVal());
             if(menu.get().getPatient().getUuid().equals(uuidPatient))
                 return menu.get();
 
@@ -63,8 +62,8 @@ public class MenuDataFetcher {
     {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            int meal = dataFetchingEnvironment.getArgument("meal");
-            Optional<MealType> mealType = MealType.valueOf(meal);
+            int mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+            Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
             return mealType.map(type -> applicationMenuRepository.getMenusForMeal(uuidPatient, type.name())).orElse(null);
         };
     }

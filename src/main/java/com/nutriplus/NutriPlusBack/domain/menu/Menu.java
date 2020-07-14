@@ -36,7 +36,7 @@ public class Menu extends MenuModel{
     }
 
     // Setters
-    public void setMealType(MealType mealValue) { mealType = mealValue;}
+    public void setMealType(MealType mealTypeValue) { mealType = mealTypeValue;}
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders

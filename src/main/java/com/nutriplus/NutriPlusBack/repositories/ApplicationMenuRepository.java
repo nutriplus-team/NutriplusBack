@@ -24,13 +24,13 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
     @Query("MATCH (m:Menu) where m.uuid=$0 DETACH DELETE m")
     void deleteByUuid(String uuid);
 
-    @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:HAS_PORTION_OF]->()" +
+    @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:HAS_PORTION_OF]->() " +
             "WHERE k.uuid=$0 RETURN p")
     List<Menu> getMenuFromPatient(String patientUuid);
 
-    @Query("MATCH p=(k:Patient)-[:HAS_MENU]->()-[:PORTION|:MEALTYPE]->() where k.uuid=$0 " +
-            "and exists((k)-[:HAS_MENU]->()-[:MEALTYPE]->(:Meal {mealType: $1})) return p")
-    List<Menu> getMenusForMeal(String patientUuid, String meal);
+    @Query("MATCH p=(:Patient {uuid: $0})-[:HAS_MENU]->(:Menu {mealType: $1})-[:HAS_PORTION_OF]->() " +
+            "return p")
+    List<Menu> getMenusForMeal(String patientUuid, String mealTypeName);
 
     @Query("MATCH p=(m:Menu)-[r:HAS_PORTION_OF]->(f:Food) RETURN p")
     Menu findByUuid(String uuid);

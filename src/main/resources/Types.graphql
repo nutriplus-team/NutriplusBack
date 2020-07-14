@@ -22,7 +22,7 @@ type Query {
     #Menu
     getMenu(uuidMenu: String!, uuidPatient: String!): Menu
     getAllMenusForPatient(uuidPatient: String!): [Menu]
-    getMenusForMeal(uuidPatient: String!, meal: Int!): [Menu]
+    getMenusForMeal(uuidPatient: String!, mealTypeInt: Int!): [Menu]
 }
 
 type Mutation{
@@ -199,6 +199,11 @@ type Meal{
     mealType: MealType
     foodList: [FoodSimple]
 }
+
+#type MealType{
+#    mealTypeName: MealTypeName
+#    mealTypeInt: Int
+#}
 
 enum MealType {
     BREAKFAST
