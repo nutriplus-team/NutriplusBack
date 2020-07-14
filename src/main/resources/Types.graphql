@@ -16,13 +16,14 @@ type Query {
     listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) : [FoodSimple]
     searchFood(uuidUser: String!, partialFoodName: String!) : [FoodSimple]
     listMealsThatAFoodBelongsTo(uuidFood: String!) : [Int]
-    getMeal(uuidUser: String!, mealTypeInt: Int!) : Meal
+    getMeal(uuidUser: String!, mealType: Int!) : Meal
     getUnits(uuidFood: String!) : NutritionFacts
+    #TODO: create getMealTypeNames
 
     #Menu
     getMenu(uuidMenu: String!, uuidPatient: String!): Menu
     getAllMenusForPatient(uuidPatient: String!): [Menu]
-    getMenusForMeal(uuidPatient: String!, mealTypeInt: Int!): [Menu]
+    getMenusForMeal(uuidPatient: String!, mealType: Int!): [Menu]
 }
 
 type Mutation{
@@ -40,8 +41,8 @@ type Mutation{
     customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
     removeFood(uuidUser: String!, uuidFood: String!) : Boolean
     startMeals : Boolean
-    addFoodToMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
-    removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
+    addFoodToMeal(uuidUser: String!, uuidFood: String!, mealType: Int!) : Boolean
+    removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealType: Int!) : Boolean
 
     # Menu
     addMenu(uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
@@ -196,21 +197,6 @@ input NutritionFactsInput {
 }
 
 type Meal{
-    mealType: MealType
+    mealType: Int
     foodList: [FoodSimple]
 }
-
-#type MealType{
-#    mealTypeName: MealTypeName
-#    mealTypeInt: Int
-#}
-
-enum MealType {
-    BREAKFAST
-    MORNING_SNACK
-    LUNCH
-    AFTERNOON_SNACK
-    PRE_WORKOUT
-    DINNER
-}
-

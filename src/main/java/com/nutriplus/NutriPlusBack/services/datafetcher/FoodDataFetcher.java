@@ -83,7 +83,7 @@ public class FoodDataFetcher {
     public DataFetcher<Meal> getMeal(){
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+            Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
             Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
             if (mealType.isPresent())
             {
@@ -202,32 +202,32 @@ public class FoodDataFetcher {
 
             ArrayList<Meal> meals = applicationMealRepository.getAllMeals();
 
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.BREAKFAST)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.BREAKFAST.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.BREAKFAST);
                 applicationMealRepository.save(breakfast);
             }
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.MORNING_SNACK)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.MORNING_SNACK.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.MORNING_SNACK);
                 applicationMealRepository.save(breakfast);
             }
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.LUNCH)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.LUNCH.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.LUNCH);
                 applicationMealRepository.save(breakfast);
             }
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.AFTERNOON_SNACK)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.AFTERNOON_SNACK.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.AFTERNOON_SNACK);
                 applicationMealRepository.save(breakfast);
             }
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.PRE_WORKOUT)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.PRE_WORKOUT.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.PRE_WORKOUT);
                 applicationMealRepository.save(breakfast);
             }
-            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.DINNER)))
+            if (meals.stream().noneMatch(o -> o.getMealType().equals(MealType.DINNER.getNumVal())))
             {
                 Meal breakfast = new Meal(MealType.DINNER);
                 applicationMealRepository.save(breakfast);
@@ -240,9 +240,9 @@ public class FoodDataFetcher {
             try {
                 String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
-                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
                 Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
-                if(mealType.isEmpty())
+                if(!mealType.isPresent())
                     return false;
                 String mealTypeName = mealType.get().name();
 
@@ -260,9 +260,9 @@ public class FoodDataFetcher {
             try {
                 String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
-                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
                 Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
-                if(mealType.isEmpty())
+                if(!mealType.isPresent())
                     return false;
                 String mealTypeName = mealType.get().name();
 

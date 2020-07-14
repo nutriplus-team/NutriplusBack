@@ -1,7 +1,6 @@
 package com.nutriplus.NutriPlusBack.domain.menu;
 
 import com.nutriplus.NutriPlusBack.domain.food.Food;
-import com.nutriplus.NutriPlusBack.domain.meal.Meal;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.menu.Portion;

@@ -1,6 +1,5 @@
 package com.nutriplus.NutriPlusBack.services.datafetcher;
 
-import com.nutriplus.NutriPlusBack.domain.meal.Meal;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.menu.Menu;
 import com.nutriplus.NutriPlusBack.domain.menu.Portion;
@@ -40,7 +39,7 @@ public class MenuDataFetcher {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
             Optional<Menu> menu = applicationMenuRepository.getMenuWithPortions(uuidMenu);
-            if(menu.isEmpty())
+            if(!menu.isPresent())
                 return null;
 
             if(menu.get().getPatient().getUuid().equals(uuidPatient))
@@ -62,7 +61,7 @@ public class MenuDataFetcher {
     {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            int mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
+            int mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
             Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
             return mealType.map(type -> applicationMenuRepository.getMenusForMeal(uuidPatient, type.name())).orElse(null);
         };
@@ -75,7 +74,11 @@ public class MenuDataFetcher {
                 String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
                 String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
-                MealType mealType = MealType.values()[mealTypeInt];
+
+                if (!MealType.valueOf(mealTypeInt).isPresent()) {
+                    return "ERROR";
+                }
+                MealType mealType = MealType.valueOf(mealTypeInt).get();
                 ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
                 ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
                 UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
