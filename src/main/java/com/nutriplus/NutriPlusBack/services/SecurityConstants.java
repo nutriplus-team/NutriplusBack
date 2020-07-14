@@ -1,7 +1,7 @@
 package com.nutriplus.NutriPlusBack.services;
 
 public class SecurityConstants {
-    public static final String SECRET = System.getenv("SECRET");
+    public static final String SECRET = "Ocimar";//System.getenv("SECRET");
     public static final long EXPIRATION_TIME = 172_800_000;
     public static final long REFRESH_EXPIRATION_TIME = 864_000_000; //10 days
     public static final String TOKEN_PREFIX = "Port ";

@@ -21,6 +21,9 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
     List<Food> findFoodByFoodNameContaining(String foodName);
     List<Food> findFoodByFoodNameContainingAndCustomIsFalse(String foodName);
 
+    @Query ("MATCH (u:UserCredentials) WHERE u.uuid=$0 WITH u MATCH (f:Food) WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND f.created=false AND f.custom=false RETURN f UNION MATCH (u:UserCredentials) WHERE u.uuid=$0 MATCH (f:Food)<-[:CUSTOM_FOOD]-(u) RETURN f")
+    ArrayList<Food> listFood(String nutritionistUuid);
+
     @Query("MATCH (f:Food) WHERE f.uuid = $0" +
             "OPTIONAL MATCH (f:Food)-[]->(n:NutritionFacts)\n" +
             "DETACH DELETE n, f")
@@ -29,4 +32,6 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
     @Query("MATCH (:Meal {mealType: $1})--(f:Food) where not f.uuid in $0 RETURN f")
     ArrayList<Food> getPatientEatableFoodForMeal(ArrayList<String> uuids, MealType mealType);
 
+    @Query("MATCH (u:UserCredentials) WHERE u.uuid=$0 WITH u MATCH (f:Food) WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND toLower(f.foodName) CONTAINS toLower($1) AND f.created=false AND f.custom=false RETURN f UNION MATCH (u:UserCredentials) WHERE u.uuid=$0 MATCH (f:Food)<-[:CUSTOM_FOOD]-(u) WHERE toLower(f.foodName) CONTAINS toLower($1) RETURN f")
+    ArrayList<Food> searchFood(String uuid, String partialFoodName);
 }

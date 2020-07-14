@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/graphql")
 public class GraphQLController {
-
     @Autowired
     GraphQLService graphQLService;
 

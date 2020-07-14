@@ -1,6 +1,5 @@
 package com.nutriplus.NutriPlusBack.services.datafetcher;
 
-
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
@@ -12,10 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class PatientDataFetcher {
@@ -95,6 +92,10 @@ public class PatientDataFetcher {
 
             UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
             Patient patient = user.getPatientByUuid(uuidPatient);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date(System.currentTimeMillis());
+            patientRecord.setDateModified(formatter.format(date));
             if(user.getUuid().equals(uuidUser))
             {
                 for(String key : input.keySet()){
@@ -122,7 +123,7 @@ public class PatientDataFetcher {
             }
 
             if(patient.getUuid().equals(uuidPatient)) {
-                applicationUserRepository.updatePatientFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
                 return true;
             }else return false;
         };
@@ -136,6 +137,9 @@ public class PatientDataFetcher {
             PatientRecord patientRecord = applicationUserRepository.findSingleRecord(uuidPatientRecord);
 
             if(patientRecord.getUuid().equals(uuidPatientRecord)) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = new Date(System.currentTimeMillis());
+                patientRecord.setDateModified(formatter.format(date));
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
                 return true;
             }else return false;
@@ -147,25 +151,13 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> updatePatient(){
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
-            Patient patient = user.getPatientByUuid(uuidPatient);
-            if(patient.getUuid().equals(uuidPatient)) {
+            Patient patient = applicationUserRepository.findSinglePatient(uuidPatient);
 
-                for(String key:input.keySet()){
-                    Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
-                            method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
-                    ).findAny();
-                    if(matchedMethod.isPresent())
-                    {
-                        matchedMethod.get().invoke(patient, input.get(key));
-                    }
-                }
-                user.deletePatient(patient);
-                user.setPatient(patient);
-                applicationUserRepository.save(user);
+            if(patient.getUuid().equals(uuidPatient)) {
+                applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
                 return true;
+
             }else return false;
         };
     }

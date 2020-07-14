@@ -43,6 +43,7 @@ public class MenuDataFetcher {
             if(menu.isEmpty())
                 return null;
 
+            //System.out.println(menu.get().getMealType().getNumVal());
             if(menu.get().getPatient().getUuid().equals(uuidPatient))
                 return menu.get();
 

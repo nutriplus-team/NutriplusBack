@@ -5,7 +5,7 @@ import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
-public class Food extends FoodModel {
+public class Food extends FoodModel implements Comparable<Food> {
     //Constructor
     public Food(){
         super();
@@ -44,8 +44,8 @@ public class Food extends FoodModel {
         measureTotalGrams   = measureTotalGramsValue;
         measureType         = measureTypeValue;
         measureAmount       = measureAmountValue;
-        custom              = true;
-        created             = false;
+        custom              = false;
+        created             = true;
         nutritionFacts      = nutritionFactsValue;
         owner.addCustomFood(this);
     }
@@ -57,8 +57,8 @@ public class Food extends FoodModel {
         measureTotalGrams   = originalFoodValue.getMeasureTotalGrams();
         measureType         = originalFoodValue.getMeasureType();
         measureAmount       = originalFoodValue.getMeasureAmount();
-        custom              = false;
-        created             = true;
+        custom              = true;
+        created             = false;
         originalFood        = originalFoodValue;
         nutritionFacts      = originalFoodValue.getNutritionFacts();
         owner.addCustomFood(this);
@@ -133,6 +133,13 @@ public class Food extends FoodModel {
     public String getFoodGroup()              { return foodGroup; }
     public Double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
-    public Double getMeasureAmount()             { return measureAmount; }
+    public Double getMeasureAmount()          { return measureAmount; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
+    public Boolean getCreated()               { return created; }
+    public Boolean getCustom()                { return custom; }
+
+    @Override
+    public int compareTo(Food food) {
+        return this.foodName.compareTo(food.foodName);
+    }
 }

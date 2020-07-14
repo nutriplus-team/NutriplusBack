@@ -4,30 +4,50 @@ schema {
 }
 
 type Query {
+    # Patient
     getFoodRestrictions(uuidPatient: String!, uuidUser: String!) : [Food]
     getPatientInfo(uuidPatient: String!, uuidUser: String!) : Patient
     getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
     getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
     getSingleRecord(uuidRecord: String!) : PatientRecord
+
+    # Food
+    listFood(uuidUser: String!) : [FoodSimple]
+    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) : [FoodSimple]
+    searchFood(uuidUser: String!, partialFoodName: String!) : [FoodSimple]
+    listMealsThatAFoodBelongsTo(uuidFood: String!) : [Int]
+    getMeal(uuidUser: String!, mealTypeInt: Int!) : Meal
+    getUnits(uuidFood: String!) : NutritionFacts
+
+    #Menu
     getMenu(uuidMenu: String!, uuidPatient: String!): Menu
     getAllMenusForPatient(uuidPatient: String!): [Menu]
     getMenusForMeal(uuidPatient: String!, meal: Int!): [Menu]
 }
 
 type Mutation{
+    # Patient
     createPatientRecord(uuidUser: String!, uuidPatient: String!,input: PatientRecordInput) : Boolean
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatientRecord: String!,input: PatientRecordInput): Boolean
-
     updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String]): Boolean
+    createPatient(uuidUser: String!,input: PatientInput) : Boolean
+    removePatient(uuidPatient: String!, uuidUser: String!): Boolean
+    updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
+    # Food
+    createFood(uuidUser: String!, foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    removeFood(uuidUser: String!, uuidFood: String!) : Boolean
+    startMeals : Boolean
+    addFoodToMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
+    removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealTypeInt: Int!) : Boolean
+
+    # Menu
     addMenu(uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
     removeMenu(uuidUser: String!, uuidMenu: String!) : Boolean
     editMenu(uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
 
-    createPatient(uuidUser: String!,input: PatientInput) : Boolean
-    removePatient(uuidPatient: String!, uuidUser: String!): Boolean
-    updatePatient(uuidPatient: String!,uuidUser: String! ,input: PatientInput): Boolean
 }
 
 type Patient {
@@ -41,14 +61,15 @@ type Patient {
      biologicalSex: Int
 }
 
+
 input PatientInput {
-       name:  String
-       ethnicGroup: Float
-       email: String
-       dateOfBirth: String
-       nutritionist: String
-       cpf: String
-       biologicalSex: Int
+    name:  String
+    ethnicGroup: Float
+    email: String
+    dateOfBirth: String
+    nutritionist: String
+    cpf: String
+    biologicalSex: Int
 }
 
 type PatientRecord{
@@ -84,33 +105,32 @@ type PatientRecord{
 }
 
 input PatientRecordInput{
-        corporalMass: Float
-        height: Float
-        dateModified: String
-        abdominal: Float
-        isAthlete: Boolean
-        age: Int
-        physicalActivityLevel: Float
-        observations: String
-        subscapular: Float
-        triceps: Float
-        biceps: Float
-        chest: Float
-        axillary: Float
-        supriailiac: Float
-        thigh: Float
-        calf: Float
-        waistCirc: Float
-        abdominalCirc: Float
-        hipsCirc:   Float
-        rightArmCirc: Float
-        thighCirc:  Float
-        calfCirc:   Float
-        muscularMass: Float
-        corporalDensity: Float
-        bodyFat:    Float
-        methabolicRate: Float
-        energyRequirements: Float
+    corporalMass: Float
+    height: Float
+    abdominal: Float
+    isAthlete: Boolean
+    age: Int
+    physicalActivityLevel: Float
+    observations: String
+    subscapular: Float
+    triceps: Float
+    biceps: Float
+    chest: Float
+    axillary: Float
+    supriailiac: Float
+    thigh: Float
+    calf: Float
+    waistCirc: Float
+    abdominalCirc: Float
+    hipsCirc:   Float
+    rightArmCirc: Float
+    thighCirc:  Float
+    calfCirc:   Float
+    muscularMass: Float
+    corporalDensity: Float
+    bodyFat:    Float
+    methabolicRate: Float
+    energyRequirements: Float
 }
 
 type Menu {
@@ -123,6 +143,7 @@ type Portion {
     quantity: Float
     food: Food
 }
+
 
 type FoodSimple {
     uuid: String
@@ -187,3 +208,4 @@ enum MealType {
     PRE_WORKOUT
     DINNER
 }
+
