@@ -4,40 +4,47 @@
 <!-- vscode-markdown-toc -->
 * [Autorização / Token](#AutorizaoToken)
 * [REST](#REST)
-	* [[POST] Registro /user/register/](#POSTRegistrouserregister)
-	* [[POST] Login /user/login/](#POSTLoginuserlogin)
-	* [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
-	* [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
-	* [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
-	* [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
-	* [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
+    * [[POST] Registro /user/register/](#POSTRegistrouserregister)
+    * [[POST] Login /user/login/](#POSTLoginuserlogin)
+    * [[POST] Refresh do token /user/token/refresh/](#POSTRefreshdotokenusertokenrefresh)
+    * [[POST] Geração de PDF /diet/generate-PDF/](#POSTGeraodePDFdietgenerate-PDF)
+    * [[POST] Enviar PDF por email /diet/send-email-PDF/{PatientId}/](#POSTEnviarPDFporemaildietsend-email-PDFPatientId)
+    * [[POST] Sugestão de dieta /diet/generate/{patientId}/{mealNumber}/](#POSTSugestodedietadietgeneratepatientIdmealNumber)
+    * [[POST] Substituição de refeições /diet/replace/{patientId}/{mealNumber}/](#POSTSubstituioderefeiesdietreplacepatientIdmealNumber)
 * [GraphQL](#GraphQL)
-	* [Food](#Food)
-		* [listFood](#listFood)
-		* [listFoodPaginated](#listFoodPaginated)
-		* [searchFood](#searchFood)
-		* [getUnits](#getUnits)
-		* [createFood](#createFood)
-		* [customizeFood](#customizeFood)
-		* [getMeal](#getMeal)
-		* [getFoodMeals](#getFoodMeals)
-		* [startMeals](#startMeals)
-	* [Patients](#Patients)
-		* [getPatientInfo](#getPatientInfo)
-		* [getAllPatients](#getAllPatients)
-		* [getPatientRecords](#getPatientRecords)
-		* [getSingleRecord](#getSingleRecord)
-		* [createPatientRecord](#createPatientRecord)
-		* [removePatientRecord](#removePatientRecord)
-		* [updatePatientRecord](#updatePatientRecord)
-		* [createPatient](#createPatient)
-		* [removePatient](#removePatient)
-		* [updatePatient](#updatePatient)
+    * [Food](#Food)
+        * [listFood](#listFood)
+        * [listFoodPaginated](#listFoodPaginated)
+        * [searchFood](#searchFood)
+        * [getUnits](#getUnits)
+        * [createFood](#createFood)
+        * [customizeFood](#customizeFood)
+        * [getMeal](#getMeal)
+        * [getFoodMeals](#getFoodMeals)
+        * [startMeals](#startMeals)
+    * [Menu](#Menu)
+        * [getMenu](#getMenu)
+        * [getAllMenusForPatient](#getAllMenusForPatient)
+        * [getMenusForMeal](#getMenusForMeal)
+        * [addMenu](#addMenu)
+        * [removeMenu](#removeMenu)
+        * [editMenu](#editMenu)
+    * [Patients](#Patients)
+        * [getPatientInfo](#getPatientInfo)
+        * [getAllPatients](#getAllPatients)
+        * [getPatientRecords](#getPatientRecords)
+        * [getSingleRecord](#getSingleRecord)
+        * [createPatientRecord](#createPatientRecord)
+        * [removePatientRecord](#removePatientRecord)
+        * [updatePatientRecord](#updatePatientRecord)
+        * [createPatient](#createPatient)
+        * [removePatient](#removePatient)
+        * [updatePatient](#updatePatient)
 
 <!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
+    numbering=false
+    autoSave=true
+    /vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
 ## <a name='AutorizaoToken'></a>Autorização / Token
@@ -493,6 +500,63 @@ query {
 }
 ```
 
+#### <a name='getMeal'></a>getMeal
+Rota:
+``` 
+query {
+    getMeal(uuidUser: String!, mealTypeInt: Int!) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+
+Exemplo:
+```
+query {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealTypeInt: 0) {
+        mealType, 
+        foodList{
+            uuid
+            foodName,
+            foodGroup,
+            custom,
+            created
+        }
+    }
+}
+```
+Opções de `mealTypeInt`:
+```
+BREAKFAST: 0
+MORNING_SNACK: 1
+LUNCH: 2
+AFTERNOON_SNACK: 3
+PRE_WORKOUT: 4
+DINNER: 5
+```
+#### <a name='listMealsThatAFoodBelongsTo'></a>listMealsThatAFoodBelongsTo
+
+Rota:
+``` 
+query {
+    listMealsThatAFoodBelongsTo(uuidFood: String!)
+}
+```
+
+Exemplo:
+```
+query {
+    listMealsThatAFoodBelongsTo(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+}
+```
+
 #### <a name='createFood'></a>createFood
 Rota:
 ```
@@ -575,62 +639,18 @@ mutation {
                     })
 }
 ```
-#### <a name='getMeal'></a>getMeal
+#### <a name='removeFood'></a>removeFood
 Rota:
-``` 
-query {
-    getMeal(uuidUser: String!, mealType: String!) {
-        mealType, 
-        foodList{
-            uuid
-            foodName,
-            foodGroup,
-            custom,
-            created
-        }
-    }
+```
+mutation {
+    removeFood (uuidUser: String!, uuidFood: String!)
 }
 ```
 
 Exemplo:
 ```
-query {
-    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: "DINNER") {
-        mealType, 
-        foodList{
-            uuid
-            foodName,
-            foodGroup,
-            custom,
-            created
-        }
-    }
-}
-```
-Opções de `mealType`:
-```
-BREAKFAST
-MORNING_SNACK
-LUNCH
-AFTERNOON_SNACK
-PRE_WORKOUT
-DINNER
-```
-#### <a name='getFoodMeals'></a>getFoodMeals
-Descrição:
-Restorna uma lista contendo as meals (refeições) de um dada food (comida).
-
-Rota:
-``` 
-query {
-    getFoodMeals(uuidFood: String!)
-}
-```
-
-Exemplo:
-```
-query {
-    getFoodMeals(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+mutation {
+    removeFood(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
 }
 ```
 
@@ -644,6 +664,233 @@ mutation {
     startMeals
 }
 ```
+
+#### <a name='addFoodToMeal'></a>addFoodToMeal
+Rota:
+```
+mutation {
+    addFoodToMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+}
+```
+
+Exemplo:
+```
+mutation {
+    addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+}
+```
+#### <a name='removeFoodFromMeal'></a>removeFoodFromMeal
+Rota:
+```
+mutation {
+    removeFoodFromMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+}
+```
+
+Exemplo:
+```
+mutation {
+    removeFoodFromMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+}
+```
+
+### <a name='Menu'></a>Menu
+
+#### <a name='getMenu'></a>getMenu
+Retorna um Menu a partir de seu UUID e do UUID do paciente a quem o Menu está relacionado. Os campos no interior da função ```getMenu``` são opcionais, isto é, eles são os valores cujo retorno é desejado.
+
+Rota:
+```
+{
+   getMenu(uuidMenu: String!, uuidPatient: String!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            foodName
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+Os campos disponíveis para Food são: uuid, foodName, foodGroup, measureTotalGrams, measureType, measureAmount, custom, created, nutritionFacts.
+Os campos disponíveis para NutritionFacts são: calories, proteins, lipids, fiber.
+
+Exemplo:
+```
+{
+   getMenu(uuidMenu: "593e5457ff904ba4962e811cefe44dd8", uuidPatient: "3dbd7c50ab814f3abd4d06aab685d4e6") {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            foodName
+            foodGroup
+            nutritionFacts {
+               proteins
+               calories
+            }
+         }
+      }
+   }
+}
+```
+
+#### <a name='getAllMenusForPatient'></a>getAllMenusForPatient
+Retorna todos os menus disponíveis para um paciente. Os campos disponíveis para Food e para NutritionFacts são os mesmos citados em [getMenu](#getMenu).
+
+Rota:
+```
+{
+   getAllMenusForPatient(uuidPatient: String!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+
+```
+
+Exemplo:
+```
+{
+   getAllMenusForPatient(uuidPatient: "593e5457ff904ba4962e811cefe44dd8") {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+#### <a name='getMenusForMeal'></a>getMenusForMeal
+Retorna todos os Menus de um paciente para uma determinada refeição. Os campos disponíveis para Food e para NutritionFacts são os mesmos citados em [getMenu](#getMenu). Só lembrando que a corresnpondência entre uma refeição e seu número é 0-breakfast, 1-morningSnack, 2-Lunch, 3-AfternoonSnack, 4-preWorkout, 5-dinner.
+
+Rota:
+```
+{
+   getMenusForMeal(uuidPatient: String!, meal: Int!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+Exemplo:
+```
+{
+   getMenusForMeal(uuidPatient: "593e5457ff904ba4962e811cefe44dd8"), meal: 5) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            foodName
+            measureTotalGrams
+            nutritionFacts {
+              fiber
+              calories
+              proteins
+            }
+         }
+      }
+   }
+}
+```
+
+
+
+
+#### <a name='addMenu'></a>addMenu
+Obs.: Retorna o uuid do menu se funcionar ou "ERROR" caso contrário.
+Rota:
+```
+mutation
+{
+    addMenu( uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
+}
+```
+
+Exemplo:
+```
+mutation
+{
+    addMenu( uuidUser: "fd09ddf65777455895b15807693adb57", mealType: 3, uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
+}
+```
+
+#### <a name='removeMenu'></a>removeMenu
+Rota:
+```
+mutation
+{
+    remove( uuidUser: String!, uuidMenu: String!)
+}
+```
+
+Exemplo:
+```
+mutation
+{
+    removeMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "13f9ff7a50aa418ebffc4678d921afd0")
+}
+```
+#### <a name='editMenu'></a>editMenu
+Rota:
+```
+mutation
+{
+    editMenu( uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float])
+}
+```
+
+Exemplo:
+```
+mutation
+{
+    editMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "18542bee724c4f20a93ddc14f4a79acc", uuidFoods: ["69c009161eda40048dc6be1b93a1793e"], quantities: [2.0])
+}
+```
+
 
 ### <a name='Patients'></a>Patients
 
