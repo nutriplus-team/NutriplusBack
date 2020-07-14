@@ -23,6 +23,9 @@
         * [getFoodMeals](#getFoodMeals)
         * [startMeals](#startMeals)
     * [Menu](#Menu)
+        * [getMenu](#getMenu)
+        * [getAllMenusForPatient](#getAllMenusForPatient)
+        * [getMenusForMeal](#getMenusForMeal)
         * [addMenu](#addMenu)
         * [removeMenu](#removeMenu)
         * [editMenu](#editMenu)
@@ -692,6 +695,150 @@ mutation {
 ```
 
 ### <a name='Menu'></a>Menu
+
+#### <a name='getMenu'></a>getMenu
+Retorna um Menu a partir de seu UUID e do UUID do paciente a quem o Menu está relacionado. Os campos no interior da função ```getMenu``` são opcionais, isto é, eles são os valores cujo retorno é desejado.
+
+Rota:
+```
+{
+   getMenu(uuidMenu: String!, uuidPatient: String!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            foodName
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+Os campos disponíveis para Food são: uuid, foodName, foodGroup, measureTotalGrams, measureType, measureAmount, custom, created, nutritionFacts.
+Os campos disponíveis para NutritionFacts são: calories, proteins, lipids, fiber.
+
+Exemplo:
+```
+{
+   getMenu(uuidMenu: "593e5457ff904ba4962e811cefe44dd8", uuidPatient: "3dbd7c50ab814f3abd4d06aab685d4e6") {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            foodName
+            foodGroup
+            nutritionFacts {
+               proteins
+               calories
+            }
+         }
+      }
+   }
+}
+```
+
+#### <a name='getAllMenusForPatient'></a>getAllMenusForPatient
+Retorna todos os menus disponíveis para um paciente. Os campos disponíveis para Food e para NutritionFacts são os mesmos citados em [getMenu](#getMenu).
+
+Rota:
+```
+{
+   getAllMenusForPatient(uuidPatient: String!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+
+```
+
+Exemplo:
+```
+{
+   getAllMenusForPatient(uuidPatient: "593e5457ff904ba4962e811cefe44dd8") {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+#### <a name='getMenusForMeal'></a>getMenusForMeal
+Retorna todos os Menus de um paciente para uma determinada refeição. Os campos disponíveis para Food e para NutritionFacts são os mesmos citados em [getMenu](#getMenu). Só lembrando que a corresnpondência entre uma refeição e seu número é 0-breakfast, 1-morningSnack, 2-Lunch, 3-AfternoonSnack, 4-preWorkout, 5-dinner.
+
+Rota:
+```
+{
+   getMenusForMeal(uuidPatient: String!, meal: Int!) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            uuid
+            measureTotalGrams
+            # ISTO EH UM COMENTARIO: aqui pode-se por quaisquer campo que se deseja de Food
+            nutritionFacts {
+               # ISTO EH UM COMENTARIO: campos que se deseja de nutritionFacts
+            }
+         }
+      }
+   }
+}
+```
+
+Exemplo:
+```
+{
+   getMenusForMeal(uuidPatient: "593e5457ff904ba4962e811cefe44dd8"), meal: 5) {
+      uuid
+      mealType
+      portions {
+         quantity
+         food {
+            foodName
+            measureTotalGrams
+            nutritionFacts {
+              fiber
+              calories
+              proteins
+            }
+         }
+      }
+   }
+}
+```
+
+
+
 
 #### <a name='addMenu'></a>addMenu
 Obs.: Retorna o uuid do menu se funcionar ou "ERROR" caso contrário.
