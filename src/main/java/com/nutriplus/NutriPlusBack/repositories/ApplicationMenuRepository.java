@@ -45,7 +45,8 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
             "SET r.uuid = $0 ")
     void addPortion(String portionUuid, String menuUuid, String foodUuid, Double quantity);
 
-    @Query("MATCH p=()-[:HAS_MENU]->(m:Menu)-[:PORTION|MEALTYPE]->() where m.uuid=$0 return p")
+    @Query("MATCH p=()-[:HAS_MENU]->(m:Menu)-[:HAS_PORTION_OF]->() " +
+            "WHERE m.uuid=$0 RETURN p")
     Optional<Menu> getMenuWithPortions(String uuid);
 }
 
