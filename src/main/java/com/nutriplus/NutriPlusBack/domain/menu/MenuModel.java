@@ -19,7 +19,7 @@ public abstract class MenuModel extends AbstractEntity {
     @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)
     Patient patient;
 
-    @Relationship(type = "PORTION", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_PORTION_OF", direction = Relationship.OUTGOING)
     ArrayList<Portion> portions;
 
     public MenuModel()

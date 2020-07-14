@@ -53,7 +53,8 @@ public class Menu extends MenuModel{
 
     // Getters
     public Long getId() {return id;}
-    public MealType getMealType() {return mealType;}
+    public int getMealType() {return mealType.getNumVal();}
+    public MealType getMealTypeEnum() {return mealType;}
     public Patient getPatient() {return patient;}
     public List<Portion> getPortions() {return portions;}
 }

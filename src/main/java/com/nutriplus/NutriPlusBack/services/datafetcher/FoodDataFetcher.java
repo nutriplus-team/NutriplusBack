@@ -74,7 +74,7 @@ public class FoodDataFetcher {
             ArrayList<String> mealTypeNames = applicationMealRepository.getMealsThatAFoodBelongsTo(foodUuid);
             ArrayList<Integer> mealTypeInts = new ArrayList<>();
             for (String mealTypeName: mealTypeNames )
-                mealTypeInts.add(MealType.valueOf(mealTypeName).ordinal());
+                mealTypeInts.add(MealType.valueOf(mealTypeName).getNumVal());
 
             return mealTypeInts;
         };
@@ -84,8 +84,14 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
-            String mealTypeName = MealType.values()[mealTypeInt].name();
-            return applicationMealRepository.getMeal(uuidUser, mealTypeName);
+            Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+            if (mealType.isPresent())
+            {
+                String mealTypeName = mealType.get().name();
+                return applicationMealRepository.getMeal(uuidUser, mealTypeName);
+            }
+            return null;
+
         };
     }
 
@@ -235,7 +241,10 @@ public class FoodDataFetcher {
                 String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
-                String mealTypeName = MealType.values()[mealTypeInt].name();
+                Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                if(mealType.isEmpty())
+                    return false;
+                String mealTypeName = mealType.get().name();
 
                 applicationMealRepository.addFood(mealTypeName, uuidFood);
                 return true;
@@ -252,7 +261,10 @@ public class FoodDataFetcher {
                 String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealTypeInt");
-                String mealTypeName = MealType.values()[mealTypeInt].name();
+                Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                if(mealType.isEmpty())
+                    return false;
+                String mealTypeName = mealType.get().name();
 
                 applicationMealRepository.removeFood(mealTypeName, uuidFood);
                 return true;
