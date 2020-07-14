@@ -18,7 +18,6 @@ type Query {
     listMealsThatAFoodBelongsTo(uuidFood: String!) : [Int]
     getMeal(uuidUser: String!, mealType: Int!) : Meal
     getUnits(uuidFood: String!) : NutritionFacts
-    #TODO: create getMealTypeNames
 
     #Menu
     getMenu(uuidMenu: String!, uuidPatient: String!): Menu
