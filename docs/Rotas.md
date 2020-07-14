@@ -504,7 +504,7 @@ query {
 Rota:
 ``` 
 query {
-    getMeal(uuidUser: String!, mealTypeInt: Int!) {
+    getMeal(uuidUser: String!, mealType: Int!) {
         mealType, 
         foodList{
             uuid
@@ -520,7 +520,7 @@ query {
 Exemplo:
 ```
 query {
-    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealTypeInt: 0) {
+    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: 0) {
         mealType, 
         foodList{
             uuid
@@ -532,7 +532,7 @@ query {
     }
 }
 ```
-Opções de `mealTypeInt`:
+Opções de `mealType`:
 ```
 BREAKFAST: 0
 MORNING_SNACK: 1
@@ -669,28 +669,28 @@ mutation {
 Rota:
 ```
 mutation {
-    addFoodToMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+    addFoodToMeal (uuidUser: String!, uuidFood: String!, mealType: Int!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+    addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
 }
 ```
 #### <a name='removeFoodFromMeal'></a>removeFoodFromMeal
 Rota:
 ```
 mutation {
-    removeFoodFromMeal (uuidUser: String!, uuidFood: String!, mealTypeInt: Int!)
+    removeFoodFromMeal (uuidUser: String!, uuidFood: String!, mealType: Int!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removeFoodFromMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypeInt: 5)
+    removeFoodFromMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
 }
 ```
 
@@ -797,7 +797,7 @@ Retorna todos os Menus de um paciente para uma determinada refeição. Os campos
 Rota:
 ```
 {
-   getMenusForMeal(uuidPatient: String!, meal: Int!) {
+   getMenusForMeal(uuidPatient: String!, mealType: Int!) {
       uuid
       mealType
       portions {
@@ -818,7 +818,7 @@ Rota:
 Exemplo:
 ```
 {
-   getMenusForMeal(uuidPatient: "593e5457ff904ba4962e811cefe44dd8"), meal: 5) {
+   getMenusForMeal(uuidPatient: "593e5457ff904ba4962e811cefe44dd8"), mealType: 5) {
       uuid
       mealType
       portions {
