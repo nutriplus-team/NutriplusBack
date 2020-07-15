@@ -32,7 +32,7 @@ public interface ApplicationMenuRepository extends Neo4jRepository<Menu, Long> {
             "return p")
     List<Menu> getMenusForMeal(String patientUuid, String mealTypeName);
 
-    @Query("MATCH p=(m:Menu)-[r:HAS_PORTION_OF]->(f:Food) RETURN p")
+    @Query("MATCH p=(m:Menu {uuid: $0})-[r:HAS_PORTION_OF]->(f:Food) RETURN p")
     Menu findByUuid(String uuid);
 
     @Query("MATCH (m:Menu)-[r:HAS_PORTION_OF]->(f:Food) DELETE r")
