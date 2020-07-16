@@ -23,4 +23,7 @@ public class GraphQLController {
 
         return new ResponseEntity<>(execute, HttpStatus.OK);
     }
+
+
 }
+

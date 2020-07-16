@@ -3,6 +3,7 @@ package com.nutriplus.NutriPlusBack.services;
 import com.google.common.io.Resources;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import com.nutriplus.NutriPlusBack.services.datafetcher.FoodDataFetcher;
+import com.nutriplus.NutriPlusBack.services.datafetcher.MenuDataFetcher;
 import com.nutriplus.NutriPlusBack.services.datafetcher.PatientDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -12,10 +13,16 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.apache.commons.codec.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Service
 public class GraphQLService{
@@ -31,9 +38,13 @@ public class GraphQLService{
     @Autowired
     private FoodDataFetcher foodDataFetcher;
 
+    @Autowired
+    private MenuDataFetcher menuDataFetcher;
+
+
     @PostConstruct
     private void loadSchema() throws IOException {
-        URL url = Resources.getResource("patients.graphql");
+        URL url = Resources.getResource("Types.graphql");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         // parse schema
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
@@ -57,27 +68,34 @@ public class GraphQLService{
                         .dataFetcher("searchFood",foodDataFetcher.searchFood())
                         .dataFetcher("getUnits",foodDataFetcher.getUnits())
                         .dataFetcher("listMealsThatAFoodBelongsTo",foodDataFetcher.listMealsThatAFoodBelongsTo())
-                        .dataFetcher("getMeal",foodDataFetcher.getMeal()))
+                        .dataFetcher("getMeal",foodDataFetcher.getMeal())
+
+                        //Menu
+                        .dataFetcher("getMenu", menuDataFetcher.getMenu())
+                        .dataFetcher("getAllMenusForPatient", menuDataFetcher.getAllMenusForPatient())
+                        .dataFetcher("getMenusForMeal", menuDataFetcher.getMenusForMeal()))
                 .type("Mutation",typeWiring->typeWiring
                         // Patient
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())
                         .dataFetcher("createPatient",patientsDataFetcher.createPatient())
                         .dataFetcher("updatePatient",patientsDataFetcher.updatePatient())
-
                         .dataFetcher("createPatientRecord",patientsDataFetcher.createPatientRecord())
                         .dataFetcher("updatePatientRecord",patientsDataFetcher.updatePatientRecord())
                         .dataFetcher("removePatientRecord",patientsDataFetcher.removePatientRecord())
-
                         .dataFetcher("updateFoodRestrictions",patientsDataFetcher.updateFoodRestrictions())
 
                         // Food
                         .dataFetcher("createFood", foodDataFetcher.createFood())
                         .dataFetcher("customizeFood", foodDataFetcher.customizeFood())
                         .dataFetcher("removeFood", foodDataFetcher.removeFood())
-
                         .dataFetcher("startMeals", foodDataFetcher.startMeals())
                         .dataFetcher("addFoodToMeal", foodDataFetcher.addFoodToMeal())
-                        .dataFetcher("removeFoodFromMeal", foodDataFetcher.removeFoodFromMeal()))
+                        .dataFetcher("removeFoodFromMeal", foodDataFetcher.removeFoodFromMeal())
+
+                        //Menu
+                        .dataFetcher("addMenu",menuDataFetcher.addMenu())
+                        .dataFetcher("removeMenu",menuDataFetcher.removeMenu())
+                        .dataFetcher("editMenu",menuDataFetcher.editMenu()))
                 .build();
     }
 
