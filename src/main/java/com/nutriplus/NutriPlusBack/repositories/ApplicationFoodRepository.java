@@ -14,6 +14,8 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
     Food getFoodByFoodName(String foodName);
 
     Food getFoodById(Long id);
+
+    @Query("MATCH (f:Food {uuid: $0}) RETURN f")
     Food findByUuid(String uuid);
 
     List<Food> findFoodByFoodNameContaining(String foodName);

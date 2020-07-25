@@ -24,4 +24,9 @@ public enum MealType {
                 .filter(mealType -> mealType.value == value)
                 .findFirst();
     }
+
+    public int getNumVal()
+    {
+        return value;
+    }
 }

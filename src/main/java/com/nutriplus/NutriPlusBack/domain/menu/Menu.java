@@ -1,11 +1,13 @@
 package com.nutriplus.NutriPlusBack.domain.menu;
 
 import com.nutriplus.NutriPlusBack.domain.food.Food;
-import com.nutriplus.NutriPlusBack.domain.meal.Meal;
+import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
+import com.nutriplus.NutriPlusBack.domain.menu.Portion;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @NodeEntity
 public class Menu extends MenuModel{
@@ -13,37 +15,45 @@ public class Menu extends MenuModel{
         super();
     }
 
-    public Menu(Meal mealTypeValue, Patient patientValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
     }
 
-    public Menu(Meal mealTypeValue, Patient patientValue, Food foodValue, float quantityValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
         portions = new ArrayList<Portion>();
-        addPortion(foodValue, quantityValue);
+        for (int i = 0; i < foodValue.size(); i++) {
+            Food food = foodValue.get(i);
+            Double qty = quantityValue.get(i);
+            addPortion(food, qty);
+        }
     }
 
     // Setters
-    public void setMealType(Meal mealValue) { mealType = mealValue;}
+    public void setMealType(MealType mealTypeValue) { mealType = mealTypeValue;}
     public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
-    public void addPortion(Food portionValue, float quantityValue) {
-        Portion portion = new Portion(this, portionValue, quantityValue);
+    public void addPortion(Food foodValue, Double quantityValue) {
+        Portion portion = new Portion(this, foodValue, quantityValue);
         portions.add(portion);
     }
 
     // Removers
-    public void removePortion(Food portionValue) {portions.remove(portionValue);}
+    public void removePortion(Food food) {
+        portions.remove(portions.stream().filter(o->o.getFood().equals(food)).findFirst().orElse(null));}
+    public void removePortion(Portion portion) {portions.remove(portion);}
+    public void removeAllPortion() {portions.clear();}
 
     // Getters
     public Long getId() {return id;}
-    public Meal getMealType() {return mealType;}
+    public int getMealType() {return mealType.getNumVal();}
+    public MealType getMealTypeEnum() {return mealType;}
     public Patient getPatient() {return patient;}
-    public ArrayList<Portion> getPortions() {return portions;}
+    public List<Portion> getPortions() {return portions;}
 }

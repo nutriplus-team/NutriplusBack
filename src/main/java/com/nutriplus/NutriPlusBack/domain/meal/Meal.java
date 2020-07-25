@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack.domain.meal;
 
 import com.nutriplus.NutriPlusBack.domain.food.Food;
 import org.neo4j.ogm.annotation.NodeEntity;
+import sun.font.CompositeGlyphMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,6 @@ public class Meal extends MealModel {
 
     // Getters
     public Long getId()             { return id; }
-    public MealType getMealType()   { return mealType; }
+    public Integer getMealType()    { return mealType.getNumVal(); }
     public List<Food> getFoodList() { return foodList; }
 }
