@@ -25,7 +25,7 @@ public class Patient extends PatientModel {
         name = nameValue;
     }
     public void setDateOfBirth(String date) throws ParseException {
-        dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        dateOfBirth = String.valueOf(new SimpleDateFormat("dd/MM/yyyy").parse(date));
     }
     public void setBiologicalSex(Integer biologicalSexValue){
         biologicalSex = biologicalSexValue.shortValue();
@@ -54,7 +54,9 @@ public class Patient extends PatientModel {
     public String getName(){
         return name;
     }
-    public String getDateOfBirth(){ return new SimpleDateFormat("dd/MM/yyyy").format(dateOfBirth); }
+    public String getDateOfBirth() { //return new SimpleDateFormat("dd/MM/yyyy").format(dateOfBirth);
+            return dateOfBirth;
+    }
     public Short getBiologicalSex(){
         return biologicalSex;
     }

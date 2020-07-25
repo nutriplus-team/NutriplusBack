@@ -78,7 +78,6 @@ type PatientRecord{
     corporalMass: Float
     height: Float
     abdominal: Float
-    dateModified: String
     isAthlete: Boolean
     dateModified: String
     age: Int

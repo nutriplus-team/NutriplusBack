@@ -25,7 +25,7 @@ public class PatientRecord extends AbstractEntity {
 
     String uuidPatient;
 
-    Date dateModified;
+    String dateModified;
 
     Boolean isAthlete ;
     Integer age;
@@ -63,12 +63,13 @@ public class PatientRecord extends AbstractEntity {
     //Set Functions
     public void setUuidPatient(String uuid){uuidPatient = uuid;}
     public void setDateModified(String stringDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            dateModified = sdf.parse(stringDate);
-        }catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        //try {
+        //    dateModified = sdf.parse(stringDate);
+        //}catch (ParseException e) {
+        //    e.printStackTrace();
+        //}
+        dateModified = stringDate;
     }
     public void setIsAthlete(Boolean value){isAthlete = value;}
     public void setAge(Integer ageValue){age = ageValue;}
@@ -104,7 +105,9 @@ public class PatientRecord extends AbstractEntity {
 
     //Get Functions
     public String getUuidPatient(){return uuidPatient;}
-    public String getDateModified(){return new SimpleDateFormat("dd/MM/yyyy").format(dateModified);}
+    public String getDateModified(){//return new SimpleDateFormat("dd/MM/yyyy").format(dateModified);
+        return dateModified;
+    }
     public Boolean getIsAthlete(){return isAthlete;}
     public Integer getAge(){return age;}
     public Double getPhysicalActivityLevel(){return physicalActivityLevel;}
