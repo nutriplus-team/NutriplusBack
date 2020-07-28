@@ -25,6 +25,7 @@ public class PatientDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            Patient foundPatient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
             return applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
         };
     }

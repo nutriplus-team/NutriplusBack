@@ -18,6 +18,7 @@ public abstract class PatientModel extends AbstractEntity {
     protected String email;
     String cpf;
     String dateOfBirth;
+    protected Date dateOfBirthValue;
     short biologicalSex;   //0 equals female and 1 equals male
     Double ethnicGroup;     //0 for white/hispanic and 1.1 for afroamerican
 
