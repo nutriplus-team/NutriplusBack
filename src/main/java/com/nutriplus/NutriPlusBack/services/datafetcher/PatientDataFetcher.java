@@ -208,4 +208,38 @@ public class PatientDataFetcher {
     }
 
 
+    public DataFetcher<Boolean> removeFoodRestrictions() {
+        return dataFetchingEnvironment ->{
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            ArrayList<String> restrictedFoods = dataFetchingEnvironment.getArgument("uuidFoods");
+
+            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+
+            for(String uuidFood : restrictedFoods){
+                patient.getFoodRestrictionsUUID().remove(uuidFood);
+            }
+
+            if(patient.getUuid().equals(uuidPatient)) {
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+                return true;
+            }else return false;
+        };
+    }
+
+    public DataFetcher<Boolean> removeAllFoodRestrictions() {
+        return dataFetchingEnvironment ->{
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+
+            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+
+            patient.getFoodRestrictionsUUID().clear();
+
+            if(patient.getUuid().equals(uuidPatient)) {
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+                return true;
+            }else return false;
+        };
+    }
 }
