@@ -121,27 +121,31 @@ public class PatientDataFetcher {
                     field.setAccessible(true);
                     field.set(patientRecord, input.get(key));
                 }
-                if ((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
-                !method.equals(Constants.TINSLEY)&&input.containsKey("corporalDensity")){
+                if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
+                !method.equals(Constants.TINSLEY)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
                     patientRecord.calculateBodyFat(method);
                 }
                 if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
                     input.containsKey("chest")&&input.containsKey("axillary")&&
-                    input.containsKey("abdominal")&&input.containsKey("thigh")){
+                    input.containsKey("abdominal")&&input.containsKey("thigh")&&
+                    !input.containsKey("corporalDensity")){
 
                     patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
                 }
                 if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
                     input.containsKey("triceps")&&input.containsKey("age")&&
                     input.containsKey("calf")&&input.containsKey("calfCirc")&&
-                    input.containsKey("thigh")&&input.containsKey("thighCirc")){
+                    input.containsKey("thigh")&&input.containsKey("thighCirc")&&
+                    !input.containsKey("muscularMass")){
 
                     patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
                 }
 
                 if(input.containsKey("corporalMass")){
-                    patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
-                    patientRecord.calculateEnergyRequirements();
+                    if(!input.containsKey("methabolicRate"))
+                        patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
+                    if(!input.containsKey("energyRequirements"))
+                        patientRecord.calculateEnergyRequirements();
                 }
 
                 patient.setPatientRecord(patientRecord);
@@ -173,14 +177,40 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> updatePatientRecord(){
         return dataFetchingEnvironment -> {
             String uuidPatientRecord = dataFetchingEnvironment.getArgument("uuidPatientRecord");
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
 
             PatientRecord patientRecord = applicationUserRepository.findSingleRecord(uuidPatientRecord);
-
+            Patient patient = applicationUserRepository.findSinglePatient(uuidPatient);
             if(patientRecord.getUuid().equals(uuidPatientRecord)) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = new Date(System.currentTimeMillis());
                 patientRecord.setDateModified(formatter.format(date));
+                if(input.containsKey("method")){
+                    Constants method = null;
+                    String method_string = (String) input.get("method");
+                    switch (method_string.toLowerCase()){
+                        case "tinsley": method = Constants.TINSLEY;break;
+                        case "pollok": method = Constants.POLLOK;break;
+                        case "faulkner": method = Constants.FAULKNER;break;
+                        case "tinsley_no_fat": method = Constants.TINSLEY_NO_FAT;break;
+                        case "cunningham": method = Constants.CUNNINGHAM;break;
+                        case "mifflin": method = Constants.MIFFLIN;break;
+                    }
+
+                    if(!input.containsKey("bodyFat"))
+                        patientRecord.calculateBodyFat(method);
+                    if(!input.containsKey("corporalDensity"))
+                        patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+                    if(!input.containsKey("muscularMass"))
+                        patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
+                    if(!input.containsKey("methabolicRate"))
+                        patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
+                    if(!input.containsKey("energyRequirements"))
+                        patientRecord.calculateEnergyRequirements();
+
+                    input.remove("method");
+                }
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
                 return true;
             }else return false;
