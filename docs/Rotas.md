@@ -30,6 +30,7 @@
         * [removeMenu](#removeMenu)
         * [editMenu](#editMenu)
     * [Patients](#Patients)
+        * [getFoodRestrictions](#getFoodRestrictions)
         * [getPatientInfo](#getPatientInfo)
         * [getAllPatients](#getAllPatients)
         * [getPatientRecords](#getPatientRecords)
@@ -40,6 +41,9 @@
         * [createPatient](#createPatient)
         * [removePatient](#removePatient)
         * [updatePatient](#updatePatient)
+        * [updateFoodRestrictions](#updateFoodRestrictions)
+        * [removeFoodRestrictions](#removeFoodRestrictions)
+        * [removeAllFoodRestrictions](#removeAllFoodRestrictions)
 
 <!-- vscode-markdown-toc-config
     numbering=false
@@ -912,7 +916,7 @@ query {
         dateOfBirth,
         nutritionist,
         cpf,
-        biologicalSex,
+        biologicalSex
     }
 }
 ```
@@ -928,7 +932,7 @@ query {
         dateOfBirth,
         nutritionist,
         cpf,
-        biologicalSex,
+        biologicalSex
     }
 }
 ```
@@ -946,7 +950,7 @@ query {
         dateOfBirth,
         nutritionist,
         cpf,
-        biologicalSex,
+        biologicalSex
     }
 }
 ```
@@ -999,7 +1003,7 @@ query {
         corporalDensity,
         bodyFat,
         methabolicRate,
-        energyRequirements,
+        energyRequirements
     }
 }
 ```
@@ -1035,7 +1039,7 @@ query {
         corporalDensity,
         bodyFat,
         methabolicRate,
-        energyRequirements,
+        energyRequirements
     }
 }
 ```
@@ -1072,7 +1076,7 @@ query {
         corporalDensity,
         bodyFat,
         methabolicRate,
-        energyRequirements,
+        energyRequirements
     }
 }
 ```
@@ -1108,18 +1112,20 @@ query {
         corporalDensity,
         bodyFat,
         methabolicRate,
-        energyRequirements,
+        energyRequirements
     }
 }
 ```
 
 #### <a name='createPatientRecord'></a>createPatientRecord
 Rota:
+OBS: O input, bem como suas variáveis que o compõem, são opcionais.
 ```
 mutation {
     createPatientRecord(uuidUser: String!, 
                         uuidPatient: String!,
                         input: {
+                            method: String,
                             corporalMass: Float,
                             height: Float,
                             abdominal: Float,
@@ -1156,6 +1162,7 @@ mutation {
     createPatientRecord(uuidUser: "ba179e310491460ebaa7260cf355180f", 
                         uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                         input: {
+                            method: "faulkner"
                             corporalMass: 104.0,
                             height: 1.83,
                             abdominal: 110.0,
@@ -1163,23 +1170,10 @@ mutation {
                             age: 38,
                             physicalActivityLevel: 1.0,
                             observations: "Fumante",
-                            subscapular: 1.0,
-                            triceps: 1.0,
-                            biceps: 1.0,
-                            chest: 1.0,
-                            axillary: 1.0,
-                            supriailiac: 1.0,
-                            thigh: 1.0,
-                            calf: 1.0,
                             waistCirc: 1.0,
                             abdominalCirc: 1.0,
                             hipsCirc:   1.0,
                             rightArmCirc: 1.0,
-                            thighCirc:  1.0,
-                            calfCirc:   1.0,
-                            muscularMass: 1.0,
-                            corporalDensity: 1.0,
-                            bodyFat:    1.0,
                             methabolicRate: 1.0,
                             energyRequirements: 1.0,
                         })
@@ -1203,10 +1197,13 @@ mutation {
 
 #### <a name='updatePatientRecord'></a>updatePatientRecord
 Rota:
+OBS: O input, bem como suas variáveis que o compõem, são opcionais.
+OBS: É necessario passar o método para selecionar a forma que os cálculos serão realizados.
 ```
 mutation {
     updatePatientRecord(uuidPatientRecord: String!,
                         input: {
+                            method: String,
                             corporalMass: Float,
                             height: Float,
                             abdominal: Float,
@@ -1232,7 +1229,7 @@ mutation {
                             corporalDensity: Float,
                             bodyFat:    Float,
                             methabolicRate: Float,
-                            energyRequirements: Float,
+                            energyRequirements: Float
                         })
 }
 ```
@@ -1271,6 +1268,62 @@ mutation {
                         })
 }
 ```
+
+
+#### <a name='updateFoodRestrictions'></a>updateFoodRestrictions
+Rota:
+```
+mutation{
+   updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String])
+}
+
+```
+
+Exemplo:
+```
+mutation {
+    updateFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
+                             uuidPatient: "ad12e11adasdas12321213212asasd",
+                             uuidFoods: ["12","1","12"])
+}
+```
+
+#### <a name='removeFoodRestrictions'></a>removeFoodRestrictions
+Rota:
+```
+mutation{
+   removeFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String])
+}
+
+```
+
+Exemplo:
+```
+mutation {
+    removeFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
+                             uuidPatient: "ad12e11adasdas12321213212asasd",
+                             uuidFoods: ["12","1","12"])
+}
+```
+
+#### <a name='removeAllFoodRestrictions'></a>removeAllFoodRestrictions
+Rota:
+```
+mutation{
+   removeAllFoodRestrictions(uuidUser: String!, uuidPatient: String!)
+}
+
+```
+
+Exemplo:
+```
+mutation {
+    removeAllFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
+                             uuidPatient: "ad12e11adasdas12321213212asasd",
+                             uuidFoods: ["12","1","12"])
+}
+```
+
 
 #### <a name='createPatient'></a>createPatient
 Rota:
