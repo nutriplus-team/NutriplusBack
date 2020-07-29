@@ -2,6 +2,7 @@ package com.nutriplus.NutriPlusBack.services.datafetcher;
 
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
+import com.nutriplus.NutriPlusBack.domain.patient.Constants;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
@@ -96,13 +97,53 @@ public class PatientDataFetcher {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
             patientRecord.setDateModified(formatter.format(date));
+
+            Constants method = null;
+
             if(user.getUuid().equals(uuidUser))
             {
+                if(input.containsKey("method")){
+                    String method_string = (String) input.get("method");
+                    switch (method_string.toLowerCase()){
+                        case "tinsley": method = Constants.TINSLEY;break;
+                        case "pollok": method = Constants.POLLOK;break;
+                        case "faulkner": method = Constants.FAULKNER;break;
+                        case "tinsley_no_fat": method = Constants.TINSLEY_NO_FAT;break;
+                        case "cunningham": method = Constants.CUNNINGHAM;break;
+                        case "mifflin": method = Constants.MIFFLIN;break;
+                    }
+                    input.remove("method");
+                }else{
+                    method = Constants.TINSLEY;
+                }
                 for(String key : input.keySet()){
                     Field field = PatientRecord.class.getDeclaredField(key);
                     field.setAccessible(true);
                     field.set(patientRecord, input.get(key));
                 }
+                if ((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
+                !method.equals(Constants.TINSLEY)&&input.containsKey("corporalDensity")){
+                    patientRecord.calculateBodyFat(method);
+                }
+                if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
+                    input.containsKey("chest")&&input.containsKey("axillary")&&
+                    input.containsKey("abdominal")&&input.containsKey("thigh")){
+
+                    patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+                }
+                if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
+                    input.containsKey("triceps")&&input.containsKey("age")&&
+                    input.containsKey("calf")&&input.containsKey("calfCirc")&&
+                    input.containsKey("thigh")&&input.containsKey("thighCirc")){
+
+                    patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
+                }
+
+                if(input.containsKey("corporalMass")){
+                    patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
+                    patientRecord.calculateEnergyRequirements();
+                }
+
                 patient.setPatientRecord(patientRecord);
                 applicationUserRepository.save(user);
                 return true;

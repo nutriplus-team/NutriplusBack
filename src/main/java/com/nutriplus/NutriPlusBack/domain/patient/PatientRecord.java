@@ -159,13 +159,16 @@ public class PatientRecord extends AbstractEntity {
                 case CUNNINGHAM:
                     value = (Double)(22*getCorporalMass()*(100 - getBodyFat())/100 + 500);
                     break;
+                default:
+                    value = (Double) 24.8 * getCorporalMass() + 10;
             }
         }
-        else if (biologicalSex == 0) //female
-            value = (Double) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() - 161);
-        else                                //male
-            value = (Double) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() + 5);
-
+        else {
+            if (biologicalSex == 0) //female
+                value = (Double) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() - 161);
+            else                                //male
+                value = (Double) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() + 5);
+        }
         setMethabolicRate(value);
     }
 
