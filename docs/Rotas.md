@@ -1114,12 +1114,20 @@ query {
 ```
 
 #### <a name='createPatientRecord'></a>createPatientRecord
+
+OBS: 
+     methodBodyFat --> Selecionar entre "faulkner" ou "pollok"
+     methodMethabolicRate --> Selecionar entre "tinsley", "tinsley_no_fat","mifflin","cunningham".
+
+
 Rota:
 ```
 mutation {
     createPatientRecord(uuidUser: String!, 
                         uuidPatient: String!,
                         input: {
+                            methodBodyFat: String,
+                            methodMethabolicRate: String,
                             corporalMass: Float,
                             height: Float,
                             abdominal: Float,
@@ -1156,6 +1164,8 @@ mutation {
     createPatientRecord(uuidUser: "ba179e310491460ebaa7260cf355180f", 
                         uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                         input: {
+                            methodBodyFat: "faulkner",
+                            methodMethabolicRate: "cunningham",
                             corporalMass: 104.0,
                             height: 1.83,
                             abdominal: 110.0,
@@ -1202,11 +1212,17 @@ mutation {
 ```
 
 #### <a name='updatePatientRecord'></a>updatePatientRecord
+OBS: 
+     methodBodyFat --> Selecionar entre "faulkner" ou "pollok"
+     methodMethabolicRate --> Selecionar entre "tinsley", "tinsley_no_fat","mifflin","cunningham".
+
 Rota:
 ```
 mutation {
     updatePatientRecord(uuidPatientRecord: String!,
                         input: {
+                            methodBodyFat: String,
+                            methodMethabolicRate: String,
                             corporalMass: Float,
                             height: Float,
                             abdominal: Float,
@@ -1242,6 +1258,8 @@ Exemplo:
 mutation {
     updatePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043",
                         input: {
+                            methodBodyFat: "faulkner",
+                            methodMethabolicRate: "cunningham",
                             corporalMass: 104.0,
                             height: 1.83,
                             abdominal: 110.0,
