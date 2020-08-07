@@ -98,23 +98,23 @@ public class PatientDataFetcher {
             Date date = new Date(System.currentTimeMillis());
             patientRecord.setDateModified(formatter.format(date));
 
-            Constants method = null;
-
+            Constants methodBodyFatConstants = null;
+            Constants methodMethabolicRateConstants = null;
             if(user.getUuid().equals(uuidUser))
             {
-                if(input.containsKey("method")){
-                    String method_string = (String) input.get("method");
-                    switch (method_string.toLowerCase()){
-                        case "tinsley": method = Constants.TINSLEY;break;
-                        case "pollok": method = Constants.POLLOK;break;
-                        case "faulkner": method = Constants.FAULKNER;break;
-                        case "tinsley_no_fat": method = Constants.TINSLEY_NO_FAT;break;
-                        case "cunningham": method = Constants.CUNNINGHAM;break;
-                        case "mifflin": method = Constants.MIFFLIN;break;
-                    }
-                    input.remove("method");
+                if(input.containsKey("methodBodyFat")){
+                    String methodBodyFatString = (String) input.get("methodBodyFat");
+                    methodBodyFatConstants = patientRecord.convertMethodStringToConstants(methodBodyFatString);
+                    input.remove("methodBodyFat");
                 }else{
-                    method = Constants.TINSLEY;
+                    methodBodyFatConstants = Constants.FAULKNER;
+                }
+                if(input.containsKey("methodMethabolicRate")){
+                    String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
+                    methodMethabolicRateConstants = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
+                    input.remove("methodMethabolicRate");
+                }else{
+                    methodMethabolicRateConstants = Constants.MIFFLIN;
                 }
                 for(String key : input.keySet()){
                     Field field = PatientRecord.class.getDeclaredField(key);
@@ -122,8 +122,8 @@ public class PatientDataFetcher {
                     field.set(patientRecord, input.get(key));
                 }
                 if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
-                !method.equals(Constants.TINSLEY)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
-                    patientRecord.calculateBodyFat(method);
+                !methodBodyFatConstants.equals(Constants.FAULKNER)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
+                    patientRecord.calculateBodyFat(methodBodyFatConstants);
                 }
                 if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
                     input.containsKey("chest")&&input.containsKey("axillary")&&
@@ -143,7 +143,7 @@ public class PatientDataFetcher {
 
                 if(input.containsKey("corporalMass")){
                     if(!input.containsKey("methabolicRate"))
-                        patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
+                        patientRecord.calculateMethabolicRate(methodMethabolicRateConstants,patient.getBiologicalSex());
                     if(!input.containsKey("energyRequirements"))
                         patientRecord.calculateEnergyRequirements();
                 }
@@ -186,31 +186,31 @@ public class PatientDataFetcher {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = new Date(System.currentTimeMillis());
                 patientRecord.setDateModified(formatter.format(date));
-                if(input.containsKey("method")){
-                    Constants method = null;
-                    String method_string = (String) input.get("method");
-                    switch (method_string.toLowerCase()){
-                        case "tinsley": method = Constants.TINSLEY;break;
-                        case "pollok": method = Constants.POLLOK;break;
-                        case "faulkner": method = Constants.FAULKNER;break;
-                        case "tinsley_no_fat": method = Constants.TINSLEY_NO_FAT;break;
-                        case "cunningham": method = Constants.CUNNINGHAM;break;
-                        case "mifflin": method = Constants.MIFFLIN;break;
-                    }
+                if(input.containsKey("methodBodyFat") && !input.containsKey("bodyFat")) {
+                    Constants methodBodyFat = null;
+                    String methodBodyFatString = (String) input.get("methodBodyFat");
+                    methodBodyFat = patientRecord.convertMethodStringToConstants(methodBodyFatString);
+                    patientRecord.calculateBodyFat(methodBodyFat);
+                    input.remove("methodBodyFat");
 
-                    if(!input.containsKey("bodyFat"))
-                        patientRecord.calculateBodyFat(method);
-                    if(!input.containsKey("corporalDensity"))
-                        patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-                    if(!input.containsKey("muscularMass"))
-                        patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
-                    if(!input.containsKey("methabolicRate"))
-                        patientRecord.calculateMethabolicRate(method,patient.getBiologicalSex());
-                    if(!input.containsKey("energyRequirements"))
-                        patientRecord.calculateEnergyRequirements();
+                }if(!input.containsKey("corporalDensity"))
+                    patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+                if(!input.containsKey("muscularMass"))
+                    patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
+                if(!input.containsKey("methabolicRate") && input.containsKey("methodMethabolicRate")) {
+                    Constants methodMethabolicRate = null;
+                    String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
+                    methodMethabolicRate = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
 
-                    input.remove("method");
+                    patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
+                    input.remove("methodMethabolicRate");
+
                 }
+
+                if(!input.containsKey("energyRequirements"))
+                    patientRecord.calculateEnergyRequirements();
+
+
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
                 return true;
             }else return false;

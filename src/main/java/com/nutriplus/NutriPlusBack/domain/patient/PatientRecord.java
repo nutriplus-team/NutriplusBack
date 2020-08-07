@@ -145,11 +145,24 @@ public class PatientRecord extends AbstractEntity {
         setEnergyRequirements(getMethabolicRate()*getPhysicalActivityLevel());
     }
 
-    public void calculateMethabolicRate(Constants method, Short biologicalSex){
+    public Constants convertMethodStringToConstants(String method){
+        Constants methodConstants = null;
+        switch (method.toUpperCase()){
+            case "TINSLEY": methodConstants = Constants.TINSLEY;break;
+            case "TINSLEY_NO_FAT": methodConstants = Constants.TINSLEY_NO_FAT;break;
+            case "CUNNINGHAM": methodConstants = Constants.CUNNINGHAM;break;
+            case "FAULKNER": methodConstants = Constants.FAULKNER;break;
+            case "MIFFLIN": methodConstants = Constants.MIFFLIN;break;
+            case "POLLOK": methodConstants = Constants.POLLOK;break;
+        }
+        return methodConstants;
+    }
+
+    public void calculateMethabolicRate(Constants methodMethabolicRate, Short biologicalSex){
         //the default is "" string when patient is no athlete.
         double value = 0;
         if(getIsAthlete()){
-            switch (method){
+            switch (methodMethabolicRate){
                 case TINSLEY:
                     value = (Double) 24.8 * getCorporalMass() + 10;
                     break;
@@ -196,10 +209,10 @@ public class PatientRecord extends AbstractEntity {
         setCorporalDensity(corporal_density);
     }
 
-    public void calculateBodyFat(Constants method){
+    public void calculateBodyFat(Constants methodBodyFat){
 
         Double body_fat;
-        if(method == Constants.FAULKNER)
+        if(methodBodyFat == Constants.FAULKNER)
             body_fat = (Double) ((getSubscapular()+getTriceps()+getAbdominal()+getSupriailiac())*0.153+5.18);
         else
             body_fat = (Double) ((4.95/(getCorporalDensity()) - 4.5)*100);
