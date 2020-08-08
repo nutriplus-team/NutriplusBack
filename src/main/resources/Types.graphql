@@ -107,7 +107,8 @@ type PatientRecord{
 }
 
 input PatientRecordInput{
-    method: String
+    methodBodyFat: String
+    methodMethabolicRate: String
     corporalMass: Float
     height: Float
     abdominal: Float
