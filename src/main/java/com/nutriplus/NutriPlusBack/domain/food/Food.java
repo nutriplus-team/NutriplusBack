@@ -134,9 +134,9 @@ public class Food extends FoodModel implements Comparable<Food> {
     public Double getMeasureTotalGrams()      { return measureTotalGrams; }
     public String getMeasureType()            { return measureType; }
     public Double getMeasureAmount()          { return measureAmount; }
-    public NutritionFacts getNutritionFacts() { return nutritionFacts; }
     public Boolean getCreated()               { return created; }
     public Boolean getCustom()                { return custom; }
+    public NutritionFacts getNutritionFacts() { return nutritionFacts; }
 
     @Override
     public int compareTo(Food food) {

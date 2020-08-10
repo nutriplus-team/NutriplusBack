@@ -406,6 +406,16 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
@@ -419,6 +429,13 @@ query {
         foodGroup,
         custom,
         created,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
@@ -433,6 +450,16 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
@@ -446,6 +473,13 @@ query {
         foodGroup,
         custom,
         created,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
@@ -460,6 +494,16 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
@@ -473,6 +517,13 @@ query {
         foodGroup,
         custom,
         created,
+        nutritionFacts {
+          calories,
+          proteins,
+          carbohydrates,
+          lipids,
+          fiber
+        }
     }
 }
 ```
