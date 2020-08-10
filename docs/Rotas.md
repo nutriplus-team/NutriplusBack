@@ -705,7 +705,7 @@ Retorna um Menu a partir de seu UUID e do UUID do paciente a quem o Menu está r
 
 Rota:
 ```
-{
+query {
    getMenu(uuidMenu: String!, uuidPatient: String!) {
       uuid
       mealType
@@ -729,7 +729,7 @@ Os campos disponíveis para NutritionFacts são: calories, proteins, lipids, fib
 
 Exemplo:
 ```
-{
+query {
    getMenu(uuidMenu: "593e5457ff904ba4962e811cefe44dd8", uuidPatient: "3dbd7c50ab814f3abd4d06aab685d4e6") {
       uuid
       mealType
@@ -754,7 +754,7 @@ Retorna todos os menus disponíveis para um paciente. Os campos disponíveis par
 
 Rota:
 ```
-{
+query {
    getAllMenusForPatient(uuidPatient: String!) {
       uuid
       mealType
@@ -776,7 +776,7 @@ Rota:
 
 Exemplo:
 ```
-{
+query {
    getAllMenusForPatient(uuidPatient: "593e5457ff904ba4962e811cefe44dd8") {
       uuid
       mealType
@@ -800,7 +800,7 @@ Retorna todos os Menus de um paciente para uma determinada refeição. Os campos
 
 Rota:
 ```
-{
+query {
    getMenusForMeal(uuidPatient: String!, mealType: Int!) {
       uuid
       mealType
@@ -821,7 +821,7 @@ Rota:
 
 Exemplo:
 ```
-{
+query {
    getMenusForMeal(uuidPatient: "593e5457ff904ba4962e811cefe44dd8"), mealType: 5) {
       uuid
       mealType
@@ -850,7 +850,7 @@ Rota:
 ```
 mutation
 {
-    addMenu( uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
+    addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
 }
 ```
 
@@ -858,7 +858,7 @@ Exemplo:
 ```
 mutation
 {
-    addMenu( uuidUser: "fd09ddf65777455895b15807693adb57", mealType: 3, uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
+    addMenu(mealType: 3, uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
 }
 ```
 
@@ -867,7 +867,7 @@ Rota:
 ```
 mutation
 {
-    remove( uuidUser: String!, uuidMenu: String!)
+    remove(uuidMenu: String!)
 }
 ```
 
@@ -875,7 +875,7 @@ Exemplo:
 ```
 mutation
 {
-    removeMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "13f9ff7a50aa418ebffc4678d921afd0")
+    removeMenu(uuidMenu: "13f9ff7a50aa418ebffc4678d921afd0")
 }
 ```
 #### <a name='editMenu'></a>editMenu
@@ -883,7 +883,7 @@ Rota:
 ```
 mutation
 {
-    editMenu( uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float])
+    editMenu(uuidMenu: String!, uuidFoods: [String], quantities: [Float])
 }
 ```
 
@@ -891,7 +891,7 @@ Exemplo:
 ```
 mutation
 {
-    editMenu( uuidUser: "fd09ddf65777455895b15807693adb57", uuidMenu: "18542bee724c4f20a93ddc14f4a79acc", uuidFoods: ["69c009161eda40048dc6be1b93a1793e"], quantities: [2.0])
+    editMenu(uuidMenu: "18542bee724c4f20a93ddc14f4a79acc", uuidFoods: ["69c009161eda40048dc6be1b93a1793e"], quantities: [2.0])
 }
 ```
 
