@@ -454,7 +454,7 @@ query {
 Rota:
 ``` 
 query {
-    searchFood(uuidUser: String!, partialFoodName: String!) {
+    searchFood(uuidUser: String!, partialFoodName: String!, indexPage: Int!, sizePage: Int!) {
         uuid,
         foodName,
         foodGroup,
@@ -467,7 +467,7 @@ query {
 Exemplo:
 ```
 query {
-    searchFood(uuidUser: "ba179e310491460ebaa7260cf355180f", partialFoodName: "arr") {
+    searchFood(uuidUser: "ba179e310491460ebaa7260cf355180f", partialFoodName: "arr", indexPage: 0, sizePage: 5) {
         uuid,
         foodName,
         foodGroup,
