@@ -26,14 +26,10 @@ public class MenuDataFetcher {
     @Autowired
     private ApplicationMenuRepository applicationMenuRepository;
 
-    @Autowired
-    private ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     private ApplicationFoodRepository applicationFoodRepository;
 
-    @Autowired
-    private ApplicationMealRepository applicationMealRepository;
 
     public DataFetcher<Menu> getMenu()
     {
