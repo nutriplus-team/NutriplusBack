@@ -12,9 +12,9 @@ type Query {
     getSingleRecord(uuidRecord: String!) : PatientRecord
 
     # Food
-    listFood(uuidUser: String!) : [FoodSimple]
-    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) : [FoodSimple]
-    searchFood(uuidUser: String!, partialFoodName: String!, indexPage: Int!, sizePage: Int!) : [FoodSimple]
+    listFood(uuidUser: String!) : [Food]
+    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) : [Food]
+    searchFood(uuidUser: String!, partialFoodName: String!, indexPage: Int!, sizePage: Int!) : [Food]
     listMealsThatAFoodBelongsTo(uuidFood: String!) : [Int]
     getMeal(uuidUser: String!, mealType: Int!) : Meal
     getUnits(uuidFood: String!) : NutritionFacts
@@ -167,6 +167,11 @@ type Food {
     custom: Boolean
     created: Boolean
     nutritionFacts: NutritionFacts
+    calories: Float
+    proteins: Float
+    carbohydrates: Float
+    lipids: Float
+    fiber: Float
 }
 
 type NutritionFacts {
