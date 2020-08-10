@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -242,6 +243,11 @@ public class PatientDataFetcher {
                 return false;
 
             if(patient.getUuid().equals(uuidPatient)) {
+                if(input.containsKey("dateOfBirth")){
+                    String dateOfBirth = (String) input.get("dateOfBirth");
+                    Date dateOfBirthValue = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirth);
+                    input.put("dateOfBirthValue",dateOfBirthValue);
+                }
                 applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
                 return true;
 
