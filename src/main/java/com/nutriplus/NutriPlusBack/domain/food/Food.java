@@ -137,11 +137,6 @@ public class Food extends FoodModel implements Comparable<Food> {
     public Boolean getCreated()               { return created; }
     public Boolean getCustom()                { return custom; }
     public NutritionFacts getNutritionFacts() { return nutritionFacts; }
-    public Double getCalories()               { return nutritionFacts.calories; }
-    public Double getProteins()               { return nutritionFacts.proteins; }
-    public Double getCarbohydrates()          { return nutritionFacts.carbohydrates; }
-    public Double getLipids()                 { return nutritionFacts.lipids; }
-    public Double getFiber()                  { return nutritionFacts.fiber; }
 
     @Override
     public int compareTo(Food food) {

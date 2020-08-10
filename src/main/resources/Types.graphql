@@ -167,11 +167,6 @@ type Food {
     custom: Boolean
     created: Boolean
     nutritionFacts: NutritionFacts
-    calories: Float
-    proteins: Float
-    carbohydrates: Float
-    lipids: Float
-    fiber: Float
 }
 
 type NutritionFacts {
