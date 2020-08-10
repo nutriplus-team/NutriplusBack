@@ -12,6 +12,8 @@ import com.nutriplus.NutriPlusBack.repositories.ApplicationMenuRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -72,7 +74,8 @@ public class MenuDataFetcher {
         return dataFetchingEnvironment -> {
             try {
                 String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                UserCredentials user = (UserCredentials) authentication.getCredentials();
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
 
                 if (!MealType.valueOf(mealTypeInt).isPresent()) {
@@ -81,8 +84,9 @@ public class MenuDataFetcher {
                 MealType mealType = MealType.valueOf(mealTypeInt).get();
                 ArrayList<String> uuidFoods = dataFetchingEnvironment.getArgument("uuidFoods");
                 ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
-                UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
                 Patient patient = user.getPatientByUuid(uuidPatient);
+                if(patient == null)
+                    return "Patient no found";
                 // fetch foods:
                 ArrayList<Food> foodList = new ArrayList<>();
                 for (String uuidFood : uuidFoods)
@@ -105,7 +109,6 @@ public class MenuDataFetcher {
     {
         return dataFetchingEnvironment -> {
             try{
-                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
                 applicationMenuRepository.deleteByUuid(uuidMenu);
                 return true;

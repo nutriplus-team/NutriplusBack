@@ -8,6 +8,8 @@ import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -24,17 +26,19 @@ public class PatientDataFetcher {
 
     public DataFetcher<Patient> getPatient() {
         return dataFetchingEnvironment -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            return applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+            return user.getPatientByUuid(uuidPatient);
         };
     }
 
     public DataFetcher<ArrayList<Food>> getFoodRestrictions() {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            ArrayList<String> listUuids = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient).getFoodRestrictionsUUID();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            ArrayList<String> listUuids = user.getPatientByUuid(uuidPatient).getFoodRestrictionsUUID();
             return applicationUserRepository.findFoodRestrictions(listUuids);
         };
     }
@@ -43,8 +47,11 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> removePatient(){
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
-            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
             ArrayList<PatientRecord> patientRecordList = applicationUserRepository.findPatientRecords(uuidPatient,0,Integer.MAX_VALUE);
             if(patient.getUuid().equals(uuidPatient))
             {
@@ -60,39 +67,38 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> createPatient(){
         return dataFetchingEnvironment -> {
 
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
             Patient patient = new Patient();
 
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
 
-            if(user.getUuid().equals(uuidUser))
-            {
-                for(String key:input.keySet()){
-                    Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
-                            method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
-                    ).findAny();
-                    if(matchedMethod.isPresent())
-                    {
-                        matchedMethod.get().invoke(patient, input.get(key));
-                    }
+            for(String key:input.keySet()){
+                Optional<Method> matchedMethod = Arrays.stream(patient.getClass().getDeclaredMethods()).filter(
+                        method -> method.getName().toLowerCase().contains("set"+key.toLowerCase())
+                ).findAny();
+                if(matchedMethod.isPresent())
+                {
+                    matchedMethod.get().invoke(patient, input.get(key));
                 }
-                user.setPatient(patient);
-                applicationUserRepository.save(user);
-                return true;
-            }else return false;
+            }
+            user.setPatient(patient);
+            applicationUserRepository.save(user);
+            return true;
         };
     }
 
     public DataFetcher<Boolean> createPatientRecord(){
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
             PatientRecord patientRecord = new PatientRecord();
 
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
@@ -100,68 +106,68 @@ public class PatientDataFetcher {
 
             Constants methodBodyFatConstants = null;
             Constants methodMethabolicRateConstants = null;
-            if(user.getUuid().equals(uuidUser))
-            {
-                if(input.containsKey("methodBodyFat")){
-                    String methodBodyFatString = (String) input.get("methodBodyFat");
-                    methodBodyFatConstants = patientRecord.convertMethodStringToConstants(methodBodyFatString);
-                    input.remove("methodBodyFat");
-                }else{
-                    methodBodyFatConstants = Constants.FAULKNER;
-                }
-                if(input.containsKey("methodMethabolicRate")){
-                    String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
-                    methodMethabolicRateConstants = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
-                    input.remove("methodMethabolicRate");
-                }else{
-                    methodMethabolicRateConstants = Constants.MIFFLIN;
-                }
-                for(String key : input.keySet()){
-                    Field field = PatientRecord.class.getDeclaredField(key);
-                    field.setAccessible(true);
-                    field.set(patientRecord, input.get(key));
-                }
-                if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
-                !methodBodyFatConstants.equals(Constants.FAULKNER)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
-                    patientRecord.calculateBodyFat(methodBodyFatConstants);
-                }
-                if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
-                    input.containsKey("chest")&&input.containsKey("axillary")&&
-                    input.containsKey("abdominal")&&input.containsKey("thigh")&&
-                    !input.containsKey("corporalDensity")){
+            if(input.containsKey("methodBodyFat")){
+                String methodBodyFatString = (String) input.get("methodBodyFat");
+                methodBodyFatConstants = patientRecord.convertMethodStringToConstants(methodBodyFatString);
+                input.remove("methodBodyFat");
+            }else{
+                methodBodyFatConstants = Constants.FAULKNER;
+            }
+            if(input.containsKey("methodMethabolicRate")){
+                String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
+                methodMethabolicRateConstants = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
+                input.remove("methodMethabolicRate");
+            }else{
+                methodMethabolicRateConstants = Constants.MIFFLIN;
+            }
+            for(String key : input.keySet()){
+                Field field = PatientRecord.class.getDeclaredField(key);
+                field.setAccessible(true);
+                field.set(patientRecord, input.get(key));
+            }
+            if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
+            !methodBodyFatConstants.equals(Constants.FAULKNER)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
+                patientRecord.calculateBodyFat(methodBodyFatConstants);
+            }
+            if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
+                input.containsKey("chest")&&input.containsKey("axillary")&&
+                input.containsKey("abdominal")&&input.containsKey("thigh")&&
+                !input.containsKey("corporalDensity")){
 
-                    patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-                }
-                if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
-                    input.containsKey("triceps")&&input.containsKey("age")&&
-                    input.containsKey("calf")&&input.containsKey("calfCirc")&&
-                    input.containsKey("thigh")&&input.containsKey("thighCirc")&&
-                    !input.containsKey("muscularMass")){
+                patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+            }
+            if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
+                input.containsKey("triceps")&&input.containsKey("age")&&
+                input.containsKey("calf")&&input.containsKey("calfCirc")&&
+                input.containsKey("thigh")&&input.containsKey("thighCirc")&&
+                !input.containsKey("muscularMass")){
 
-                    patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
-                }
+                patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
+            }
 
-                if(input.containsKey("corporalMass")){
-                    if(!input.containsKey("methabolicRate"))
-                        patientRecord.calculateMethabolicRate(methodMethabolicRateConstants,patient.getBiologicalSex());
-                    if(!input.containsKey("energyRequirements"))
-                        patientRecord.calculateEnergyRequirements();
-                }
+            if(input.containsKey("corporalMass")){
+                if(!input.containsKey("methabolicRate"))
+                    patientRecord.calculateMethabolicRate(methodMethabolicRateConstants,patient.getBiologicalSex());
+                if(!input.containsKey("energyRequirements"))
+                    patientRecord.calculateEnergyRequirements();
+            }
 
-                patient.setPatientRecord(patientRecord);
-                applicationUserRepository.save(user);
-                return true;
-            }else return false;
+            patient.setPatientRecord(patientRecord);
+            applicationUserRepository.save(user);
+            return true;
         };
     }
 
     public DataFetcher<Boolean> updateFoodRestrictions(){
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             ArrayList<String> restrictedFoods = dataFetchingEnvironment.getArgument("uuidFoods");
 
-            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
 
             for(String uuidFood : restrictedFoods){
                 patient.getFoodRestrictionsUUID().add(uuidFood);
@@ -181,7 +187,13 @@ public class PatientDataFetcher {
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
 
             PatientRecord patientRecord = applicationUserRepository.findSingleRecord(uuidPatientRecord);
-            Patient patient = applicationUserRepository.findSinglePatient(uuidPatient);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
+
             if(patientRecord.getUuid().equals(uuidPatientRecord)) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = new Date(System.currentTimeMillis());
@@ -223,7 +235,11 @@ public class PatientDataFetcher {
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
-            Patient patient = applicationUserRepository.findSinglePatient(uuidPatient);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
 
             if(patient.getUuid().equals(uuidPatient)) {
                 applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
@@ -259,17 +275,20 @@ public class PatientDataFetcher {
 
     public DataFetcher<ArrayList<Patient>> getPatients(){
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+
             int indexPage = dataFetchingEnvironment.getArgument("indexPage");
             int sizePage = dataFetchingEnvironment.getArgument("sizePage");
             indexPage = indexPage*sizePage;
-            return applicationUserRepository.findPatients(uuidUser,indexPage,sizePage);
+            return applicationUserRepository.findPatients(user.getUuid(),indexPage,sizePage);
         };
     }
 
 
     public DataFetcher<ArrayList<PatientRecord>> getAllPatientRecords(){
         return dataFetchingEnvironment -> {
+
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             int indexPage = dataFetchingEnvironment.getArgument("indexPage");
             int sizePage = dataFetchingEnvironment.getArgument("sizePage");
@@ -282,10 +301,13 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> removeFoodRestrictions() {
         return dataFetchingEnvironment ->{
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
             ArrayList<String> restrictedFoods = dataFetchingEnvironment.getArgument("uuidFoods");
 
-            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
 
             for(String uuidFood : restrictedFoods){
                 patient.getFoodRestrictionsUUID().remove(uuidFood);
@@ -301,9 +323,13 @@ public class PatientDataFetcher {
     public DataFetcher<Boolean> removeAllFoodRestrictions() {
         return dataFetchingEnvironment ->{
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
 
-            Patient patient = applicationUserRepository.findByUuid(uuidUser).getPatientByUuid(uuidPatient);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+
+            Patient patient = user.getPatientByUuid(uuidPatient);
+            if(patient == null)
+                return false;
 
             patient.getFoodRestrictionsUUID().clear();
 

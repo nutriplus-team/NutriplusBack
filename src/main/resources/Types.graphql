@@ -5,10 +5,10 @@ schema {
 
 type Query {
     # Patient
-    getFoodRestrictions(uuidPatient: String!, uuidUser: String!) : [Food]
-    getPatientInfo(uuidPatient: String!, uuidUser: String!) : Patient
-    getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!):[Patient]
-    getPatientRecords(uuidPatient: String!,uuidUser: String!,indexPage: Int!, sizePage: Int!) : [PatientRecord]
+    getFoodRestrictions(uuidPatient: String!) : [Food]
+    getPatientInfo(uuidPatient: String!) : Patient #
+    getAllPatients(indexPage: Int!, sizePage: Int!):[Patient] #
+    getPatientRecords(uuidPatient: String!, indexPage: Int!, sizePage: Int!) : [PatientRecord]
     getSingleRecord(uuidRecord: String!) : PatientRecord
 
     # Food
@@ -27,14 +27,14 @@ type Query {
 
 type Mutation{
     # Patient
-    createPatientRecord(uuidUser: String!, uuidPatient: String!,input: PatientRecordInput) : Boolean
+    createPatientRecord(uuidPatient: String!, input: PatientRecordInput) : Boolean
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatient: String!,uuidPatientRecord: String!,input: PatientRecordInput): Boolean
-    updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String]): Boolean
-    removeFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String]): Boolean
-    removeAllFoodRestrictions(uuidUser: String!, uuidPatient: String!): Boolean
-    createPatient(uuidUser: String!,input: PatientInput) : Boolean
-    removePatient(uuidPatient: String!, uuidUser: String!): Boolean
+    updateFoodRestrictions(uuidPatient: String!, uuidFoods: [String]): Boolean
+    removeFoodRestrictions(uuidPatient: String!, uuidFoods: [String]): Boolean
+    removeAllFoodRestrictions(uuidPatient: String!): Boolean
+    createPatient(input: PatientInput) : Boolean #
+    removePatient(uuidPatient: String!): Boolean
     updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
     # Food
@@ -46,9 +46,9 @@ type Mutation{
     removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealType: Int!) : Boolean
 
     # Menu
-    addMenu(uuidUser: String!, mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
-    removeMenu(uuidUser: String!, uuidMenu: String!) : Boolean
-    editMenu(uuidUser: String!, uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
+    addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
+    removeMenu(uuidMenu: String!) : Boolean
+    editMenu(uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
 
 }
 

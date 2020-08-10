@@ -77,4 +77,9 @@ public class Patient extends PatientModel {
         else return null;
     }
 
+    public PatientRecord getRecordByUuid(String uuid)
+    {
+        return patientRecordList.stream().filter(record -> record.getUuid().equals(uuid)).findAny().orElse(null);
+    }
+
 }
