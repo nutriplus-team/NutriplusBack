@@ -10,6 +10,8 @@ import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationFoodRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -28,8 +30,9 @@ public class FoodDataFetcher {
 
     public DataFetcher<ArrayList<Food>> listFood(){
         return dataFetchingEnvironment -> {
-            String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
-            ArrayList<Food> foodList = applicationFoodRepository.listFood(nutritionistUuid);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            ArrayList<Food> foodList = applicationFoodRepository.listFood(user.getUuid());
             Collections.sort(foodList); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
             return foodList;
         };
@@ -37,8 +40,9 @@ public class FoodDataFetcher {
 
     public DataFetcher<List<Food>> listFoodPaginated(){
         return dataFetchingEnvironment -> {
-            String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
-            ArrayList<Food> foodList = applicationFoodRepository.listFood(nutritionistUuid);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
+            ArrayList<Food> foodList = applicationFoodRepository.listFood(user.getUuid());
             Collections.sort(foodList); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
             int indexPage = dataFetchingEnvironment.getArgument("indexPage");
             int sizePage = dataFetchingEnvironment.getArgument("sizePage");
@@ -60,9 +64,10 @@ public class FoodDataFetcher {
 
     public DataFetcher<List<Food>> searchFood(){
         return dataFetchingEnvironment -> {
-            String nutritionistUuid = dataFetchingEnvironment.getArgument("uuidUser");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             String partialFoodName = dataFetchingEnvironment.getArgument("partialFoodName");
-            ArrayList<Food> searchResult = applicationFoodRepository.searchFood(nutritionistUuid, partialFoodName);
+            ArrayList<Food> searchResult = applicationFoodRepository.searchFood(user.getUuid(), partialFoodName);
             Collections.sort(searchResult); // Workaround because it's not possible to do post UNION sorting in Neo4J 3.X.X
             int indexPage = dataFetchingEnvironment.getArgument("indexPage");
             int sizePage = dataFetchingEnvironment.getArgument("sizePage");
@@ -96,13 +101,14 @@ public class FoodDataFetcher {
 
     public DataFetcher<Meal> getMeal(){
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
             Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
             if (mealType.isPresent())
             {
                 String mealTypeName = mealType.get().name();
-                return applicationMealRepository.getMeal(uuidUser, mealTypeName);
+                return applicationMealRepository.getMeal(user.getUuid(), mealTypeName);
             }
             return null;
 
@@ -119,88 +125,82 @@ public class FoodDataFetcher {
 
     public DataFetcher<Boolean> createFood() {
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             HashMap<String, Object> foodInput = dataFetchingEnvironment.getArgument("foodInput");
             HashMap<String, Object> nutritionInput = dataFetchingEnvironment.getArgument("nutritionInput");
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
 
-            if (user.getUuid().equals(uuidUser)) {
-                // Get nutrition facts data from input
-                Double caloriesValue = (Double) nutritionInput.get("calories");
-                Double proteinsValue = (Double) nutritionInput.get("proteins");
-                Double carbohydratesValue = (Double) nutritionInput.get("carbohydrates");
-                Double lipidsValue = (Double) nutritionInput.get("lipids");
-                Double fiberValue = (Double) nutritionInput.get("fiber");
+            // Get nutrition facts data from input
+            Double caloriesValue = (Double) nutritionInput.get("calories");
+            Double proteinsValue = (Double) nutritionInput.get("proteins");
+            Double carbohydratesValue = (Double) nutritionInput.get("carbohydrates");
+            Double lipidsValue = (Double) nutritionInput.get("lipids");
+            Double fiberValue = (Double) nutritionInput.get("fiber");
 
-                // Get food data from input
-                String foodName = (String) foodInput.get("foodName");
-                String foodGroup = (String) foodInput.get("foodGroup");
-                String measureType = (String) foodInput.get("measureTypeValue");
-                Double measureTotalGrams = (Double) foodInput.get("measureTotalGrams");
-                Double measureAmountValue = (Double) foodInput.get("measureAmountValue");
+            // Get food data from input
+            String foodName = (String) foodInput.get("foodName");
+            String foodGroup = (String) foodInput.get("foodGroup");
+            String measureType = (String) foodInput.get("measureTypeValue");
+            Double measureTotalGrams = (Double) foodInput.get("measureTotalGrams");
+            Double measureAmountValue = (Double) foodInput.get("measureAmountValue");
 
-                // Instantiate food and add to database
-                NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
-                        lipidsValue, fiberValue);
+            // Instantiate food and add to database
+            NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
+                    lipidsValue, fiberValue);
 
-                Food createdFood = new Food(user, foodName, foodGroup, measureTotalGrams,
-                        measureType, measureAmountValue, nutritionFacts);
+            Food createdFood = new Food(user, foodName, foodGroup, measureTotalGrams,
+                    measureType, measureAmountValue, nutritionFacts);
 
-                applicationFoodRepository.save(createdFood);
-                applicationUserRepository.save(user);
+            applicationFoodRepository.save(createdFood);
+            applicationUserRepository.save(user);
 
-                return true;
-            } else
-                return false;
+            return true;
+
         };
     }
 
     public DataFetcher<Boolean> customizeFood() {
         return dataFetchingEnvironment -> {
-            String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserCredentials user = (UserCredentials) authentication.getCredentials();
             String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
             HashMap<String, Object> customInput = dataFetchingEnvironment.getArgument("customInput");
             HashMap<String, Object> nutritionInput = dataFetchingEnvironment.getArgument("nutritionInput");
-            UserCredentials user = applicationUserRepository.findByUuid(uuidUser);
 
-            if (user.getUuid().equals(uuidUser)) {
-                // Get nutrition facts data from input
-                Double caloriesValue = (Double) nutritionInput.get("calories");
-                Double proteinsValue = (Double) nutritionInput.get("proteins");
-                Double carbohydratesValue = (Double) nutritionInput.get("carbohydrates");
-                Double lipidsValue = (Double) nutritionInput.get("lipids");
-                Double fiberValue = (Double) nutritionInput.get("fiber");
+            // Get nutrition facts data from input
+            Double caloriesValue = (Double) nutritionInput.get("calories");
+            Double proteinsValue = (Double) nutritionInput.get("proteins");
+            Double carbohydratesValue = (Double) nutritionInput.get("carbohydrates");
+            Double lipidsValue = (Double) nutritionInput.get("lipids");
+            Double fiberValue = (Double) nutritionInput.get("fiber");
 
-                // Get food data from input
-                String measureType = (String) customInput.get("measureType");
-                Double measureTotalGrams = (Double) customInput.get("measureTotalGrams");
-                Double measureAmountValue = (Double) customInput.get("measureAmountValue");
+            // Get food data from input
+            String measureType = (String) customInput.get("measureType");
+            Double measureTotalGrams = (Double) customInput.get("measureTotalGrams");
+            Double measureAmountValue = (Double) customInput.get("measureAmountValue");
 
-                // Instantiate food and add to database
-                NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
-                        lipidsValue, fiberValue);
+            // Instantiate food and add to database
+            NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
+                    lipidsValue, fiberValue);
 
-                Food originalFood = applicationFoodRepository.findByUuid(uuidFood);
-                Food customFood = new Food(user, originalFood);
+            Food originalFood = applicationFoodRepository.findByUuid(uuidFood);
+            Food customFood = new Food(user, originalFood);
 
-                customFood.setNutritionFacts(nutritionFacts);
-                customFood.setMeasureType(measureType);
-                customFood.setMeasureTotalGrams(measureTotalGrams);
-                customFood.setMeasureAmount(measureAmountValue);
+            customFood.setNutritionFacts(nutritionFacts);
+            customFood.setMeasureType(measureType);
+            customFood.setMeasureTotalGrams(measureTotalGrams);
+            customFood.setMeasureAmount(measureAmountValue);
 
-                applicationFoodRepository.save(customFood);
-                applicationUserRepository.save(user);
+            applicationFoodRepository.save(customFood);
+            applicationUserRepository.save(user);
 
-                return true;
-            } else
-                return false;
+            return true;
         };
     }
 
     public DataFetcher<Boolean> removeFood() {
         return dataFetchingEnvironment -> {
             try {
-                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
                 applicationFoodRepository.deleteFoodFromRepository(uuidFood);
                 return true;
@@ -252,7 +252,6 @@ public class FoodDataFetcher {
     public DataFetcher<Boolean> addFoodToMeal(){
         return dataFetchingEnvironment -> {
             try {
-                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
                 Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
@@ -272,7 +271,6 @@ public class FoodDataFetcher {
     public DataFetcher<Boolean> removeFoodFromMeal(){
         return dataFetchingEnvironment -> {
             try {
-                String uuidUser = dataFetchingEnvironment.getArgument("uuidUser");
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
                 Optional<MealType> mealType = MealType.valueOf(mealTypeInt);

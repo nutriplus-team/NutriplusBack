@@ -12,11 +12,11 @@ type Query {
     getSingleRecord(uuidRecord: String!) : PatientRecord
 
     # Food
-    listFood(uuidUser: String!) : [Food]
-    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) : [Food]
-    searchFood(uuidUser: String!, partialFoodName: String!, indexPage: Int!, sizePage: Int!) : [Food]
+    listFood : [Food]
+    listFoodPaginated(indexPage: Int!, sizePage: Int!) : [Food]
+    searchFood(partialFoodName: String!, indexPage: Int!, sizePage: Int!) : [Food]
     listMealsThatAFoodBelongsTo(uuidFood: String!) : [Int]
-    getMeal(uuidUser: String!, mealType: Int!) : Meal
+    getMeal(mealType: Int!) : Meal
     getUnits(uuidFood: String!) : NutritionFacts
 
     #Menu
@@ -38,12 +38,12 @@ type Mutation{
     updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
     # Food
-    createFood(uuidUser: String!, foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
-    customizeFood(uuidUser: String!, uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
-    removeFood(uuidUser: String!, uuidFood: String!) : Boolean
+    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    customizeFood(uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    removeFood(uuidFood: String!) : Boolean
     startMeals : Boolean
-    addFoodToMeal(uuidUser: String!, uuidFood: String!, mealType: Int!) : Boolean
-    removeFoodFromMeal(uuidUser: String!, uuidFood: String!, mealType: Int!) : Boolean
+    addFoodToMeal(uuidFood: String!, mealType: Int!) : Boolean
+    removeFoodFromMeal(uuidFood: String!, mealType: Int!) : Boolean
 
     # Menu
     addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String

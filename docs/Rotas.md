@@ -400,7 +400,7 @@ Todas as rotas pelo GraphQL usam a rota `/graphql/get/`
 Rota:
 ``` 
 query {
-    listFood(uuidUser: String!) {
+    listFood {
         uuid,
         foodName,
         foodGroup,
@@ -423,7 +423,7 @@ query {
 Exemplo:
 ```
 query {
-    listFood(uuidUser: "ba179e310491460ebaa7260cf355180f") {
+    listFood {
         uuid,
         foodName,
         foodGroup,
@@ -444,7 +444,7 @@ query {
 Rota:
 ``` 
 query {
-    listFoodPaginated(uuidUser: String!, indexPage: Int!, sizePage: Int!) {
+    listFoodPaginated(indexPage: Int!, sizePage: Int!) {
         uuid,
         foodName,
         foodGroup,
@@ -467,7 +467,7 @@ query {
 Exemplo:
 ```
 query {
-    listFoodPaginated(uuidUser: "ba179e310491460ebaa7260cf355180f", indexPage: 0, sizePage: 10) {
+    listFoodPaginated(indexPage: 0, sizePage: 10) {
         uuid,
         foodName,
         foodGroup,
@@ -488,7 +488,7 @@ query {
 Rota:
 ``` 
 query {
-    searchFood(uuidUser: String!, partialFoodName: String!, indexPage: Int!, sizePage: Int!) {
+    searchFood(partialFoodName: String!, indexPage: Int!, sizePage: Int!) {
         uuid,
         foodName,
         foodGroup,
@@ -511,7 +511,7 @@ query {
 Exemplo:
 ```
 query {
-    searchFood(uuidUser: "ba179e310491460ebaa7260cf355180f", partialFoodName: "arr", indexPage: 0, sizePage: 5) {
+    searchFood(partialFoodName: "arr", indexPage: 0, sizePage: 5) {
         uuid,
         foodName,
         foodGroup,
@@ -559,7 +559,7 @@ query {
 Rota:
 ``` 
 query {
-    getMeal(uuidUser: String!, mealType: Int!) {
+    getMeal(mealType: Int!) {
         mealType, 
         foodList{
             uuid
@@ -575,7 +575,7 @@ query {
 Exemplo:
 ```
 query {
-    getMeal(uuidUser: "fd09ddf65777455895b15807693adb57", mealType: 0) {
+    getMeal(mealType: 0) {
         mealType, 
         foodList{
             uuid
@@ -616,8 +616,7 @@ query {
 Rota:
 ```
 mutation {
-    createFood( uuidUser: String!, 
-                foodInput: {
+    createFood( foodInput: {
                     foodName: String!
                     foodGroup: String!
                     measureTotalGrams: Float!
@@ -637,8 +636,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    createFood( uuidUser: "ba179e310491460ebaa7260cf355180f", 
-                foodInput: {
+    createFood(foodInput: {
                     foodName: "Pudim de Passas", 
                     foodGroup: "Doces",
                     measureTotalGrams: 21.0,
@@ -659,8 +657,7 @@ mutation {
 #### <a name='customizeFood'></a>customizeFood
 Rota:
 ```
-customizeFood(  uuidUser: String!, 
-                uuidFood: String!,
+customizeFood(uuidFood: String!,
                 customInput: {
                     measureTotalGrams: Float!
                     measureType: String!
@@ -678,8 +675,7 @@ customizeFood(  uuidUser: String!,
 Exemplo:
 ```
 mutation {
-    customizeFood(  uuidUser: "ba179e310491460ebaa7260cf355180f",
-                    uuidFood: "6584956257c94bc892ac8f9506087243",
+    customizeFood(uuidFood: "6584956257c94bc892ac8f9506087243",
                     customInput: {
                         measureTotalGrams: 999.9,
                         measureType: "Medidas Carteadas",
@@ -698,14 +694,14 @@ mutation {
 Rota:
 ```
 mutation {
-    removeFood (uuidUser: String!, uuidFood: String!)
+    removeFood (uuidFood: String!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removeFood(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
+    removeFood(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6")
 }
 ```
 
@@ -724,28 +720,28 @@ mutation {
 Rota:
 ```
 mutation {
-    addFoodToMeal (uuidUser: String!, uuidFood: String!, mealType: Int!)
+    addFoodToMeal (uuidFood: String!, mealType: Int!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    addFoodToMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
+    addFoodToMeal(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
 }
 ```
 #### <a name='removeFoodFromMeal'></a>removeFoodFromMeal
 Rota:
 ```
 mutation {
-    removeFoodFromMeal (uuidUser: String!, uuidFood: String!, mealType: Int!)
+    removeFoodFromMeal (uuidFood: String!, mealType: Int!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removeFoodFromMeal(uuidUser: "fd09ddf65777455895b15807693adb57", uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
+    removeFoodFromMeal(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
 }
 ```
 
