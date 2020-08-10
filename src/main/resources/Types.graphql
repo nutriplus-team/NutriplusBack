@@ -78,6 +78,8 @@ type PatientRecord{
     uuid: String
     uuidPatient: String
     corporalMass: Float
+    methodBodyFat: String
+    methodMethabolicRate: String
     height: Float
     abdominal: Float
     isAthlete: Boolean
