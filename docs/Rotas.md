@@ -406,6 +406,9 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
         nutritionFacts {
           calories,
           proteins,
@@ -447,6 +450,9 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
         nutritionFacts {
           calories,
           proteins,
@@ -488,6 +494,9 @@ query {
         foodGroup,
         custom,
         created,
+        measureTotalGrams,
+        measureType,
+        measureAmount,
         nutritionFacts {
           calories,
           proteins,
