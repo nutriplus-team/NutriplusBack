@@ -908,7 +908,7 @@ mutation
 Rota:
 ```
 query {
-    getPatientInfo(uuidPatient: String!, uuidUser: String!) {
+    getPatientInfo(uuidPatient: String!) {
         uuid,
         name,
         ethnicGroup,
@@ -924,7 +924,7 @@ query {
 Exemplo:
 ```
 query {
-    getPatientInfo(uuidPatient: "TODO", uuidUser: "ba179e310491460ebaa7260cf355180f") {
+    getPatientInfo(uuidPatient: "TODO") {
         uuid,
         name,
         ethnicGroup,
@@ -942,7 +942,7 @@ query {
 Rota:
 ```
 query {
-    getAllPatients(uuidUser: String!, indexPage: Int!, sizePage: Int!) {
+    getAllPatients(indexPage: Int!, sizePage: Int!) {
         uuid,
         name,
         ethnicGroup,
@@ -958,7 +958,7 @@ query {
 Exemplo:
 ```
 query {
-    getAllPatients(uuidUser: "ba179e310491460ebaa7260cf355180f", indexPage: 0, sizePage: 5) {
+    getAllPatients(indexPage: 0, sizePage: 5) {
         uuid,
         name,
         ethnicGroup,
@@ -975,7 +975,7 @@ query {
 Rota:
 ```
 query {
-    getPatientRecords(uuidPatient: String!, uuidUser: String!, indexPage: Int!, sizePage: Int!) {
+    getPatientRecords(uuidPatient: String!, indexPage: Int!, sizePage: Int!) {
         uuid,
         uuidPatient,
         corporalMass,
@@ -1011,7 +1011,7 @@ query {
 Exemplo:
 ```
 query {
-    getPatientRecords(uuidPatient: "TODO", uuidUser: "ba179e310491460ebaa7260cf355180f", indexPage: 0, sizePage: 5) {
+    getPatientRecords(uuidPatient: "TODO", indexPage: 0, sizePage: 5) {
         uuid,
         uuidPatient,
         corporalMass,
@@ -1122,8 +1122,7 @@ Rota:
 OBS: O input, bem como suas variáveis que o compõem, são opcionais.
 ```
 mutation {
-    createPatientRecord(uuidUser: String!, 
-                        uuidPatient: String!,
+    createPatientRecord(uuidPatient: String!,
                         input: {
                             method: String,
                             corporalMass: Float,
@@ -1159,8 +1158,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    createPatientRecord(uuidUser: "ba179e310491460ebaa7260cf355180f", 
-                        uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
+    createPatientRecord(uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
                         input: {
                             method: "faulkner"
                             corporalMass: 104.0,
@@ -1274,7 +1272,7 @@ mutation {
 Rota:
 ```
 mutation{
-   updateFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String])
+   updateFoodRestrictions(uuidPatient: String!, uuidFoods: [String])
 }
 
 ```
@@ -1282,8 +1280,7 @@ mutation{
 Exemplo:
 ```
 mutation {
-    updateFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
-                             uuidPatient: "ad12e11adasdas12321213212asasd",
+    updateFoodRestrictions(  uuidPatient: "ad12e11adasdas12321213212asasd",
                              uuidFoods: ["12","1","12"])
 }
 ```
@@ -1292,7 +1289,7 @@ mutation {
 Rota:
 ```
 mutation{
-   removeFoodRestrictions(uuidUser: String!, uuidPatient: String!, uuidFoods: [String])
+   removeFoodRestrictions(uuidPatient: String!, uuidFoods: [String])
 }
 
 ```
@@ -1300,8 +1297,7 @@ mutation{
 Exemplo:
 ```
 mutation {
-    removeFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
-                             uuidPatient: "ad12e11adasdas12321213212asasd",
+    removeFoodRestrictions(  uuidPatient: "ad12e11adasdas12321213212asasd",
                              uuidFoods: ["12","1","12"])
 }
 ```
@@ -1310,7 +1306,7 @@ mutation {
 Rota:
 ```
 mutation{
-   removeAllFoodRestrictions(uuidUser: String!, uuidPatient: String!)
+   removeAllFoodRestrictions(uuidPatient: String!)
 }
 
 ```
@@ -1318,9 +1314,7 @@ mutation{
 Exemplo:
 ```
 mutation {
-    removeAllFoodRestrictions(  uuidUser: "ba179e310491460ebaa7260cf355180f",
-                             uuidPatient: "ad12e11adasdas12321213212asasd",
-                             uuidFoods: ["12","1","12"])
+    removeAllFoodRestrictions( uuidPatient: "ad12e11adasdas12321213212asasd")
 }
 ```
 
@@ -1329,8 +1323,7 @@ mutation {
 Rota:
 ```
 mutation {
-    createPatient(  uuidUser: String!, 
-                    input: {
+    createPatient(  input: {
                         name:  String,
                         ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
                         email: String,
@@ -1345,8 +1338,7 @@ mutation {
 Exemplo:
 ```
 mutation {
-    createPatient(  uuidUser: "ba179e310491460ebaa7260cf355180f", 
-                    input: {
+    createPatient(input: {
                         name:  "Luís Iago José Lima",
                         ethnicGroup: 0,
                         email: "luisiagojoselima@metalplasma.com.br",
@@ -1362,16 +1354,14 @@ mutation {
 Rota:
 ```
 mutation {
-    removePatient(  uuidPatient: String!,
-                    uuidUser: String!)
+    removePatient(  uuidPatient: String!)
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    removePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8",
-                    uuidUser: "ba179e310491460ebaa7260cf355180f")
+    removePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8")
 }
 ```
 
@@ -1379,8 +1369,7 @@ mutation {
 Rota:
 ```
 mutation {
-    updatePatient(  uuidPatient: String!, 
-                    uuidUser: String!, 
+    updatePatient(  uuidPatient: String!,
                     input: {
                         name:  String,
                         ethnicGroup: Float, // 0 para branco/hispânico e 1.1 para afrodescendentes.
@@ -1397,7 +1386,6 @@ Exemplo:
 ```
 mutation {
     updatePatient(  uuidPatient: "d0738c5d83994872a71dfbcec704e2e8", 
-                    uuidUser: "ba179e310491460ebaa7260cf355180f", 
                     input: {
                         name:  "Francisco Carlos Eduardo Alves",
                         ethnicGroup: 1.1,
