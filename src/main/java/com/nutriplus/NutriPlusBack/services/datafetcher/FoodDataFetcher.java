@@ -253,13 +253,16 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             try {
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
-                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
-                Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
-                if(!mealType.isPresent())
-                    return false;
-                String mealTypeName = mealType.get().name();
+                ArrayList<Integer> mealTypesInts = dataFetchingEnvironment.getArgument("mealTypes");
 
-                applicationMealRepository.addFood(mealTypeName, uuidFood);
+                for (Integer mealTypeInt : mealTypesInts){
+                    Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                    if(!mealType.isPresent())
+                        return false;
+                    String mealTypeName = mealType.get().name();
+
+                    applicationMealRepository.addFood(mealTypeName, uuidFood);
+                }
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
