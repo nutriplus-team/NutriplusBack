@@ -140,7 +140,7 @@ public class FoodDataFetcher {
             // Get food data from input
             String foodName = (String) foodInput.get("foodName");
             String foodGroup = (String) foodInput.get("foodGroup");
-            String measureType = (String) foodInput.get("measureTypeValue");
+            String measureType = (String) foodInput.get("measureType");
             Double measureTotalGrams = (Double) foodInput.get("measureTotalGrams");
             Double measureAmountValue = (Double) foodInput.get("measureAmountValue");
 
