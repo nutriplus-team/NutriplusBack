@@ -723,14 +723,14 @@ mutation {
 Rota:
 ```
 mutation {
-    addFoodToMeal (uuidFood: String!, mealType: Int!)
+    addFoodToMeal (uuidFood: String!, mealTypes: [Int])
 }
 ```
 
 Exemplo:
 ```
 mutation {
-    addFoodToMeal(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealType: 5)
+    addFoodToMeal(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypes: [5, 2])
 }
 ```
 #### <a name='removeFoodFromMeal'></a>removeFoodFromMeal
