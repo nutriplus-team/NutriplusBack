@@ -112,14 +112,12 @@ public class PatientDataFetcher {
             if(input.containsKey("methodBodyFat")){
                 String methodBodyFatString = (String) input.get("methodBodyFat");
                 methodBodyFatConstants = patientRecord.convertMethodStringToConstants(methodBodyFatString);
-                input.remove("methodBodyFat");
             }else{
                 methodBodyFatConstants = Constants.FAULKNER;
             }
             if(input.containsKey("methodMethabolicRate")){
                 String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
                 methodMethabolicRateConstants = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
-                input.remove("methodMethabolicRate");
             }else{
                 methodMethabolicRateConstants = Constants.MIFFLIN;
             }
@@ -231,7 +229,6 @@ public class PatientDataFetcher {
                     String methodBodyFatString = (String) input.get("methodBodyFat");
                     methodBodyFat = patientRecord.convertMethodStringToConstants(methodBodyFatString);
                     patientRecord.calculateBodyFat(methodBodyFat);
-                    input.remove("methodBodyFat");
 
                 }if(!input.containsKey("corporalDensity"))
                     patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
@@ -243,8 +240,6 @@ public class PatientDataFetcher {
                     methodMethabolicRate = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
 
                     patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
-                    input.remove("methodMethabolicRate");
-
                 }
 
                 if(!input.containsKey("energyRequirements"))
@@ -271,7 +266,7 @@ public class PatientDataFetcher {
             if(input.containsKey("restrictedFoods")){
 
                 ArrayList<String> restrictedFoods = (ArrayList<String>) input.get("restrictedFoods");
-
+                patient.getFoodRestrictionsUUID().clear();
                 for(String uuidFood : restrictedFoods){
                     if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
                         patient.getFoodRestrictionsUUID().add(uuidFood);

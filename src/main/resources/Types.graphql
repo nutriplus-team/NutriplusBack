@@ -38,7 +38,7 @@ type Mutation{
     updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
     # Food
-    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : String
     customizeFood(uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : String
     removeFood(uuidFood: String!) : Boolean
     startMeals : Boolean
@@ -79,6 +79,8 @@ input PatientInput {
 
 type PatientRecord{
     uuid: String
+    anamnesis: String
+    exam: String
     uuidPatient: String
     corporalMass: Float
     methodBodyFat: String
@@ -112,6 +114,8 @@ type PatientRecord{
 }
 
 input PatientRecordInput{
+    anamnesis: String
+    exam: String
     methodBodyFat: String
     methodMethabolicRate: String
     corporalMass: Float
