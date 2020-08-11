@@ -292,4 +292,37 @@ public class FoodDataFetcher {
             }
         };
     }
+    public DataFetcher<Boolean> setMeals(){
+        return dataFetchingEnvironment -> {
+            try {
+                String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
+                ArrayList<Integer> mealTypesInts = dataFetchingEnvironment.getArgument("mealTypes");
+
+                for (Integer mealTypeInt = 0; mealTypeInt < 6; mealTypeInt++) {
+
+                    if (mealTypesInts.contains(mealTypeInt)) {
+                        Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                        if(!mealType.isPresent())
+                            return false;
+                        String mealTypeName = mealType.get().name();
+
+                        applicationMealRepository.addFood(mealTypeName, uuidFood);
+                    }
+                    else {
+                        Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                        if (!mealType.isPresent())
+                            return false;
+                        String mealTypeName = mealType.get().name();
+
+                        applicationMealRepository.removeFood(mealTypeName, uuidFood);
+                    }
+
+                }
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+    }
 }

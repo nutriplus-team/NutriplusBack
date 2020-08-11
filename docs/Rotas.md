@@ -24,7 +24,8 @@
 		* [removeFood](#removeFood)
 		* [startMeals](#startMeals)
 		* [addFoodToMeal](#addFoodToMeal)
-		* [removeFoodFromMeal](#removeFoodFromMeal)
+    * [removeFoodFromMeal](#removeFoodFromMeal)
+		* [setMeals](#setMeals)
 	* [Menu](#Menu)
 		* [getMenu](#getMenu)
 		* [getAllMenusForPatient](#getAllMenusForPatient)
@@ -746,6 +747,22 @@ mutation {
     removeFoodFromMeal(uuidFood: "3743096a5b3d4fc9991af06182a9cbd6", mealTypes: [5, 2])
 }
 ```
+
+#### <a name='setMeals'></a>setMeals
+Rota:
+```
+mutation {
+    setMeals (uuidFood: String!, mealTypes: [Int])
+}
+```
+
+Exemplo:
+```
+mutation {
+    setMeals(uuidFood: "e83debb7bf564126ae7e77ebe20ab1e3", mealTypes: [4, 5])
+}
+```
+
 
 ### <a name='Menu'></a>Menu
 
