@@ -59,8 +59,12 @@ public class PatientRecord extends AbstractEntity {
     Double methabolicRate;
     Double energyRequirements;
 
+    String methodBodyFat;
+    String methodMethabolicRate;
 
     //Set Functions
+    public void setMethodBodyFat(String methodBodyFatValue){methodBodyFat=methodBodyFatValue;}
+    public void setMethodMethabolicRate(String methodMethabolicRateValue){methodMethabolicRate=methodMethabolicRateValue;}
     public void setUuidPatient(String uuid){uuidPatient = uuid;}
     public void setDateModified(String stringDate) {
         //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -104,6 +108,8 @@ public class PatientRecord extends AbstractEntity {
     public void setEnergyRequirements(Double energyRequirementsValue){energyRequirements = energyRequirementsValue;}
 
     //Get Functions
+    public String getMethodBodyFat(){return methodBodyFat;}
+    public String getMethodMethabolicRate(){return methodMethabolicRate;}
     public String getUuidPatient(){return uuidPatient;}
     public String getDateModified(){//return new SimpleDateFormat("dd/MM/yyyy").format(dateModified);
         return dateModified;
