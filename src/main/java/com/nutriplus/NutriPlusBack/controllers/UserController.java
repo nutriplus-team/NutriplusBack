@@ -82,7 +82,7 @@ public class UserController {
 
 
 
-        return ResponseEntity.status(HttpStatus.OK).body("OK");
+        return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponseDTO("OK"));
     }
 
     @GetMapping("/activate/{token}/")
