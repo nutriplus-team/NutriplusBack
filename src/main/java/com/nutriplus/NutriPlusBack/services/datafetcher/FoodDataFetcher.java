@@ -81,7 +81,7 @@ public class FoodDataFetcher {
                     return searchResult.subList(indexPage, searchResult.size());
                 }
                 else {
-                    return null;
+                    return new ArrayList<Food>();
                 }
             }
         };
