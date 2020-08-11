@@ -1246,7 +1246,8 @@ OBS: O input, bem como suas variáveis que o compõem, são opcionais.
 OBS: É necessario passar o método para selecionar a forma que os cálculos serão realizados.
 ```
 mutation {
-    updatePatientRecord(uuidPatientRecord: String!,
+    updatePatientRecord(uuidPatient: String!,
+                        uuidPatientRecord: String!,
                         input: {
                             method: String,
                             corporalMass: Float,
@@ -1282,7 +1283,8 @@ mutation {
 Exemplo:
 ```
 mutation {
-    updatePatientRecord(uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043",
+    updatePatientRecord(uuidPatient: "0987235abce35524",
+                        uuidPatientRecord: "760668c9a8a949139d8ef7ccb7e23043",
                         input: {
                             corporalMass: 104.0,
                             height: 1.83,
