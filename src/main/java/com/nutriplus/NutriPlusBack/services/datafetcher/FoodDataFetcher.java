@@ -159,7 +159,7 @@ public class FoodDataFetcher {
         };
     }
 
-    public DataFetcher<Boolean> customizeFood() {
+    public DataFetcher<String> customizeFood() {
         return dataFetchingEnvironment -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserCredentials user = (UserCredentials) authentication.getCredentials();
@@ -194,7 +194,7 @@ public class FoodDataFetcher {
             applicationFoodRepository.save(customFood);
             applicationUserRepository.save(user);
 
-            return true;
+            return customFood.getUuid();
         };
     }
 
