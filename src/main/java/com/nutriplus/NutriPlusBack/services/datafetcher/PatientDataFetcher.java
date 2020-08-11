@@ -91,7 +91,7 @@ public class PatientDataFetcher {
         };
     }
 
-    public DataFetcher<Boolean> createPatientRecord(){
+    public DataFetcher<String> createPatientRecord(){
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
@@ -101,7 +101,7 @@ public class PatientDataFetcher {
             UserCredentials user = (UserCredentials) authentication.getCredentials();
             Patient patient = user.getPatientByUuid(uuidPatient);
             if(patient == null)
-                return false;
+                return "";
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
@@ -176,10 +176,10 @@ public class PatientDataFetcher {
                 if(!input.containsKey("energyRequirements"))
                     patientRecord.calculateEnergyRequirements();
             }
-
+            String uuidRecord = patientRecord.getUuid();
             patient.setPatientRecord(patientRecord);
             applicationUserRepository.save(user);
-            return true;
+            return uuidRecord;
         };
     }
 

@@ -27,7 +27,7 @@ type Query {
 
 type Mutation{
     # Patient
-    createPatientRecord(uuidPatient: String!, input: PatientRecordInput) : Boolean
+    createPatientRecord(uuidPatient: String!, input: PatientRecordInput) : String
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatient: String!,uuidPatientRecord: String!,input: PatientRecordInput): Boolean
     updateFoodRestrictions(uuidPatient: String!, uuidFoods: [String]): Boolean
