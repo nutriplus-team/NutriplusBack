@@ -272,7 +272,9 @@ public class PatientDataFetcher {
                 if(input.containsKey("dateOfBirth")){
                     String dateOfBirth = (String) input.get("dateOfBirth");
                     Date dateOfBirthValue = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirth);
-                    input.put("dateOfBirthValue",dateOfBirthValue);
+                    String dateOfBirthNeo4JFormat = new SimpleDateFormat("dd-MM-yyyy").format(dateOfBirthValue);
+                    dateOfBirthNeo4JFormat = dateOfBirthNeo4JFormat.concat("T02:00:00.000Z");
+                    input.put("dateOfBirthValue", dateOfBirthNeo4JFormat);
                 }
                 applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
                 return true;
