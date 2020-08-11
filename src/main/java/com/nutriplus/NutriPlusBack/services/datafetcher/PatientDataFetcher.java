@@ -126,17 +126,19 @@ public class PatientDataFetcher {
                 field.setAccessible(true);
                 field.set(patientRecord, input.get(key));
             }
+            if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
+                    input.containsKey("chest")&&input.containsKey("axillary")&&
+                    input.containsKey("abdominal")&&input.containsKey("thigh")&&
+                    !input.containsKey("corporalDensity")){
+
+                patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+            }
+
             if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
             !methodBodyFatConstants.equals(Constants.FAULKNER)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
                 patientRecord.calculateBodyFat(methodBodyFatConstants);
             }
-            if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
-                input.containsKey("chest")&&input.containsKey("axillary")&&
-                input.containsKey("abdominal")&&input.containsKey("thigh")&&
-                !input.containsKey("corporalDensity")){
 
-                patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-            }
             if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
                 input.containsKey("triceps")&&input.containsKey("age")&&
                 input.containsKey("calf")&&input.containsKey("calfCirc")&&
