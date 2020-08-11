@@ -24,7 +24,7 @@
 		* [removeFood](#removeFood)
 		* [startMeals](#startMeals)
 		* [addFoodToMeal](#addFoodToMeal)
-    * [removeFoodFromMeal](#removeFoodFromMeal)
+		* [removeFoodFromMeal](#removeFoodFromMeal)
 		* [setMeals](#setMeals)
 	* [Menu](#Menu)
 		* [getMenu](#getMenu)
