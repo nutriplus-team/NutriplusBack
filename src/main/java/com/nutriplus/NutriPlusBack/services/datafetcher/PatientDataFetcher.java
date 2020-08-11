@@ -271,7 +271,7 @@ public class PatientDataFetcher {
             if(input.containsKey("restrictedFoods")){
 
                 ArrayList<String> restrictedFoods = (ArrayList<String>) input.get("restrictedFoods");
-
+                patient.getFoodRestrictionsUUID().clear();
                 for(String uuidFood : restrictedFoods){
                     if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
                         patient.getFoodRestrictionsUUID().add(uuidFood);
