@@ -55,6 +55,7 @@ type Mutation{
 type Patient {
      uuid:  String
      name:  String
+     foodRestrictions: [String]
      ethnicGroup: Float
      email: String
      dateOfBirth: String
@@ -67,6 +68,7 @@ type Patient {
 input PatientInput {
     name:  String
     ethnicGroup: Float
+    foodRestrictions: [String]
     email: String
     dateOfBirth: String
     nutritionist: String

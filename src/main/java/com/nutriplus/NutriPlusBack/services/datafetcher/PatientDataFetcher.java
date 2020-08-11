@@ -197,7 +197,8 @@ public class PatientDataFetcher {
                 return false;
 
             for(String uuidFood : restrictedFoods){
-                patient.getFoodRestrictionsUUID().add(uuidFood);
+                if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
+                    patient.getFoodRestrictionsUUID().add(uuidFood);
             }
 
             if(patient.getUuid().equals(uuidPatient)) {
@@ -249,7 +250,6 @@ public class PatientDataFetcher {
                 if(!input.containsKey("energyRequirements"))
                     patientRecord.calculateEnergyRequirements();
 
-
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
                 return true;
             }else return false;
@@ -268,7 +268,21 @@ public class PatientDataFetcher {
             if(patient == null)
                 return false;
 
-            if(patient.getUuid().equals(uuidPatient)) {
+            if(input.containsKey("restrictedFoods")){
+
+                ArrayList<String> restrictedFoods = (ArrayList<String>) input.get("restrictedFoods");
+
+                for(String uuidFood : restrictedFoods){
+                    if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
+                        patient.getFoodRestrictionsUUID().add(uuidFood);
+                }
+
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+            }
+
+
+
+            if(patient.getUuid().equals(uuidPatient)){
                 if(input.containsKey("dateOfBirth")){
                     String dateOfBirth = (String) input.get("dateOfBirth");
                     Date dateOfBirthValue = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirth);
