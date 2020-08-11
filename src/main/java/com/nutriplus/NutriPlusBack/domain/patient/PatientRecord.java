@@ -62,19 +62,15 @@ public class PatientRecord extends AbstractEntity {
     String methodBodyFat;
     String methodMethabolicRate;
 
+    String anamnesis;
+    String exam;
     //Set Functions
+    public void setAnamnesis(String anamnesisValue){anamnesis=anamnesisValue;}
+    public void setExam(String examValue){exam=examValue;}
     public void setMethodBodyFat(String methodBodyFatValue){methodBodyFat=methodBodyFatValue;}
     public void setMethodMethabolicRate(String methodMethabolicRateValue){methodMethabolicRate=methodMethabolicRateValue;}
     public void setUuidPatient(String uuid){uuidPatient = uuid;}
-    public void setDateModified(String stringDate) {
-        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        //try {
-        //    dateModified = sdf.parse(stringDate);
-        //}catch (ParseException e) {
-        //    e.printStackTrace();
-        //}
-        dateModified = stringDate;
-    }
+    public void setDateModified(String stringDate) { dateModified = stringDate; }
     public void setIsAthlete(Boolean value){isAthlete = value;}
     public void setAge(Integer ageValue){age = ageValue;}
     public void setPhysicalActivityLevel(Double physicalActivityLevelValue){physicalActivityLevel = physicalActivityLevelValue;}
@@ -108,6 +104,8 @@ public class PatientRecord extends AbstractEntity {
     public void setEnergyRequirements(Double energyRequirementsValue){energyRequirements = energyRequirementsValue;}
 
     //Get Functions
+    public String getAnamnesis(){return anamnesis;}
+    public String getExam(){return exam;}
     public String getMethodBodyFat(){return methodBodyFat;}
     public String getMethodMethabolicRate(){return methodMethabolicRate;}
     public String getUuidPatient(){return uuidPatient;}
