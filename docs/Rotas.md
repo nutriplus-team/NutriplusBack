@@ -1052,6 +1052,7 @@ query {
         corporalDensity,
         bodyFat,
         methabolicRate,
+        dateModified,
         energyRequirements
     }
 }

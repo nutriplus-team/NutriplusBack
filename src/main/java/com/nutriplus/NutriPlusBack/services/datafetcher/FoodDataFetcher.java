@@ -56,7 +56,7 @@ public class FoodDataFetcher {
                     return foodList.subList(indexPage, foodList.size());
                 }
                 else {
-                    return null;
+                    return new ArrayList<Food>();
                 }
             }
         };
