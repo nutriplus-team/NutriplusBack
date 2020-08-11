@@ -43,7 +43,8 @@ type Mutation{
     removeFood(uuidFood: String!) : Boolean
     startMeals : Boolean
     addFoodToMeal(uuidFood: String!, mealTypes: [Int]) : Boolean
-    removeFoodFromMeal(uuidFood: String!, mealType: Int!) : Boolean
+    removeFoodFromMeal(uuidFood: String!, mealTypes: [Int]) : Boolean
+    setMeals(uuidFood: String!, mealTypes: [Int]) : Boolean
 
     # Menu
     addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
