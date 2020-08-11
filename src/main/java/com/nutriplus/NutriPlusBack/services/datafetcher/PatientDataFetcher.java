@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class PatientDataFetcher {
@@ -126,6 +128,29 @@ public class PatientDataFetcher {
                 field.setAccessible(true);
                 field.set(patientRecord, input.get(key));
             }
+
+            if(!input.containsKey("age")){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date dateOfBirth = sdf.parse(patient.getDateOfBirth());
+                Calendar today = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+                Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+                birthDate.setTime(dateOfBirth);
+
+                int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+
+                if ( (birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3) ||
+                        (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH ))){
+                    age--;
+
+                    // If birth date and todays date are of same month and birth day of month is greater than todays day of month then decrement age
+                }else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH )) &&
+                        (birthDate.get(Calendar.DAY_OF_MONTH) > today.get(Calendar.DAY_OF_MONTH ))){
+                    age--;
+                }
+
+                patientRecord.setAge(age);
+            }
+
             if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
                     input.containsKey("chest")&&input.containsKey("axillary")&&
                     input.containsKey("abdominal")&&input.containsKey("thigh")&&
@@ -140,8 +165,7 @@ public class PatientDataFetcher {
             }
 
             if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
-                input.containsKey("triceps")&&input.containsKey("age")&&
-                input.containsKey("calf")&&input.containsKey("calfCirc")&&
+                input.containsKey("triceps")&& input.containsKey("calf")&&input.containsKey("calfCirc")&&
                 input.containsKey("thigh")&&input.containsKey("thighCirc")&&
                 !input.containsKey("muscularMass")){
 
