@@ -38,7 +38,7 @@ type Mutation{
     updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
     # Food
-    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : String
     customizeFood(uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : String
     removeFood(uuidFood: String!) : Boolean
     startMeals : Boolean
