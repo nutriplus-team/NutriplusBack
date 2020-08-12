@@ -1,146 +1,128 @@
-Abacate;96;1.2;8.4;6;6.3;4;100;Colher de sopa;Frutas;1&2&4&5&6
-Abacaxi;48;0.9;0.1;12.3;1;1.2;100;Fatia pequena;Frutas;1&2&4&5&6
-Abobrinha;15;1.1;0.2;3;1.6;1;100;Colher de servir;Verduras e Legumes;3&6
-Abóbora Cabotiá;48;1.4;0.7;10.8;2.5;4;100;Colher de sopa;Tubérculos e derivados;3&6
-Abóbora Italiana;15;1.1;0.2;3;1.3;3;100;Colher de sopa;Verduras e Legumes;3&6
-Açúcar;406;0;0;104;0;7;100;Colher de sopa;Açúcar;&
-Açúcar de coco;373;0;0;105;0;20;100;Colher de chá;Açúcar;&
-Açúcar demerara;400;0;0;100;0;20;100;Colher de chá;Açúcar;&
-Açúcar mascavo;400;0;0;100;0;20;100;Colher de chá;Açúcar;&
-Água de coco;41;0;0;10;1;1;100;200mL;Frutas;1&2&4&5&6
-Aipim;125;1;0.3;30.4;1.6;4;100;Colher de sopa;Tubérculos e derivados;3&6
-Amaranto em flocos;336;12.1;6.2;58;6;5;100;Colher de sopa;Cereais, pães e massas;1&5
-Ameixa;53;0.8;0;13.9;2.4;1;100;Unidade;Frutas;1&2&4&5
-Ameixa Seca;240;2.2;0.38;63;7.1;17;100;Unidade;Frutas desidratadas;1&2&4&5
-Amêndoa;520;16;40;25;11.6;40;100;Unidade;Oleaginosas;1&2&4&5
-Amendoim;550;19;46;16;7.8;5;100;Colher de sopa;Oleaginosas;1&2&4&5
-Arroz Branco;128;2.5;0.2;28.1;0;5;100;Colher de sopa;Cereais, pães e massas;3&6
-Arroz integral;124;2.6;1;25.8;2.7;5;100;Colher de sopa;Cereais, pães e massas;3&6
-Arroz parboilizado;123;2.9;0.4;26.1;0;5;100;Colher de sopa;Cereais, pães e massas;3&6
-Atum em óleo;166;26.2;0.9;0;0;1;100;Lata;Proteína;3&6
-Aveia em flocos grossos;336;15;6.3;53;10;7;100;Colher de sopa;Cereais, pães e massas;1&2&4&5
-Avelã;707;14.1;63;17.5;0;100;100;Unidade;Oleaginosas;1&2&4&5
-Azeite de oliva;884;0;100;0;0;7.7;100;Colher de sopa;Gorduras (de adição);3&6
-Azeitona;194;1.2;20.3;5.5;4.6;26;100;Unidade;Gorduras/Oleaginosas;3&6
-Banana;77;1.2;0.1;20.3;2;1;100;Unidade;Frutas;1&2&3&4&5&6
-Banana Desidratada;162;3;0;40;0;18;100;Unidade;Frutas desidratadas;1&2&3&4&6
-Banha de porco;902;0;100;0;0;7;100;Colher de sopa;Gorduras (de adição);3&6
-Batata baroa;80;0.9;0.2;15;1.8;1;100;Unidade pequena;Tubérculos e derivados;3&6
-Batata doce;77;0.6;0.1;18.4;2.2;3;100;Fatias médias;Tubérculos e derivados;1&2&4&5
-Batata inglesa;103.9;2.31;0;23.73;1.3;3;100;Colher de sopa;Tubérculos e derivados;3&6
-Berinjela;19;0.7;0.1;4.5;2.5;3.5;100;Colher de sopa;Verduras e Legumes;3&6
-Beterraba;32;1.3;0.1;7.2;1.9;6;100;Colher de sopa;Verduras e Legumes;3&6
-Bolacha de Arroz Grande;386.1;8.91;6.6;72.6;3.96;8;100;Unidade;Cereais, pães e massas;1&2&4&5
-Bolacha de Arroz Pequena;389.4;8.91;6.6;72.6;3.96;42.9;100;Unidade;Cereais, pães e massas;1&2&4&5
-Bolo de caneca de banana;187.6;10.16;6.07;36.8;3.52;1;100;Unidade;Receita;1&2&3&4&5&6
-Brócolis;25;2.1;0.5;4.4;3.4;1;100;Colher de servir;Verduras e Legumes;3&6
-Caqui;32;0.2;0.1;8.4;0;1;25;2/3;Frutas;1&2&4&5
-Carne bovina;153;30;2.4;0;0;1;100;Porção;Proteína;3&6
-Castanha de caju;605;19;49;29.5;3.7;25;100;Unidade;Oleaginosas;1&2&4&5
-Castanha do Pará;643;14.3;63.5;15.1;7.9;10;100;Unidade;Oleaginosas;1&2&4&5
-Cenoura;34;1.3;0.2;7.7;3.2;6;100;Colher de sopa;Verduras e Legumes;3&6
-Chocolate amargo - 60%;524;8.8;34.8;44;10;4;100;Pedaço;Doces;2&4&5
-Chocolate amargo - 70%;635;6.5;50;40.5;3;5;100;Pedaço;Doces;2&4&5
-Chocolate amargo - 80%;616;11.2;52;26.8;6.8;4;100;Pedaço;Doces;2&4&5
-Chuchu;19;0.7;0.1;4.1;1.3;1;100;Colher de servir;Verduras e Legumes;3&6
-CLEARPRO BAR - Nutrify;134;16;5.5;6.7;12;1;100;Unidade;Proteína;2&4&5
-Coco;434;3.7;42;10.4;0;4;100;Palmo;Frutas;1&2&4&5
-Coco em flocos sem açúcar;737;5.5;63;36.85;0;10;100;Colher de sopa;Frutas;1&24&5
-Couve flor;19;1.2;0.3;3.9;2.1;1;100;Colher de servir;Verduras e Legumes;3&6
-Couve Manteiga;90;1.7;6.6;8.7;1.5;2;100;Colher de servir;Verduras e Legumes;3&6
-Crepioca;133.8;6.5;4.45;18.6;0;1;100;Unidade;Receita;4&5
-Damasco;355;5;0.55;81.9;7.8;11;100;Unidade;Frutas desidratadas;1&2&4&5
-Ervilha;88;7.5;0.5;15;9.7;7;100;Colher de sopa;Leguminosas;3&6
-Farelo de aveia;389;17;7;66;11;10;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Farinha de banana verde;260;1.5;0;14;11;10;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Feijão Carioca;76;4.8;0.5;15;8.5;5;100;Colher de sopa;Leguminosas;3&6
-Feijão Preto;77;4.5;0.5;15;8.4;4;100;Colher de sopa;Leguminosas;3&6
-Frango;212;33.4;7.6;0;0;1;100;Porção;Proteína;3&6
-Geleia;290;0;0;70;0;5;100;Colher de sopa;Doces e derivados;1&2&4&5
-Geleia 100% Fruta;155;0;0;37.5;0;5;100;Colher de sopa;Doces e derivados;1&2&4&5
-Goiaba;72.1;1.3;0.5;15.6;6.2;1.2;100;Unidade;Frutas;1&2&4&5
-Granola Tradicional - Mãe terra;487;10.5;16.75;72;8.5;4;100;Colher de sopa;Cereais, pães e massas;1&2&4&5
-Grão de bico;355;21.2;5.4;15;3.2;7;100;Colher de sopa;Leguminosas;3&6
-Iogurte natural;126;6.8;7;9.1;0;1;100;Unidade;Leite e derivados;1&2&4&5
-Iogurte Natural MOO;122;15;6;4;0;1;100;Unidade; ;1&2&4&5
-Iogurte Yorgus - grego;103;14;2.6;6;0;1;100;Pote; ;1&2&4&5
-Iogurte Yorgus (0 lactose);80;14;6;6;0;1;100;Pote; ;1&2&4&5
-Iogurte Yorgus ultra;160;16;0;22;0;1;100;Unidade; ;1&2&4&5
-Isocrisp Vegan;108;15;1.9;7.8;1.6;1;100;Scoop;Proteína;2&4&5
-Isocrisp Whey;112;16;0;12;0;1;100;Scoop;Proteína;2&4&5
-Isofort;114;27;0;1.6;0;1;30;30g; ;2&4&5
-Isomaltose (Palatinose);396;0;0;100;0;6.6;100;Colher de sopa;Açúcar;2&4&5
-Kiwi;51;1.3;0.6;11.5;2.7;1.3;100;Unidade;Frutas;1&2&4&5
-Laranja Baia;45;1;0.1;11.5;1.1;1;100;Unidade;Frutas;1&2&3&4&5&6
-Laranja Pera;37;1;0.1;8.9;0.8;1;100;Unidade;Frutas;1&2&3&4&5&6
-Leite de castanha Caju;81;3;6.6;2.8;0.7;1;100;Xícara; ;1&5
-Leite de Coco;166;1;18.4;2.2;0.7;1;100;Xícara;Gorduras/Oleaginosas;1&5
-Leite integral;59.5;3.1;3;5;0;1;100;Xícara;Leite e derivados;1&5
-Leite integral - em pó;516;26.4;28.4;38.4;0;8;100;Colher de sopa;Leite e derivados;1&5
-Lentilha;76.3;6.3;0.5;16.3;7.9;6;100;Colher de sopa;Leguminosas;3&6
-Maçã;56;0.3;0;15.2;1.3;1;100;Unidade;Frutas;1&2&3&4&5&6
-Macadamia;702;8.3;73.7;13.7;5.31;41;100;Unidade;Oleaginosas;2&4&5
-Macarrão;125.7;4.3;1;24.75;2;4;100;Colher de sopa;Cereais, pães e massas;3&6
-Macarrão (de milho sem glúten);177;2.6;2.6;31;0;4;100;Colher de sopa;Cereais, pães e massas;3&6
-Macarrão Integral;146;12;1.75;29.4;2.3;4;100;Colher de sopa;Cereais, pães e massas;3&6
-Mamão Formosa;45;0.8;0.1;11.6;1.8;1;100;Fatia;Frutas;1&2&3&4&5&6
-Mamão Papaia;40;0.5;0.1;10.4;1;1;100;Fatia;Frutas;1&2&3&4&5&6
-Manga Palmer;72;0.4;0.3;19.4;1.6;1;100;Unidade pequena;Frutas;1&2&3&4&5&6
-Manteiga;726;0;84.4;0;0;15;100;Colher de chá;Gorduras (de adição);1
-Mel;332.75;0.3;0;75;0;5.5;100;Colher de sopa;Açúcar;1
-Melado;306.5;0;0;76.6;0;5;100;Colher de sopa;Açúcar;1
-Melancia;33;0.9;0;8.1;0.1;1;100;Fatia;Frutas;1&2&3&4&5&6
-Melão;29;0.7;0;7.5;0.3;1;100;Fatia;Frutas;1&2&3&4&5&6
-Mexerica;58;0.9;0.1;14.9;3.1;1;100;Unidade;Frutas;1&2&3&4&5&6
-Milho;138;6.6;0.6;28.6;3.9;3;100;Colher de sopa;Cereais, pães e massas;1&3&6
-Morango;30;0.9;0.3;6.8;1.7;10;100;Unidade;Frutas;2&4&5
-Muffin de banana;240;16;17;44;8;4;100;Unidade;Receita;2&4&5
-Muffin de frango;264;32;12;16;4;4;100;Unidade;Receita;2&4&5
-Mussarela de Búfala;325;5.4;6;0.6;0;1;1;Fatia; ;1
-Nibs de cacau;635;13.5;46.5;33.5;0;20;100;Colher de chá;Frutas;1&2&4&5
-Noz;620;14;59.4;18.4;2.7;20;100;Unidade;Oleaginosas;1&2&4&5
-Óleo de coco;821;0;95.2;0;0;7;100;Colher de sopa;Gorduras (de adição);1&3&6
-Ovo Codorna;177;13.7;12.7;0.6;0;10;100;Unidade;Proteína;1&2&3&4&5&6
-Ovo Galinha;146;13.3;9.5;0.6;0;2;100;Unidade;Proteína;1&2&3&4&5&6
-Palmito;29;2.5;0.5;5.5;2.6;2;100;Unidade;Verduras e Legumes;3&6
-Panqueca;130.8;9.5;12.45;4.6;2;1;100;Unidade;Receita;3&6
-Panqueca de banana;204.6;10.6;12.55;26.6;4.6;1;100;Unidade;Receita;3&6
-Panqueca de banana com cacau;239.6;13.9;14.45;28.45;8.25;1;100;Unidade;Receita;3&6
-Pão 100% Integral;230;13.6;3.2;36;7.6;4;100;Fatias;Cereais, pães e massas;1&6
-Pão Caseiro;252;9;1.8;50;2.4;4;100;Fatias;Cereais, pães e massas;1&6
-Pão de frigideira;136.3;11;6.87;15.45;0.92;1;100;Unidade;Receita;1
-Pão de queijo de frigideira;173.8;9.5;7.75;18.6;0;1;100;Unidade;Receita;1&5
-Pão Integral;266;10.1;6.4;40;5.4;4;100;Fatias;Cereais, pães e massas;1&6
-Pão sem glúten;254.1;6.6;3.96;49.5;1.65;3.33;100;Fatias;Cereais, pães e massas;1&6
-Pasta de amendoim;588;25;50;20;0;6;100;Colher de sopa;Oleaginosas;1&2&4&5
-Pepino;10;0.9;0;2;1.1;9;100;Colher de sopa;Verduras e Legumes;3&6
-Pera;61;0.2;0.2;16.1;3;1;100;Unidade;Frutas;1&2&3&4&5&6
-Pescada;107;16.7;4;0;0;1;100;Porção;Proteína;3&6
-Pistache;617;20.6;48.4;24.8;10.8;81;100;Unidade;Oleaginosas;1&2&4&5
-Psyllium;374;6;2;83;78;16;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Pupunha;20;1;1;2;0.8;2;100;Unidade; ;1&2&3&4&5&6
-Queijo Cottage;98;11;4.3;3.4;0;3;100;Colher de sopa;Leite e derivados;1&3&6
-Queijo minas frescal;214.5;15.51;15.84;2.31;0;3.3;100;Fatia;Leite e derivados;1&3&6
-Queijo mussarela;312.5;22.75;15.75;0;0;9;100;Fatias; ;1&3&6
-Quinoa cozida;117;4.48;6.44;21;0;4;100;Colher de sopa;Cereais, pães e massas;1&3&6
-Repolho;17;0.9;0.1;3.9;1.9;2;100;Colher de servir;Verduras e Legumes;3&6
-Salmão;229;26.1;14.5;0;0;1;100;Porção;Proteína;3&6
-Sardinha;285;15.9;24;0;0;1;100;Lata;Proteína;3&6
-Semente de abóbora;540;21.6;33.6;12;18;7.5;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Semente de chia;486;17;31;42;34;8;100;Colher de sopa;Fibras e sementes;2&4&5
-Semente de girassol;584;20;51;21;9;9;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Semente de linhaça;534;18.3;42.16;28.9;27.3;8;100;Colher de sopa;Fibras e sementes;1&2&4&5
-Snack grão de bico;107;7;3.1;14;3.5;1;100;Unidade; ;2&4&5
-Suco de uva integral;130;0;0;32;0;1;200;200mL;Frutas;1&2&3&4&5&6
-Tamara;314;2.5;0.5;75;0;15;100;unidade;Frutas desidratadas;1&2&4&5
-Tapioca;240;3.2;0;54;0;5;100;Colher de sopa;Tubérculos e derivados;1&2&3&4&5&6
-Tofu;60;7.5;3.75;1.75;0;2.5;100;Fatias; ;3&6
-Tomate;15;1.1;0.2;3.1;1.2;9;100;Fatias;Verduras e Legumes;3&6
-Tomate Cereja;15;1.1;0.2;3.1;1.2;12;100;Unidade;Verduras e Legumes;1&2&4&5
-TOPWHEY3 - MAX;157;30;0;5.1;0;1;40;40g; ;1&2&4&5
-Uva;53;0.7;0.2;13.6;0.9;8;100;Unidade;Frutas;1&2&4
-Uva passa;315;3;0.5;75;0;5;100;Colher de sopa;Frutas desidratadas;1&2&4
-Vagem;25;1.8;0.72;5.3;2.4;1;100;Colher de servir;Verduras e Legumes;3&6
-VEGAN HARTS;266;20;12;22;11;1;100;Unidade;Proteína;1&2&4&5
-VEGANPRO BAR - Nutrify;104;13;4.8;4.5;12;1;100;Unidade;Proteína;1&2&4&5
-Whey;396;66.6;6.6;17.6;0;3.3;100;Scoop;Proteína;1&2&4&5
+FoodName;calories;proteins;lipids;carbohydrates;fiber;measure_amount;measure_type;food_group;measure_total_grams;meal_set
+Abacate;32.00;0.40;2.80;2.00;2.05;1.00;Colher de sopa;Frutas;35.00;0&1&3&4&5
+Abacaxi;48.00;0.90;0.10;12.30;1.00;1.00;Fatia Média;Frutas;100.00;0&1&3&4&5
+Abóbora Cabotian;12.00;0.35;0.18;2.70;0.63;1.00;Colher de sopa;Verduras e Legumes;25.00;2&5
+Abóbora Italiana;15.00;1.10;0.20;3.00;1.60;3.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Aipim;125.00;0.60;0.30;30.40;1.60;1.00;Pedaço Médio;Tuberculos e derivados;100.00;2&5
+Amaranto em flocos;73.20;2.70;6.00;1.00;1.50;1.00;Colher de sopa;Cereais, pães e massas;15.00;0&4
+Ameixa;53.00;0.80;0.00;13.90;2.40;1.00;Unidade Média;Frutas;100.00;0&1&3&4
+Ameixa Seca;10.00;0.10;0.02;2.50;0.71;1.00;Unidade;Frutas desidratadas;7.00;0&1&3&4
+Amendoim;88.00;4.30;7.40;3.20;1.00;1.00;Colher de sopa;Oleaginosas e sementes;15.00;0&1&3&4
+Amêndoa;5.90;0.21;0.54;0.10;0.12;1.00;Unidade;Oleaginosas e sementes;1.15;0&1&3&4
+Arroz Branco;24.80;0.52;0.20;5.00;0.54;1.00;Colher de sopa;Cereais, pães e massas;20.00;2&5
+Arroz integral;24.80;0.52;0.20;5.00;0.54;1.00;Colher de sopa;Cereais, pães e massas;20.00;2&5
+Arroz parboilizado;24.80;0.52;0.20;5.00;0.54;1.00;Colher de sopa;Cereais, pães e massas;20.00;2&5
+Atum em óleo;160.00;16.60;18.30;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Aveia em flocos;35.50;1.25;0.75;6.00;0.00;1.00;Colher de sopa;Cereais, pães e massas;15.00;0&1&3&4
+Azeite de oliva;108.00;0.00;12.00;0.00;0.00;1.00;Colher de sopa;Gorduras (de adição);11.77;2&5
+Azeitona Preta;8.08;0.05;1.30;0.20;0.20;1.00;Unidade;Gorduras;4.00;2&5
+Azeitona Verde;5.48;0.04;1.22;0.16;0.15;1.00;Unidade;Gorduras;4.00;2&5
+Açúcar;60.00;0.00;0.00;15.00;0.00;1.00;Colher de sopa;Açúcar;15.00;&
+Açúcar de coco;60.00;0.00;0.00;15.00;0.00;1.00;Colher de chá;Açúcar;15.00;&
+Açúcar demerara;60.00;0.00;0.00;15.00;0.00;1.00;Colher de chá;Açúcar;15.00;&
+Açúcar mascavo;60.00;0.00;0.00;15.00;0.00;1.00;Colher de chá;Açúcar;15.00;&
+Banana;77.00;1.20;0.10;20.30;2.00;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Banana Desidratada;78.00;1.00;0.00;17.50;0.00;1.00;Unidade;Frutas desidratadas;25.00;0&1&2&3&4&5
+Batata baroa;80.00;0.90;0.20;18.90;1.80;1.00;Unidade;Tuberculos e derivados;100.00;2&5
+Batata doce;77.20;0.75;0.25;18.50;0.00;0.50;Unidade Pequena;Tuberculos e derivados;100.00;0&1&3&4
+Batata inglesa;52.00;1.20;0.00;11.90;1.30;1.00;Unidade Grande;Tuberculos e derivados;100.00;2&5
+Berinjela;19.00;0.70;0.10;4.50;2.50;4.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Beterraba;100.00;1.40;0.20;8.00;4.00;6.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Bolacha de Arroz Pequena;59.00;1.35;1.00;11.00;0.00;6.00;Unidade;Cereais, pães e massas;15.00;0&1&3&4
+Brócolis;25.00;2.10;0.50;4.40;3.40;3.00;Ramos;Verduras e Legumes;100.00;2&5
+CLEARPRO BAR - Nutrify;134.00;16.00;5.50;6.70;12.00;1.00;Unidade;Proteína;50.00;1&3&4
+Camarão;90.00;19.00;1.00;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Caqui;71.00;0.40;0.10;19.30;0.00;1.00;Unidade Pequena;Frutas;100.00;0&1&3&4
+Carne bovina - Músculo;194.00;31.20;6.70;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Carne bovina - patinho;219.00;35.90;7.60;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Cará;33.00;0.70;1.00;7.60;0.00;1.00;Pedaço Pequeno;Tuberculos e derivados;40.00;2&5
+Castanha de caju;11.40;0.37;0.93;0.58;0.07;1.00;Unidade;Oleaginosas e sementes;2.00;0&1&3&4
+Castanha do Pará;64.30;1.45;6.35;1.51;0.74;1.00;Unidade;Oleaginosas e sementes;10.00;0&1&3&4
+Cenoura crua;34.00;1.30;0.20;7.70;3.20;8.00;Colher de sopa;Verduras e Legumes;100.00;1&2&3&5
+Chocolate amargo - 60%;136.00;1.70;13.00;4.90;0.00;1.00;Pedaço;Doces e derivados;25.00;1&3&4
+Chocolate amargo - 70%;141.00;2.50;10.00;8.50;0.00;1.00;Pedaço;Doces e derivados;25.00;1&3&4
+Chocolate amargo - 80%;155.00;3.10;11.00;4.40;0.00;1.00;Pedaço;Doces e derivados;25.00;1&3&4
+Chuchu;19.00;0.40;0.10;4.80;1.00;4.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Clara;14.75;3.35;0.03;0.00;0.00;1.00;Unidade;Proteína;25.00;2&5
+Coco;108.00;0.95;10.50;2.60;0.00;1.00;Palmo;Frutas gordurosas;25.00;0&1&3&4
+Couve Manteiga;27.00;2.90;0.50;4.30;3.10;4.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Couve flor;19.00;1.20;0.30;3.90;2.10;3.00;Ramos;Verduras e Legumes;100.00;2&5
+Damasco;26.00;0.50;0.10;8.10;0.78;1.00;Unidade;Frutas desidratadas;10.00;0&1&3&4
+Ervilha;18.50;1.20;0.10;4.20;2.43;1.00;Colher de sopa;Leguminosas;25.00;2&5
+Farelo de aveia;38.90;1.70;0.70;6.60;0.00;1.00;Colher de sopa;Cereais, pães e massas;15.00;0&1&3&4
+Farinha de amendoas;90.00;3.30;8.00;3.00;1.80;1.00;Colher de sopa;Oleaginosas e sementes;15.00;0&1&3&4
+Farinha de côco;54.00;1.30;5.20;0.50;2.50;1.00;Colher de sopa;Oleaginosas e sementes;10.00;0&1&3&4
+Feijão Preto;16.60;1.06;0.00;3.00;0.00;1.00;Colher de sopa;Leguminosas;20.00;2&5
+Frango - Peito;163.00;31.50;3.20;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Frango - Sobrecoxa;260.00;28.70;15.20;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Geleia;60.00;0.00;0.00;15.00;0.00;1.00;Colher de sopa;Doces e derivados;25.00;0&1&3&4
+Geleia 100% Fruta;31.00;0.00;0.00;7.50;0.00;1.00;Colher de sopa;Doces e derivados;25.00;0&1&3&4
+Goiaba;54.00;1.10;0.40;13.00;6.20;1.00;Unidade Pequena;Frutas;100.00;0&1&3&4
+Granola - Mãe terra;96.00;2.00;5.00;11.00;0.00;1.00;Colher de sopa;Cereais, pães e massas;20.00;0&1&3&4
+Grão de bico;25.35;1.35;0.00;4.05;0.95;1.00;Colher de sopa;Leguminosas;15.00;2&5
+Iogurte Natural MOO;122.00;15.00;6.00;4.00;0.00;1.00;Unidade;Leite e derivados;130.00;0&1&3&4
+Iogurte Yorgus - grego;76.00;15.00;0.00;4.00;0.00;1.00;Pote;Leite e derivados;130.00;0&1&3&4
+Iogurte Yorgus ultra;160.00;18.00;0.00;22.00;0.00;1.00;Garrafa;Leite e derivados;300.00;0&1&3&4
+Iogurte natural;126.00;6.80;7.00;9.10;0.00;1.00;Unidade;Leite e derivados;170.00;0&1&3&4
+Isomaltose (Palatinose);60.00;0.00;0.00;15.00;0.00;1.00;Colher de sopa;Açúcar;15.00;1&3&4
+Kiwi;51.00;1.30;0.60;11.50;2.70;1.00;Unidade;Frutas;70.00;0&1&3&4
+Laranja Baia;45.00;1.00;0.10;11.50;1.10;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Laranja Pera;37.00;1.00;0.10;8.90;0.80;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Leite desnatado;31.00;3.00;0.00;4.50;0.00;0.50;Copo;Leite e derivados;103.50;0&4
+Leite desnatado - PÓ;36.00;3.50;0.00;5.00;0.00;1.00;Colher de sopa;Leite e derivados;12.50;0&4
+Leite integral;72.00;3.00;3.00;4.50;0.00;0.50;Copo;Leite e derivados;103.20;0&4
+Leite integral - PÓ;64.50;3.30;3.55;4.80;0.00;1.00;Colher de sopa;Leite e derivados;12.50;0&4
+Leite semidesnatado;39.00;3.00;1.00;4.50;0.00;0.50;Copo;Leite e derivados;103.40;0&4
+Lentilha;14.80;1.00;0.08;2.61;0.00;1.00;Colher de sopa;Leguminosas;20.00;2&5
+Macarrão (de milho sem glúten);59.00;0.90;1.00;10.00;0.00;1.00;Colher de sopa;Cereais, pães e massas;33.00;2&5
+Macarrão Integral;48.70;4.00;0.60;10.00;0.80;1.00;Colher de sopa;Cereais, pães e massas;33.00;2&5
+Macarrão tradicional;41.70;1.40;0.30;8.20;0.70;1.00;Colher de sopa;Cereais, pães e massas;33.00;2&5
+Mamão Formosa;45.00;0.80;0.10;11.60;1.80;1.00;Fatia Média;Frutas;100.00;0&1&2&3&4&5
+Mamão Papaia;40.00;0.50;0.10;10.40;1.00;0.50;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Manga Palmer;72.00;0.40;0.20;19.40;1.60;0.25;Unidade;Frutas;100.00;0&1&2&3&4&5
+Manteiga com sal;76.00;0.00;8.40;0.00;0.00;1.00;Colher de sopa;Gorduras (de adição);10.00;0
+Maçã Fuji;56.00;0.30;0.00;15.20;1.30;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Mel;60.00;0.00;0.00;12.00;0.00;1.00;Colher de sopa;Açúcar;15.00;0
+Melado;60.00;0.00;0.00;15.00;0.00;1.00;Colher de sopa;Açúcar;15.00;0
+Melancia;33.00;0.90;0.00;8.10;0.10;1.00;Fatia Pequena;Frutas;100.00;0&1&2&3&4&5
+Melão;29.00;0.70;0.00;7.50;0.30;1.00;Fatia Média;Frutas;100.00;0&1&2&3&4&5
+Mexerica;58.00;0.90;0.10;14.90;3.10;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Morango;30.00;0.90;0.30;6.80;1.70;10.00;Unidade;Frutas;100.00;0&1&3&4
+Nibs de cacau;31.75;0.70;3.00;1.70;0.00;1.00;Colher de chá;Frutas gordurosas;5.00;0&1&3&4
+Nozes;15.50;0.35;1.48;0.46;0.18;1.00;Unidade;Oleaginosas e sementes;2.50;0&1&3&4
+Ovo Codorna;17.70;1.37;1.27;0.06;0.00;1.00;Unidade;Proteína;10.00;0&1&2&3&4&5
+Ovo Galinha;73.00;6.65;4.75;0.30;0.00;1.00;Unidade;Proteína;50.00;0&1&2&3&4&5
+Palmito Juçara;13.00;1.40;0.00;1.90;3.20;0.50;Xícara;Verduras e Legumes;50.00;2&5
+Pasta de amendoim;91.00;4.10;7.00;3.00;1.00;1.00;Colher de sopa;Oleaginosas e sementes;15.00;0&1&3&4
+Pepino;10.00;0.90;0.00;2.00;1.10;1.00;Unidade;Verduras e Legumes;100.00;2&5
+Pera;61.00;0.20;0.20;16.10;3.00;1.00;Unidade Pequena;Frutas;100.00;0&1&2&3&4&5
+Pescada;107.00;16.70;4.00;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Pipoca;82.00;2.30;1.00;16.00;2.40;0.50;Xícara;Cereais, pães e massas;25.00;1&3
+Pão 100% integral - WICKBOLD;57.50;3.40;0.80;9.00;1.90;1.00;Fatia;Cereais, pães e massas;25.00;0&1&3&4&5
+Pão sem glúten;62.50;1.10;1.30;11.50;0.00;1.00;Fatia;Cereais, pães e massas;25.00;0&1&3&4&5
+Pão sírio;139.00;5.30;0.50;28.00;0.00;1.00;Unidade;Cereais, pães e massas;50.00;0&1&3&4&5
+Queijo Cottage;22.50;2.90;0.90;0.65;0.00;1.00;Colher de sopa;Leite e derivados;25.00;0&1&3&4&5
+Queijo Mozzarella;106.00;7.50;8.40;0.00;0.00;1.00;Fatia;Leite e derivados;30.00;0&1&3&4&5
+Queijo coalho;105.00;7.10;8.50;0.00;0.00;1.00;Espeto;Leite e derivados;60.00;0&1&3&4&5
+Quinoa cozida;42.00;1.60;0.70;7.40;0.00;1.00;Colher de sopa;Cereais, pães e massas;33.00;2&5
+Quinoa em flocos;63.00;2.60;1.10;10.30;0.00;1.00;Colher de sopa;Cereais, pães e massas;33.00;0&1&3&5
+Repolho Branco;17.00;0.90;0.10;3.90;1.90;8.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Salmão;243.00;26.10;26.10;0.00;0.00;1.00;Porção;Proteína;100.00;2&5
+Sardinha;285.00;15.90;24.00;0.00;0.00;1.00;Lata;Proteína;100.00;2&5
+Semente de abóbora;43.60;1.85;1.95;5.40;3.59;1.00;Colher de sopa;Oleaginosas e sementes;10.00;0&1&3&4
+Semente de chia;56.00;2.10;3.85;5.28;0.00;1.00;Colher de sopa;Oleaginosas e sementes;12.50;0&1&3&4
+Semente de linhaça;65.00;1.75;4.05;5.40;0.00;1.00;Colher de sopa;Fibras e sementes;12.50;0&1&3&4
+Snack grão de bico;107.00;7.00;3.10;14.00;3.50;1.00;Pacote;Leguminosas;30.00;1&3&4
+Suco de Laranja - Prats;74.00;1.30;0.00;16.00;1.70;1.00;Copo;Frutas;262.59;0&1&2&3&4&5
+Suco de uva integral;121.00;0.00;0.00;29.00;0.00;1.00;Copo;Frutas;212.00;0&1&2&3&4&5
+Tamara;21.00;0.20;0.00;5.00;0.00;2.00;Unidade;Frutas desidratadas;15.00;0&1&3&4
+Tapioca;48.00;0.64;0.00;10.80;0.00;1.00;Colher de sopa;Tuberculos e derivados;20.00;0&1&2&3&4&5
+Tomate;15.00;1.10;0.20;3.10;1.20;4.00;Fatia;Verduras e Legumes;100.00;2&5
+Uva Italia;53.00;0.70;0.20;13.60;0.90;10.00;Bagos;Frutas;100.00;0&1&2&3&4&5
+Uva passa;63.00;0.60;0.10;15.00;0.00;1.00;Colher de sopa;Frutas desidratadas;15.00;0&1&2&3&4&5
+VEGANPRO BAR - Nutrify;104.00;13.00;4.80;4.50;12.00;1.00;Unidade;Proteína;50.00;0&1&3&4
+Vagem;25.00;1.80;0.72;5.30;2.40;4.00;Colher de sopa;Verduras e Legumes;100.00;2&5
+Whey - Best Whey;132.00;25.00;1.50;4.50;0.00;1.00;Scoop;Proteína;25.00;0&1&3&4
+Whey - Essential;104.00;22.00;0.70;4.50;0.00;1.00;Scoop;Proteína;30.00;0&1&3&4
+Água de coco;38.00;0.00;0.00;9.40;0.00;1.00;Copo;Frutas;204.00;0&1&3&4&5
+Óleo de coco;108.00;0.00;95.20;0.00;0.00;1.00;Colher de sopa;Gorduras (de adição);11.97;0&2&5
