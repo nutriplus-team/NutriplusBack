@@ -193,7 +193,7 @@ public class DietController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ErrorDTO("Error sending email"));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body("OK");
+        return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponseDTO("OK"));
     }
 
     @PostMapping("/generate/{patientId}/{meal}/")
