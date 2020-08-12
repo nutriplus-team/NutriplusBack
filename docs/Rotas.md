@@ -1143,6 +1143,7 @@ query {
         calfCirc,
         muscularMass,
 	dateModified
+        //COMENTARIO: Adicionar menus aqui nao vai retornar nada
     }
 }
 ```
@@ -1156,10 +1157,10 @@ query {
         uuid,
         uuidPatient,
         anamnesis,
-	exam,
-	corporalMass,
-	methodBodyFat,
-	methodMethabolicRate,
+    	exam,
+        corporalMass,
+        methodBodyFat,
+        methodMethabolicRate,
         height,
         abdominal,
         isAthlete,
@@ -1185,7 +1186,8 @@ query {
         bodyFat,
         methabolicRate,
         dateModified,
-        energyRequirements
+        energyRequirements,
+        menus //COMENTARIO: Isso retorna uma lista com os uuids dos cardapios associados
     }
 }
 ```
