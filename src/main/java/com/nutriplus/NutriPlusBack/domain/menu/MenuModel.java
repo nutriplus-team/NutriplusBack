@@ -16,7 +16,6 @@ public abstract class MenuModel extends AbstractEntity {
     public Long id;
 
     MealType mealType;
-    Patient patient;
 
     @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)
     PatientRecord patientRecord;

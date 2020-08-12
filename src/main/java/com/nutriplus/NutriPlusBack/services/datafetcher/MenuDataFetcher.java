@@ -34,13 +34,13 @@ public class MenuDataFetcher {
     public DataFetcher<Menu> getMenu()
     {
         return dataFetchingEnvironment -> {
-            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");//TODO: Change to patientRecord
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
             Optional<Menu> menu = applicationMenuRepository.getMenuWithPortions(uuidMenu);
             if(!menu.isPresent())
                 return null;
 
-            if(menu.get().getPatient().getUuid().equals(uuidPatient))
+            if(menu.get().getPatient().getUuid().equals(uuidPatient))//TODO: Change to patientRecord
                 return menu.get();
 
             return null;
