@@ -23,7 +23,7 @@ public class Food extends FoodModel implements Comparable<Food> {
         nutritionFacts      = new NutritionFacts(foodValue.nutritionFacts);
     }
     //New Food
-    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+    public Food(String foodNameValue, String foodGroupValue, Double measureTotalGramsValue, String measureTypeValue,
          Double measureAmountValue, NutritionFacts nutritionFactsValue){
         super();
         foodName            = foodNameValue;
@@ -65,7 +65,7 @@ public class Food extends FoodModel implements Comparable<Food> {
     }
 
     //This was only for testing
-//    public Food(String foodNameValue, String foodGroupValue, double measureTotalGramsValue, String measureTypeValue,
+//    public Food(String foodNameValue, String foodGroupValue, Double measureTotalGramsValue, String measureTypeValue,
 //                Double measureAmountValue){
 //        foodName            = foodNameValue;
 //        foodGroup           = foodGroupValue;
