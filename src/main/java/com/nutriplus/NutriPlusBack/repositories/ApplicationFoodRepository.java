@@ -34,4 +34,7 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
 
     @Query("MATCH (u:UserCredentials) WHERE u.uuid=$0 WITH u MATCH (f:Food) WHERE NOT (f)<-[:CUSTOMIZE]-()<--(u) AND toLower(f.foodName) CONTAINS toLower($1) AND f.created=false AND f.custom=false RETURN f UNION MATCH (u:UserCredentials) WHERE u.uuid=$0 MATCH (f:Food)<-[:CUSTOM_FOOD]-(u) WHERE toLower(f.foodName) CONTAINS toLower($1) RETURN f")
     ArrayList<Food> searchFood(String uuid, String partialFoodName);
+
+    @Query("MATCH (n) RETURN count(n)")
+    Integer numOfFoods();
 }

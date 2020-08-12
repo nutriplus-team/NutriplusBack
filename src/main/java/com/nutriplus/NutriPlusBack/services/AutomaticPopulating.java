@@ -8,6 +8,7 @@ import com.nutriplus.NutriPlusBack.repositories.ApplicationFoodRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationMealRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -24,12 +25,18 @@ public class AutomaticPopulating {
     @Autowired
     private ApplicationMealRepository applicationMealRepository;
 
+    @Bean
+    void firstStartUp(){
+        if (applicationFoodRepository.numOfFoods() == 0)
+            FoodPopulate();
+    }
+
     void FoodPopulate(){
 
         startMeals();
 
         // Read csv
-        String csvFile = "./foods.csv";
+        String csvFile = "./dbAux/foods.csv";
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ";";
@@ -37,29 +44,26 @@ public class AutomaticPopulating {
         try {
 
             br = new BufferedReader(new FileReader(csvFile));
-            boolean firstLine = Boolean.TRUE;
+
+            br.readLine(); // read the first line (header) to skip it
 
             while ((line = br.readLine()) != null) {
-                if (firstLine) {
-                    firstLine = Boolean.FALSE;
-                    continue;
-                }
 
                 String[] csvData = line.split(cvsSplitBy);
 
                 // debug
-                System.out.println(
-                        "FoodName=" +               csvData[0] +
-                        ", calories=" +             csvData[1] +
-                        ", proteins=" +             csvData[2] +
-                        ", lipids=" +               csvData[3] +
-                        ", carbohydrates=" +        csvData[4] +
-                        ", fiber=" +                csvData[5] +
-                        ", measure_amount=" +       csvData[6] +
-                        ", measure_type=" +         csvData[7] +
-                        ", food_group=" +           csvData[8] +
-                        ", measure_total_grams=" +  csvData[9] +
-                        ", meal_set=" +             csvData[10]);
+//                System.out.println(
+//                        "FoodName=" +               csvData[0] +
+//                        ", calories=" +             csvData[1] +
+//                        ", proteins=" +             csvData[2] +
+//                        ", lipids=" +               csvData[3] +
+//                        ", carbohydrates=" +        csvData[4] +
+//                        ", fiber=" +                csvData[5] +
+//                        ", measure_amount=" +       csvData[6] +
+//                        ", measure_type=" +         csvData[7] +
+//                        ", food_group=" +           csvData[8] +
+//                        ", measure_total_grams=" +  csvData[9] +
+//                        ", meal_set=" +             csvData[10]);
 
                 // Create Food
                 NutritionFacts csvNutritionFacts = new NutritionFacts(
@@ -76,20 +80,29 @@ public class AutomaticPopulating {
                         Double.parseDouble(csvData[6]),     // measureAmount
                         csvNutritionFacts);
 
-                // Add food to meal
-                if(csvData[10].contains("0"))
-                    applicationMealRepository.addFood("BREAKFAST", csvFood.getUuid());
-                if(csvData[10].contains("1"))
-                    applicationMealRepository.addFood("MORNING_SNACK", csvFood.getUuid());
-                if(csvData[10].contains("2"))
-                    applicationMealRepository.addFood("LUNCH", csvFood.getUuid());
-                if(csvData[10].contains("3"))
-                    applicationMealRepository.addFood("AFTERNOON_SNACK", csvFood.getUuid());
-                if(csvData[10].contains("4"))
-                    applicationMealRepository.addFood("PRE_WORKOUT", csvFood.getUuid());
-                if(csvData[10].contains("5"))
-                    applicationMealRepository.addFood("DINNER", csvFood.getUuid());
+                // Save food
                 applicationFoodRepository.save(csvFood);
+
+                // Add food to meal
+                if(csvData[10].contains("0")) {
+                    applicationMealRepository.addFood("BREAKFAST", csvFood.getUuid());
+                }
+                if(csvData[10].contains("1")) {
+                    applicationMealRepository.addFood("MORNING_SNACK", csvFood.getUuid());
+                }
+                if(csvData[10].contains("2")) {
+                    applicationMealRepository.addFood("LUNCH", csvFood.getUuid());
+                }
+                if(csvData[10].contains("3")) {
+                    applicationMealRepository.addFood("AFTERNOON_SNACK", csvFood.getUuid());
+                }
+                if(csvData[10].contains("4")) {
+                    applicationMealRepository.addFood("PRE_WORKOUT", csvFood.getUuid());
+                }
+                if(csvData[10].contains("5")) {
+                    applicationMealRepository.addFood("DINNER", csvFood.getUuid());
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
