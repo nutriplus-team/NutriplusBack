@@ -293,7 +293,7 @@ Exemplo de Resposta:
            "uuid": "6fc8831abf78457c9f2fea5aec1be168",
            "foodName": "Macarrão Integral",
            "foodGroup": "Cereais, pães e massas",
-           "measureTotalGramsValue": 0.0,
+           "measureTotalGrams": 0.0,
            "measureType": "Colher de sopa",
            "measureAmount": 4,
            "nutritionFacts": {
@@ -308,7 +308,7 @@ Exemplo de Resposta:
            "uuid": "756465cf7e8449db99f07f7c596bc7ba",
            "foodName": "Pupunha",
            "foodGroup": " ",
-           "measureTotalGramsValue": 0.0,
+           "measureTotalGrams": 0.0,
            "measureType": "Unidade",
            "measureAmount": 2,
            "nutritionFacts": {
@@ -357,7 +357,7 @@ O retorno da solicitação é uma lista de sugestões e uma lista com suas quant
            "uuid": "5b4f1bfb6cc741918c3da1522c57b50d",
            "foodName": "Feijão Carioca",
            "foodGroup": "Leguminosas",
-           "measureTotalGramsValue": 0.0,
+           "measureTotalGrams": 0.0,
            "measureType": "Colher de sopa",
            "measureAmount": 5,
            "nutritionFacts": {
@@ -372,7 +372,7 @@ O retorno da solicitação é uma lista de sugestões e uma lista com suas quant
            "uuid": "7442f5a87b9f47128e9ce43af8e094ec",
            "foodName": "Queijo Cottage",
            "foodGroup": "Leite e derivados",
-           "measureTotalGramsValue": 0.0,
+           "measureTotalGrams": 0.0,
            "measureType": "Colher de sopa",
            "measureAmount": 3,
            "nutritionFacts": {
@@ -624,7 +624,7 @@ mutation {
                     foodGroup: String!
                     measureTotalGrams: Float!
                     measureType: String!
-                    measureAmountValue: Float!
+                    measureAmount: Float!
                 },
                 nutritionInput: {
                     calories: Float!
@@ -644,7 +644,7 @@ mutation {
                     foodGroup: "Doces",
                     measureTotalGrams: 21.0,
                     measureType: "Medidas Carteadas",
-                    measureAmountValue: 110.0
+                    measureAmount: 110.0
                 },
                 nutritionInput: {
                     calories: 1.0,
@@ -664,7 +664,7 @@ customizeFood(uuidFood: String!,
                 customInput: {
                     measureTotalGrams: Float!
                     measureType: String!
-                    measureAmountValue: Float!
+                    measureAmount: Float!
                 }, 
               nutritionInput: {
                     calories: Float!
@@ -682,7 +682,7 @@ mutation {
                     customInput: {
                         measureTotalGrams: 999.9,
                         measureType: "Medidas Carteadas",
-                        measureAmountValue: 999.9 
+                        measureAmount: 999.9 
                     },
                     nutritionInput: {
                         calories: 9.9,

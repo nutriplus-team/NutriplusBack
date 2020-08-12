@@ -80,7 +80,7 @@ public class Food extends FoodModel implements Comparable<Food> {
     public void setFoodGroup(String foodGroupValue)                   { foodGroup = foodGroupValue; }
     public void setMeasureTotalGrams(Double measureTotalGramsValue)   { measureTotalGrams = measureTotalGramsValue; }
     public void setMeasureType(String measureTypeValue)               { measureType = measureTypeValue; }
-    public void setMeasureAmount(Double measureAmountValue)              { measureAmount = measureAmountValue; }
+    public void setMeasureAmount(Double measureAmountValue)           { measureAmount = measureAmountValue; }
     public void setNutritionFacts(NutritionFacts nutritionFactsValue) {
         if(nutritionFacts == null){
             nutritionFacts = new NutritionFacts();
