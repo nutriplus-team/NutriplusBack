@@ -7,6 +7,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Repository
@@ -37,4 +38,10 @@ public interface ApplicationFoodRepository extends Neo4jRepository<Food, Long> {
 
     @Query("MATCH (n) RETURN count(n)")
     Integer numOfFoods();
+
+    @Query("MATCH (f:Food) where f.uuid=$uuidFood SET f.measureType=$measureType SET f.measureTotalGrams=$measureTotalGrams SET f.measureAmount=$measureAmount")
+    void updateFoodFromRepository(String uuidFood, String measureType, Double measureTotalGrams, Double measureAmount);
+
+    @Query("MATCH (f:Food) where f.uuid=$uuidFood SET f.calories=$calories SET f.proteins=$proteins SET f.carbohydrates=$carbohydrates SET f.lipids=$lipids SET f.fiber=$fiber")
+    void updateFoodNutritionFacts(String uuidFood, Double calories, Double proteins, Double carbohydrates, Double lipids, Double fiber);
 }

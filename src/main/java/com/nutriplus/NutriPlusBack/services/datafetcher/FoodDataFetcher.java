@@ -187,13 +187,8 @@ public class FoodDataFetcher {
             String returnUUid = "";
 
             if (originalFood.getCustom() || originalFood.getCreated()) {
-                originalFood.setNutritionFacts(nutritionFacts);
-                originalFood.setMeasureType(measureType);
-                originalFood.setMeasureTotalGrams(measureTotalGrams);
-                originalFood.setMeasureAmount(measureAmount);
-
-                applicationFoodRepository.save(originalFood);
-                applicationUserRepository.save(user);
+                applicationFoodRepository.updateFoodFromRepository(originalFood.getUuid(), measureType, measureTotalGrams, measureAmount);
+                applicationFoodRepository.updateFoodNutritionFacts(originalFood.getUuid(), caloriesValue, proteinsValue, carbohydratesValue, lipidsValue, fiberValue);
 
                 returnUUid = originalFood.getUuid();
             }
