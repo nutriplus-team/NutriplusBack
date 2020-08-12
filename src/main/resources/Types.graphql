@@ -27,7 +27,7 @@ type Query {
 
 type Mutation{
     # Patient
-    createPatientRecord(uuidPatient: String!, input: PatientRecordInput) : Boolean
+    createPatientRecord(uuidPatient: String!, input: PatientRecordInput) : String
     removePatientRecord(uuidPatientRecord: String!): Boolean
     updatePatientRecord(uuidPatient: String!,uuidPatientRecord: String!,input: PatientRecordInput): Boolean
     updateFoodRestrictions(uuidPatient: String!, uuidFoods: [String]): Boolean
@@ -38,12 +38,13 @@ type Mutation{
     updatePatient(uuidPatient: String!,input: PatientInput): Boolean
 
     # Food
-    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
-    customizeFood(uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : Boolean
+    createFood(foodInput: NewFoodInput!, nutritionInput: NutritionFactsInput!) : String
+    customizeFood(uuidFood: String!, customInput: CustomFoodInput!, nutritionInput: NutritionFactsInput!) : String
     removeFood(uuidFood: String!) : Boolean
     startMeals : Boolean
-    addFoodToMeal(uuidFood: String!, mealType: Int!) : Boolean
-    removeFoodFromMeal(uuidFood: String!, mealType: Int!) : Boolean
+    addFoodToMeal(uuidFood: String!, mealTypes: [Int]) : Boolean
+    removeFoodFromMeal(uuidFood: String!, mealTypes: [Int]) : Boolean
+    setMeals(uuidFood: String!, mealTypes: [Int]) : Boolean
 
     # Menu
     addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
@@ -55,6 +56,7 @@ type Mutation{
 type Patient {
      uuid:  String
      name:  String
+     foodRestrictions: [String]
      ethnicGroup: Float
      email: String
      dateOfBirth: String
@@ -67,6 +69,7 @@ type Patient {
 input PatientInput {
     name:  String
     ethnicGroup: Float
+    foodRestrictions: [String]
     email: String
     dateOfBirth: String
     nutritionist: String
@@ -76,6 +79,8 @@ input PatientInput {
 
 type PatientRecord{
     uuid: String
+    anamnesis: String
+    exam: String
     uuidPatient: String
     corporalMass: Float
     methodBodyFat: String
@@ -109,6 +114,8 @@ type PatientRecord{
 }
 
 input PatientRecordInput{
+    anamnesis: String
+    exam: String
     methodBodyFat: String
     methodMethabolicRate: String
     corporalMass: Float

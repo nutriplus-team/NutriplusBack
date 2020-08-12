@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class PatientDataFetcher {
@@ -89,7 +91,7 @@ public class PatientDataFetcher {
         };
     }
 
-    public DataFetcher<Boolean> createPatientRecord(){
+    public DataFetcher<String> createPatientRecord(){
         return dataFetchingEnvironment -> {
             String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             LinkedHashMap<String,Object> input = dataFetchingEnvironment.getArgument("input");
@@ -99,7 +101,7 @@ public class PatientDataFetcher {
             UserCredentials user = (UserCredentials) authentication.getCredentials();
             Patient patient = user.getPatientByUuid(uuidPatient);
             if(patient == null)
-                return false;
+                return "";
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
@@ -110,14 +112,12 @@ public class PatientDataFetcher {
             if(input.containsKey("methodBodyFat")){
                 String methodBodyFatString = (String) input.get("methodBodyFat");
                 methodBodyFatConstants = patientRecord.convertMethodStringToConstants(methodBodyFatString);
-                input.remove("methodBodyFat");
             }else{
                 methodBodyFatConstants = Constants.FAULKNER;
             }
             if(input.containsKey("methodMethabolicRate")){
                 String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
                 methodMethabolicRateConstants = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
-                input.remove("methodMethabolicRate");
             }else{
                 methodMethabolicRateConstants = Constants.MIFFLIN;
             }
@@ -126,20 +126,44 @@ public class PatientDataFetcher {
                 field.setAccessible(true);
                 field.set(patientRecord, input.get(key));
             }
+
+            if(!input.containsKey("age")){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date dateOfBirth = sdf.parse(patient.getDateOfBirth());
+                Calendar today = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+                Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+                birthDate.setTime(dateOfBirth);
+
+                int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+
+                if ( (birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3) ||
+                        (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH ))){
+                    age--;
+
+                    // If birth date and todays date are of same month and birth day of month is greater than todays day of month then decrement age
+                }else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH )) &&
+                        (birthDate.get(Calendar.DAY_OF_MONTH) > today.get(Calendar.DAY_OF_MONTH ))){
+                    age--;
+                }
+
+                patientRecord.setAge(age);
+            }
+
+            if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
+                    input.containsKey("chest")&&input.containsKey("axillary")&&
+                    input.containsKey("abdominal")&&input.containsKey("thigh")&&
+                    !input.containsKey("corporalDensity")){
+
+                patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+            }
+
             if (((input.containsKey("triceps") && input.containsKey("abdominal") && input.containsKey("supriailiac")) ||
             !methodBodyFatConstants.equals(Constants.FAULKNER)&&input.containsKey("corporalDensity"))&& !input.containsKey("bodyFat")){
                 patientRecord.calculateBodyFat(methodBodyFatConstants);
             }
-            if (input.containsKey("subscapular")&&input.containsKey("triceps")&&
-                input.containsKey("chest")&&input.containsKey("axillary")&&
-                input.containsKey("abdominal")&&input.containsKey("thigh")&&
-                !input.containsKey("corporalDensity")){
 
-                patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-            }
             if(input.containsKey("height")&&input.containsKey("rightArmCirc")&&
-                input.containsKey("triceps")&&input.containsKey("age")&&
-                input.containsKey("calf")&&input.containsKey("calfCirc")&&
+                input.containsKey("triceps")&& input.containsKey("calf")&&input.containsKey("calfCirc")&&
                 input.containsKey("thigh")&&input.containsKey("thighCirc")&&
                 !input.containsKey("muscularMass")){
 
@@ -152,10 +176,10 @@ public class PatientDataFetcher {
                 if(!input.containsKey("energyRequirements"))
                     patientRecord.calculateEnergyRequirements();
             }
-
+            String uuidRecord = patientRecord.getUuid();
             patient.setPatientRecord(patientRecord);
             applicationUserRepository.save(user);
-            return true;
+            return uuidRecord;
         };
     }
 
@@ -171,7 +195,8 @@ public class PatientDataFetcher {
                 return false;
 
             for(String uuidFood : restrictedFoods){
-                patient.getFoodRestrictionsUUID().add(uuidFood);
+                if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
+                    patient.getFoodRestrictionsUUID().add(uuidFood);
             }
 
             if(patient.getUuid().equals(uuidPatient)) {
@@ -204,7 +229,6 @@ public class PatientDataFetcher {
                     String methodBodyFatString = (String) input.get("methodBodyFat");
                     methodBodyFat = patientRecord.convertMethodStringToConstants(methodBodyFatString);
                     patientRecord.calculateBodyFat(methodBodyFat);
-                    input.remove("methodBodyFat");
 
                 }if(!input.containsKey("corporalDensity"))
                     patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
@@ -216,13 +240,10 @@ public class PatientDataFetcher {
                     methodMethabolicRate = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
 
                     patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
-                    input.remove("methodMethabolicRate");
-
                 }
 
                 if(!input.containsKey("energyRequirements"))
                     patientRecord.calculateEnergyRequirements();
-
 
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
                 return true;
@@ -242,11 +263,27 @@ public class PatientDataFetcher {
             if(patient == null)
                 return false;
 
-            if(patient.getUuid().equals(uuidPatient)) {
+            if(input.containsKey("restrictedFoods")){
+
+                ArrayList<String> restrictedFoods = (ArrayList<String>) input.get("restrictedFoods");
+                patient.getFoodRestrictionsUUID().clear();
+                for(String uuidFood : restrictedFoods){
+                    if(!patient.getFoodRestrictionsUUID().contains(uuidFood))
+                        patient.getFoodRestrictionsUUID().add(uuidFood);
+                }
+
+                applicationUserRepository.updatePatientFoodsRestrictionsFromRepository(uuidPatient,patient.getFoodRestrictionsUUID());
+            }
+
+
+
+            if(patient.getUuid().equals(uuidPatient)){
                 if(input.containsKey("dateOfBirth")){
                     String dateOfBirth = (String) input.get("dateOfBirth");
                     Date dateOfBirthValue = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirth);
-                    input.put("dateOfBirthValue",dateOfBirthValue);
+                    String dateOfBirthNeo4JFormat = new SimpleDateFormat("dd-MM-yyyy").format(dateOfBirthValue);
+                    dateOfBirthNeo4JFormat = dateOfBirthNeo4JFormat.concat("T02:00:00.000Z");
+                    input.put("dateOfBirthValue", dateOfBirthNeo4JFormat);
                 }
                 applicationUserRepository.updatePatientFromRepository(uuidPatient,input);
                 return true;

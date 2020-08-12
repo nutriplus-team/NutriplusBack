@@ -56,7 +56,7 @@ public class FoodDataFetcher {
                     return foodList.subList(indexPage, foodList.size());
                 }
                 else {
-                    return null;
+                    return new ArrayList<Food>();
                 }
             }
         };
@@ -81,7 +81,7 @@ public class FoodDataFetcher {
                     return searchResult.subList(indexPage, searchResult.size());
                 }
                 else {
-                    return null;
+                    return new ArrayList<Food>();
                 }
             }
         };
@@ -123,7 +123,7 @@ public class FoodDataFetcher {
         };
     }
 
-    public DataFetcher<Boolean> createFood() {
+    public DataFetcher<String> createFood() {
         return dataFetchingEnvironment -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserCredentials user = (UserCredentials) authentication.getCredentials();
@@ -140,7 +140,7 @@ public class FoodDataFetcher {
             // Get food data from input
             String foodName = (String) foodInput.get("foodName");
             String foodGroup = (String) foodInput.get("foodGroup");
-            String measureType = (String) foodInput.get("measureTypeValue");
+            String measureType = (String) foodInput.get("measureType");
             Double measureTotalGrams = (Double) foodInput.get("measureTotalGrams");
             Double measureAmountValue = (Double) foodInput.get("measureAmountValue");
 
@@ -154,12 +154,12 @@ public class FoodDataFetcher {
             applicationFoodRepository.save(createdFood);
             applicationUserRepository.save(user);
 
-            return true;
+            return createdFood.getUuid();
 
         };
     }
 
-    public DataFetcher<Boolean> customizeFood() {
+    public DataFetcher<String> customizeFood() {
         return dataFetchingEnvironment -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserCredentials user = (UserCredentials) authentication.getCredentials();
@@ -184,17 +184,34 @@ public class FoodDataFetcher {
                     lipidsValue, fiberValue);
 
             Food originalFood = applicationFoodRepository.findByUuid(uuidFood);
-            Food customFood = new Food(user, originalFood);
+            String returnUUid = "";
 
-            customFood.setNutritionFacts(nutritionFacts);
-            customFood.setMeasureType(measureType);
-            customFood.setMeasureTotalGrams(measureTotalGrams);
-            customFood.setMeasureAmount(measureAmountValue);
+            if (originalFood.getCustom() || originalFood.getCreated()) {
+                originalFood.setNutritionFacts(nutritionFacts);
+                originalFood.setMeasureType(measureType);
+                originalFood.setMeasureTotalGrams(measureTotalGrams);
+                originalFood.setMeasureAmount(measureAmountValue);
 
-            applicationFoodRepository.save(customFood);
-            applicationUserRepository.save(user);
+                applicationFoodRepository.save(originalFood);
+                applicationUserRepository.save(user);
 
-            return true;
+                returnUUid = originalFood.getUuid();
+            }
+            else {
+                Food customFood = new Food(user, originalFood);
+
+                customFood.setNutritionFacts(nutritionFacts);
+                customFood.setMeasureType(measureType);
+                customFood.setMeasureTotalGrams(measureTotalGrams);
+                customFood.setMeasureAmount(measureAmountValue);
+
+                applicationFoodRepository.save(customFood);
+                applicationUserRepository.save(user);
+
+                returnUUid = customFood.getUuid();
+            }
+
+            return returnUUid;
         };
     }
 
@@ -253,13 +270,16 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             try {
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
-                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
-                Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
-                if(!mealType.isPresent())
-                    return false;
-                String mealTypeName = mealType.get().name();
+                ArrayList<Integer> mealTypesInts = dataFetchingEnvironment.getArgument("mealTypes");
 
-                applicationMealRepository.addFood(mealTypeName, uuidFood);
+                for (Integer mealTypeInt : mealTypesInts){
+                    Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                    if(!mealType.isPresent())
+                        return false;
+                    String mealTypeName = mealType.get().name();
+
+                    applicationMealRepository.addFood(mealTypeName, uuidFood);
+                }
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -272,13 +292,49 @@ public class FoodDataFetcher {
         return dataFetchingEnvironment -> {
             try {
                 String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
-                Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
-                Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
-                if(!mealType.isPresent())
-                    return false;
-                String mealTypeName = mealType.get().name();
+                ArrayList<Integer> mealTypesInts = dataFetchingEnvironment.getArgument("mealTypes");
 
-                applicationMealRepository.removeFood(mealTypeName, uuidFood);
+                for (Integer mealTypeInt : mealTypesInts) {
+                    Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                    if (!mealType.isPresent())
+                        return false;
+                    String mealTypeName = mealType.get().name();
+
+                    applicationMealRepository.removeFood(mealTypeName, uuidFood);
+                }
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+    }
+    public DataFetcher<Boolean> setMeals(){
+        return dataFetchingEnvironment -> {
+            try {
+                String uuidFood = dataFetchingEnvironment.getArgument("uuidFood");
+                ArrayList<Integer> mealTypesInts = dataFetchingEnvironment.getArgument("mealTypes");
+
+                for (Integer mealTypeInt = 0; mealTypeInt < 6; mealTypeInt++) {
+
+                    if (mealTypesInts.contains(mealTypeInt)) {
+                        Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                        if(!mealType.isPresent())
+                            return false;
+                        String mealTypeName = mealType.get().name();
+
+                        applicationMealRepository.addFood(mealTypeName, uuidFood);
+                    }
+                    else {
+                        Optional<MealType> mealType = MealType.valueOf(mealTypeInt);
+                        if (!mealType.isPresent())
+                            return false;
+                        String mealTypeName = mealType.get().name();
+
+                        applicationMealRepository.removeFood(mealTypeName, uuidFood);
+                    }
+
+                }
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
