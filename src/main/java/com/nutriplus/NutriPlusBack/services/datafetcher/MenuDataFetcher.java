@@ -6,10 +6,8 @@ import com.nutriplus.NutriPlusBack.domain.menu.Portion;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.UserCredentials;
 import com.nutriplus.NutriPlusBack.domain.food.Food;
-import com.nutriplus.NutriPlusBack.repositories.ApplicationFoodRepository;
-import com.nutriplus.NutriPlusBack.repositories.ApplicationMealRepository;
-import com.nutriplus.NutriPlusBack.repositories.ApplicationMenuRepository;
-import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
+import com.nutriplus.NutriPlusBack.repositories.*;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,21 +24,24 @@ public class MenuDataFetcher {
     @Autowired
     private ApplicationMenuRepository applicationMenuRepository;
 
+    @Autowired
+    private ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     private ApplicationFoodRepository applicationFoodRepository;
 
 
+
     public DataFetcher<Menu> getMenu()
     {
         return dataFetchingEnvironment -> {
-            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");//TODO: Change to patientRecord
+            String uuidPatient = dataFetchingEnvironment.getArgument("uuidPatient");
             String uuidMenu = dataFetchingEnvironment.getArgument("uuidMenu");
             Optional<Menu> menu = applicationMenuRepository.getMenuWithPortions(uuidMenu);
             if(!menu.isPresent())
                 return null;
 
-            if(menu.get().getPatient().getUuid().equals(uuidPatient))//TODO: Change to patientRecord
+            if(menu.get().getPatient().getUuid().equals(uuidPatient))
                 return menu.get();
 
             return null;
@@ -73,6 +74,8 @@ public class MenuDataFetcher {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 UserCredentials user = (UserCredentials) authentication.getCredentials();
                 Integer mealTypeInt = dataFetchingEnvironment.getArgument("mealType");
+                String uuidRecord = dataFetchingEnvironment.getArgument("uuidRecord");
+                PatientRecord patientRecord = applicationUserRepository.findSingleRecord(uuidRecord);
 
                 if (!MealType.valueOf(mealTypeInt).isPresent()) {
                     return "ERROR";
@@ -82,7 +85,10 @@ public class MenuDataFetcher {
                 ArrayList<Double> quantities = dataFetchingEnvironment.getArgument("quantities");
                 Patient patient = user.getPatientByUuid(uuidPatient);
                 if(patient == null)
-                    return "Patient no found";
+                    return "Patient not found";
+                if(patientRecord == null)
+                    return "Record not found";
+
                 // fetch foods:
                 ArrayList<Food> foodList = new ArrayList<>();
                 for (String uuidFood : uuidFoods)
@@ -91,7 +97,7 @@ public class MenuDataFetcher {
                     foodList.add(food);
                 }
 
-                Menu menu = new Menu(mealType, patient, foodList, quantities, patientRecord); // TODO: missing patientRecord argument
+                Menu menu = new Menu(mealType, patient, patientRecord, foodList, quantities);
                 applicationMenuRepository.save(menu);
                 return menu.getUuid();
             } catch (Exception e) {
@@ -135,6 +141,14 @@ public class MenuDataFetcher {
                 e.printStackTrace();
                 return false;
             }
+        };
+    }
+
+    public DataFetcher<List<Menu>> getMenusForRecord()
+    {
+        return dataFetchingEnvironment -> {
+            String uuidRecord = dataFetchingEnvironment.getArgument("uuidRecord");
+               return applicationMenuRepository.getMenusForRecord(uuidRecord);
         };
     }
 

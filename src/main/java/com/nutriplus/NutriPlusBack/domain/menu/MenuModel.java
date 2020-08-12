@@ -9,6 +9,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MenuModel extends AbstractEntity {
     @Id
@@ -18,7 +19,10 @@ public abstract class MenuModel extends AbstractEntity {
     MealType mealType;
 
     @Relationship(type = "HAS_MENU", direction = Relationship.INCOMING)
-    PatientRecord patientRecord;
+    Patient patient;
+
+    @Relationship(type = "HAS_MENUS", direction = Relationship.OUTGOING)
+    PatientRecord record;
 
     @Relationship(type = "HAS_PORTION_OF", direction = Relationship.OUTGOING)
     ArrayList<Portion> portions;

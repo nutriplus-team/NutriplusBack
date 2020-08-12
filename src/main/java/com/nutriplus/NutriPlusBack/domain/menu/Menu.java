@@ -16,18 +16,19 @@ public class Menu extends MenuModel{
         super();
     }
 
-    public Menu(MealType mealTypeValue, PatientRecord patientRecordValue) {
+    public Menu(MealType mealTypeValue, Patient patient) {
         super();
         mealType = mealTypeValue;
-        patientRecord = patientRecordValue;
         portions = new ArrayList<Portion>();
+        this.patient = patient;
     }
 
-    public Menu(MealType mealTypeValue, PatientRecord patientRecordValue,
+    public Menu(MealType mealTypeValue, Patient patient, PatientRecord record,
                 ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
         super();
         mealType = mealTypeValue;
-        patientRecord = patientRecordValue;
+        this.patient = patient;
+        this.record = record;
         portions = new ArrayList<Portion>();
         for (int i = 0; i < foodValue.size(); i++) {
             Food food = foodValue.get(i);
@@ -38,7 +39,7 @@ public class Menu extends MenuModel{
 
     // Setters
     public void setMealType(MealType mealTypeValue) { mealType = mealTypeValue;}
-    public void setPatientRecord(PatientRecord patientRecordValue) {patientRecord = patientRecordValue;}
+    public void setPatient(Patient patientValue) {patient = patientValue;}
 
     // Adders
     public void addPortion(Food foodValue, Double quantityValue) {
@@ -56,6 +57,6 @@ public class Menu extends MenuModel{
     public Long getId() {return id;}
     public int getMealType() {return mealType.getNumVal();}
     public MealType getMealTypeEnum() {return mealType;}
-    public PatientRecord getPatientRecord() {return patientRecord;}
+    public Patient getPatient() {return patient;}
     public List<Portion> getPortions() {return portions;}
 }
