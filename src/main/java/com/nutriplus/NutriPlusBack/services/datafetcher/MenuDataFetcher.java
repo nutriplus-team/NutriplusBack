@@ -91,7 +91,7 @@ public class MenuDataFetcher {
                     foodList.add(food);
                 }
 
-                Menu menu = new Menu(mealType, patient, foodList, quantities);
+                Menu menu = new Menu(mealType, patient, foodList, quantities, patientRecord); // TODO: missing patientRecord argument
                 applicationMenuRepository.save(menu);
                 return menu.getUuid();
             } catch (Exception e) {

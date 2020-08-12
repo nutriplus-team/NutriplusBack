@@ -4,6 +4,7 @@ import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.menu.Portion;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
@@ -15,17 +16,20 @@ public class Menu extends MenuModel{
         super();
     }
 
-    public Menu(MealType mealTypeValue, Patient patientValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue, PatientRecord patientRecordValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
+        patientRecord = patientRecordValue;
         portions = new ArrayList<Portion>();
     }
 
-    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
+    public Menu(MealType mealTypeValue, Patient patientValue, PatientRecord patientRecordValue,
+                ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
         super();
         mealType = mealTypeValue;
         patient = patientValue;
+        patientRecord = patientRecordValue;
         portions = new ArrayList<Portion>();
         for (int i = 0; i < foodValue.size(); i++) {
             Food food = foodValue.get(i);
@@ -37,6 +41,7 @@ public class Menu extends MenuModel{
     // Setters
     public void setMealType(MealType mealTypeValue) { mealType = mealTypeValue;}
     public void setPatient(Patient patientValue) {patient = patientValue;}
+    public void setPatientRecord(PatientRecord patientRecordValue) {patientRecord = patientRecordValue;}
 
     // Adders
     public void addPortion(Food foodValue, Double quantityValue) {
@@ -55,5 +60,6 @@ public class Menu extends MenuModel{
     public int getMealType() {return mealType.getNumVal();}
     public MealType getMealTypeEnum() {return mealType;}
     public Patient getPatient() {return patient;}
+    public PatientRecord getPatientRecord() {return patientRecord;}
     public List<Portion> getPortions() {return portions;}
 }

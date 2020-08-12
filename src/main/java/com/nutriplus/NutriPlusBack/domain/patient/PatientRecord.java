@@ -32,8 +32,6 @@ public class PatientRecord extends AbstractEntity {
 
     String dateModified;
 
-    @Relationship(type = "CONTAINS_MENU")
-    List<Menu> menuList = new ArrayList<>();
 
     Boolean isAthlete ;
     Integer age;
