@@ -6,12 +6,6 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-
 
 @NodeEntity
 public class PatientRecord extends AbstractEntity {
@@ -145,8 +139,10 @@ public class PatientRecord extends AbstractEntity {
     public Double getEnergyRequirements(){return energyRequirements;}
 
     //Calculate Functions
-    public void calculateEnergyRequirements(){
-        setEnergyRequirements(getMethabolicRate()*getPhysicalActivityLevel());
+    public Double calculateEnergyRequirements(){
+        Double energyRequirements = getMethabolicRate()*getPhysicalActivityLevel();
+        setEnergyRequirements(energyRequirements);
+        return energyRequirements;
     }
 
     public Constants convertMethodStringToConstants(String method){
@@ -162,7 +158,7 @@ public class PatientRecord extends AbstractEntity {
         return methodConstants;
     }
 
-    public void calculateMethabolicRate(Constants methodMethabolicRate, Short biologicalSex){
+    public Double calculateMethabolicRate(Constants methodMethabolicRate, Short biologicalSex){
         //the default is "" string when patient is no athlete.
         double value = 0;
         if(getIsAthlete()){
@@ -187,10 +183,13 @@ public class PatientRecord extends AbstractEntity {
                 value = (Double) (9.99 * getCorporalMass() + 6.25 * getHeight() - 4.92 * getAge() + 5);
         }
         setMethabolicRate(value);
+        return value;
     }
 
-    public void calculateMuscularMass(Short biologicalSex,Double ethnicGroup){
-        setMuscularMass((Double)(getHeight()*0.0074*Math.pow(getRightArmCirc() - 3.1416*getTriceps()/10,2)+0.00088*Math.pow(getThighCirc()-3.1416*getThigh()/10,2)+0.00441*Math.pow(getCalfCirc()-3.1416*getCalf()/10,2)+2.4*biologicalSex-0.048*getAge()+ethnicGroup+7.8));
+    public Double calculateMuscularMass(Short biologicalSex,Double ethnicGroup){
+        Double value = (Double)(getHeight()*0.0074*Math.pow(getRightArmCirc() - 3.1416*getTriceps()/10,2)+0.00088*Math.pow(getThighCirc()-3.1416*getThigh()/10,2)+0.00441*Math.pow(getCalfCirc()-3.1416*getCalf()/10,2)+2.4*biologicalSex-0.048*getAge()+ethnicGroup+7.8);
+        setMuscularMass(value);
+        return value;
     }
 
     public float sumSevenSkinFolds(){
@@ -201,7 +200,7 @@ public class PatientRecord extends AbstractEntity {
         return (float) (getSubscapular()+getTriceps()+getChest()+getAxillary()+getSupriailiac()+getAbdominal()+getThigh()+getBiceps()+getCalf());
     }
 
-    public void calculateCorporalDensity(Short biologicalSex){
+    public Double calculateCorporalDensity(Short biologicalSex){
         Double corporal_density;
 
         if (biologicalSex == 0) //female
@@ -211,9 +210,11 @@ public class PatientRecord extends AbstractEntity {
             corporal_density = (Double) (1.112 - 0.00043499*sumSevenSkinFolds() + 0.00000055*Math.pow(sumSevenSkinFolds(),2)-0.00028826*sumSevenSkinFolds()*getAge());
 
         setCorporalDensity(corporal_density);
+
+        return corporal_density;
     }
 
-    public void calculateBodyFat(Constants methodBodyFat){
+    public Double calculateBodyFat(Constants methodBodyFat){
 
         Double body_fat;
         if(methodBodyFat == Constants.FAULKNER)
@@ -222,6 +223,8 @@ public class PatientRecord extends AbstractEntity {
             body_fat = (Double) ((4.95/(getCorporalDensity()) - 4.5)*100);
 
         setBodyFat(body_fat);
+
+        return body_fat;
     }
 
 

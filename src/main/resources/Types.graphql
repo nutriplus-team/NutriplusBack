@@ -191,13 +191,13 @@ input NewFoodInput {
     foodGroup: String
     measureTotalGrams: Float
     measureType: String
-    measureAmountValue: Float
+    measureAmount: Float
 }
 
 input CustomFoodInput {
     measureTotalGrams: Float
     measureType: String
-    measureAmountValue: Float
+    measureAmount: Float
 }
 
 input NutritionFactsInput {
