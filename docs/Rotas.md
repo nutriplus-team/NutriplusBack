@@ -860,6 +860,28 @@ query {
    }
 }
 ```
+#### <a name='getMenusForRecord'></a>getMenusForRecord
+Retorna todos os uuids dos Menus relacionados a uma ficha de paciente.
+
+```
+query {
+    getMenusForRecord(uuidRecord: String!)
+}
+```
+
+Exemplo:
+
+```
+query {
+    getMenusForRecord(uuidRecord: "593e5457ff904ba4962e811cefe44dd8")
+    {
+        uuid,
+        mealType
+        //ISTO EH UM COMENTARIO: Essa função somente retorna esses dois parametros
+    }
+}
+```
+
 
 #### <a name='getMenusForMeal'></a>getMenusForMeal
 Retorna todos os Menus de um paciente para uma determinada refeição. Os campos disponíveis para Food e para NutritionFacts são os mesmos citados em [getMenu](#getMenu). Só lembrando que a corresnpondência entre uma refeição e seu número é 0-breakfast, 1-morningSnack, 2-Lunch, 3-AfternoonSnack, 4-preWorkout, 5-dinner.
@@ -916,7 +938,7 @@ Rota:
 ```
 mutation
 {
-    addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
+    addMenu(mealType: Int!, uuidRecord: String!, uuidPatient: String!, uuidFoods: [String], quantities: [Float])
 }
 ```
 
@@ -924,7 +946,7 @@ Exemplo:
 ```
 mutation
 {
-    addMenu(mealType: 3, uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
+    addMenu(mealType: 3, uuidRecord: "593e5457ff904ba4962e811cefe44dd8", uuidPatient: "5b96c7faacfc4ead8770b07157b5dbd7", uuidFoods: ["3743096a5b3d4fc9991af06182a9cbd6"], quantities: [1.0])
 }
 ```
 
