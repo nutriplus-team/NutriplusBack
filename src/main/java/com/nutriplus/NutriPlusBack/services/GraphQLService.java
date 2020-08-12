@@ -73,7 +73,9 @@ public class GraphQLService{
                         //Menu
                         .dataFetcher("getMenu", menuDataFetcher.getMenu())
                         .dataFetcher("getAllMenusForPatient", menuDataFetcher.getAllMenusForPatient())
-                        .dataFetcher("getMenusForMeal", menuDataFetcher.getMenusForMeal()))
+                        .dataFetcher("getMenusForMeal", menuDataFetcher.getMenusForMeal())
+                        .dataFetcher("getMenusForRecord", menuDataFetcher.getMenusForRecord())
+                )
                 .type("Mutation",typeWiring->typeWiring
                         // Patient
                         .dataFetcher("removePatient",patientsDataFetcher.removePatient())

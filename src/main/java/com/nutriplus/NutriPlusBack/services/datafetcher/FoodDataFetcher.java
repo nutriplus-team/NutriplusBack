@@ -142,14 +142,14 @@ public class FoodDataFetcher {
             String foodGroup = (String) foodInput.get("foodGroup");
             String measureType = (String) foodInput.get("measureType");
             Double measureTotalGrams = (Double) foodInput.get("measureTotalGrams");
-            Double measureAmountValue = (Double) foodInput.get("measureAmountValue");
+            Double measureAmount = (Double) foodInput.get("measureAmount");
 
             // Instantiate food and add to database
             NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
                     lipidsValue, fiberValue);
 
             Food createdFood = new Food(user, foodName, foodGroup, measureTotalGrams,
-                    measureType, measureAmountValue, nutritionFacts);
+                    measureType, measureAmount, nutritionFacts);
 
             applicationFoodRepository.save(createdFood);
             applicationUserRepository.save(user);
@@ -177,7 +177,7 @@ public class FoodDataFetcher {
             // Get food data from input
             String measureType = (String) customInput.get("measureType");
             Double measureTotalGrams = (Double) customInput.get("measureTotalGrams");
-            Double measureAmountValue = (Double) customInput.get("measureAmountValue");
+            Double measureAmount = (Double) customInput.get("measureAmount");
 
             // Instantiate food and add to database
             NutritionFacts nutritionFacts = new NutritionFacts(caloriesValue, proteinsValue, carbohydratesValue,
@@ -190,7 +190,7 @@ public class FoodDataFetcher {
                 originalFood.setNutritionFacts(nutritionFacts);
                 originalFood.setMeasureType(measureType);
                 originalFood.setMeasureTotalGrams(measureTotalGrams);
-                originalFood.setMeasureAmount(measureAmountValue);
+                originalFood.setMeasureAmount(measureAmount);
 
                 applicationFoodRepository.save(originalFood);
                 applicationUserRepository.save(user);
@@ -203,7 +203,7 @@ public class FoodDataFetcher {
                 customFood.setNutritionFacts(nutritionFacts);
                 customFood.setMeasureType(measureType);
                 customFood.setMeasureTotalGrams(measureTotalGrams);
-                customFood.setMeasureAmount(measureAmountValue);
+                customFood.setMeasureAmount(measureAmount);
 
                 applicationFoodRepository.save(customFood);
                 applicationUserRepository.save(user);

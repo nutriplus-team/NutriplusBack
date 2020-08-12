@@ -23,6 +23,7 @@ type Query {
     getMenu(uuidMenu: String!, uuidPatient: String!): Menu
     getAllMenusForPatient(uuidPatient: String!): [Menu]
     getMenusForMeal(uuidPatient: String!, mealType: Int!): [Menu]
+    getMenusForRecord(uuidRecord: String!): [Menu]
 }
 
 type Mutation{
@@ -47,7 +48,7 @@ type Mutation{
     setMeals(uuidFood: String!, mealTypes: [Int]) : Boolean
 
     # Menu
-    addMenu(mealType: Int!, uuidPatient: String!, uuidFoods: [String], quantities: [Float]) : String
+    addMenu(mealType: Int!, uuidPatient: String!, uuidRecord: String!, uuidFoods: [String], quantities: [Float]) : String
     removeMenu(uuidMenu: String!) : Boolean
     editMenu(uuidMenu: String!, uuidFoods: [String], quantities: [Float]) : Boolean
 
@@ -111,6 +112,7 @@ type PatientRecord{
     bodyFat:    Float
     methabolicRate: Float
     energyRequirements: Float
+    menus: [String]
 }
 
 input PatientRecordInput{
@@ -145,6 +147,7 @@ input PatientRecordInput{
     methabolicRate: Float
     energyRequirements: Float
 }
+
 
 type Menu {
     uuid: String
