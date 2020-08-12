@@ -1229,7 +1229,8 @@ query {
         bodyFat,
         methabolicRate,
         dateModified,
-        energyRequirements
+        energyRequirements,
+        menus
     }
 }
 ```
