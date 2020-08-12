@@ -225,11 +225,20 @@ public class PatientDataFetcher {
                 Date date = new Date(System.currentTimeMillis());
                 patientRecord.setDateModified(formatter.format(date));
 
+                for(String key : input.keySet()){
+                    Field field = PatientRecord.class.getDeclaredField(key);
+                    field.setAccessible(true);
+                    field.set(patientRecord, input.get(key));
+                }
+
                 Constants methodBodyFat = null;
                 Constants methodMethabolicRate = null;
-                LinkedHashMap<String,Object> inputCalculated = new LinkedHashMap<String, Object>();
 
-                applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
+
+                if(!input.containsKey("corporalDensity")){
+                    Double corporalDensity = patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+                    input.put("corporalDensity",corporalDensity);
+                }
 
                 if(!input.containsKey("bodyFat")){
                     if(input.containsKey("methodBodyFat")) {
@@ -240,18 +249,13 @@ public class PatientDataFetcher {
                         methodBodyFat = patientRecord.convertMethodStringToConstants(patientRecord.getMethodBodyFat());
                     }
                     Double bodyFat = patientRecord.calculateBodyFat(methodBodyFat);
-                    inputCalculated.put("bodyFat",bodyFat);
+                    input.put("bodyFat",bodyFat);
                 }
 
-
-                if(!input.containsKey("corporalDensity")){
-                    Double corporalDensity = patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-                    inputCalculated.put("corporalDensity",corporalDensity);
-                }
 
                 if(!input.containsKey("muscularMass")){
                     Double muscularMass = patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
-                    inputCalculated.put("muscularMass",muscularMass);
+                    input.put("muscularMass",muscularMass);
                 }
 
 
@@ -263,16 +267,16 @@ public class PatientDataFetcher {
                         methodMethabolicRate = patientRecord.convertMethodStringToConstants(patientRecord.getMethodMethabolicRate());
                     }
                     Double methabolicRate = patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
-                    inputCalculated.put("methabolicRate",methabolicRate);
+                    input.put("methabolicRate",methabolicRate);
                 }
 
 
                 if(!input.containsKey("energyRequirements")){
                     Double energyRequirements = patientRecord.calculateEnergyRequirements();
-                    inputCalculated.put("energyRequirements",energyRequirements);
+                    input.put("energyRequirements",energyRequirements);
                 }
 
-                applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,inputCalculated);
+                applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
 
                 return true;
             }else return false;
