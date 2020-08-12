@@ -4,6 +4,7 @@ import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.meal.MealType;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.menu.Portion;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
@@ -15,17 +16,19 @@ public class Menu extends MenuModel{
         super();
     }
 
-    public Menu(MealType mealTypeValue, Patient patientValue) {
+    public Menu(MealType mealTypeValue, Patient patient) {
         super();
         mealType = mealTypeValue;
-        patient = patientValue;
         portions = new ArrayList<Portion>();
+        this.patient = patient;
     }
 
-    public Menu(MealType mealTypeValue, Patient patientValue, ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
+    public Menu(MealType mealTypeValue, Patient patient, PatientRecord record,
+                ArrayList<Food> foodValue, ArrayList<Double> quantityValue) {
         super();
         mealType = mealTypeValue;
-        patient = patientValue;
+        this.patient = patient;
+        this.record = record;
         portions = new ArrayList<Portion>();
         for (int i = 0; i < foodValue.size(); i++) {
             Food food = foodValue.get(i);

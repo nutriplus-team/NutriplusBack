@@ -22,11 +22,11 @@ public class NutritionFactsToGraph implements CompositeAttributeConverter<Nutrit
 
     @Override
     public NutritionFacts toEntityAttribute(Map<String, ?> map) {
-        double calories = (Double) map.get("calories");
-        double proteins = (Double) map.get("proteins");
-        double lipids = (Double) map.get("lipids");
-        double fiber = (Double) map.get("fiber");
-        double carbohydrates = (Double) map.get("carbohydrates");
+        Double calories = (Double) map.get("calories");
+        Double proteins = (Double) map.get("proteins");
+        Double lipids = (Double) map.get("lipids");
+        Double fiber = (Double) map.get("fiber");
+        Double carbohydrates = (Double) map.get("carbohydrates");
         return new NutritionFacts(calories, proteins, carbohydrates, lipids, fiber);
     }
 }
