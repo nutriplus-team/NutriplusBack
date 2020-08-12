@@ -5,6 +5,7 @@ import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.patient.Constants;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
+import com.nutriplus.NutriPlusBack.repositories.ApplicationRecordRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class PatientDataFetcher {
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
+
+    @Autowired
+    ApplicationRecordRepository applicationRecordRepository;
 
 
     public DataFetcher<Patient> getPatient() {

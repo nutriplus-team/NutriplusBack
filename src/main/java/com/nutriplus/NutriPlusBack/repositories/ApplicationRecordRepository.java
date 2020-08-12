@@ -7,6 +7,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import java.util.ArrayList;
 
 public interface ApplicationRecordRepository extends Neo4jRepository<PatientRecord, Long> {
-    @Query("MATCH (p:Patient)-[:HAS_RECORD]->(r:PatientRecord) WHERE p.uuid=$0 RETURN r.uuid")
-    ArrayList<String> getUuidFromPatientRecords(String uuid);
+    @Query("MATCH (r:PatientRecord)-[:HAS_MENU]->(m:Menu) WHERE r.uuid=$0 RETURN m.uuid")
+    ArrayList<String> getMenusUuidsFromPatientRecord(String uuid);
 }
