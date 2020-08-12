@@ -2,15 +2,20 @@ package com.nutriplus.NutriPlusBack.domain.patient;
 
 
 import com.nutriplus.NutriPlusBack.domain.AbstractEntity;
+import com.nutriplus.NutriPlusBack.domain.food.Food;
+import com.nutriplus.NutriPlusBack.domain.menu.Menu;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 @NodeEntity
@@ -26,6 +31,9 @@ public class PatientRecord extends AbstractEntity {
     String uuidPatient;
 
     String dateModified;
+
+    @Relationship(type = "CONTAINS_MENU")
+    List<Menu> menuList = new ArrayList<>();
 
     Boolean isAthlete ;
     Integer age;
