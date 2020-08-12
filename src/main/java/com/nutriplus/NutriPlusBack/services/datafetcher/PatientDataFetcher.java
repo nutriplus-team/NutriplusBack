@@ -5,9 +5,12 @@ import com.nutriplus.NutriPlusBack.domain.food.Food;
 import com.nutriplus.NutriPlusBack.domain.patient.Constants;
 import com.nutriplus.NutriPlusBack.domain.patient.Patient;
 import com.nutriplus.NutriPlusBack.domain.patient.PatientRecord;
+import com.nutriplus.NutriPlusBack.domain.patient.PatientRecordDTO;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationRecordRepository;
 import com.nutriplus.NutriPlusBack.repositories.ApplicationUserRepository;
 import graphql.schema.DataFetcher;
+import org.checkerframework.checker.units.qual.A;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +28,13 @@ import java.util.concurrent.TimeUnit;
 public class PatientDataFetcher {
 
     @Autowired
-    ApplicationUserRepository applicationUserRepository;
+    private ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    ApplicationRecordRepository applicationRecordRepository;
+    private ApplicationRecordRepository applicationRecordRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     public DataFetcher<Patient> getPatient() {
@@ -309,12 +315,24 @@ public class PatientDataFetcher {
         };
     }
 
-    public DataFetcher<PatientRecord> getSingleRecord(){
+    private PatientRecordDTO mapRecordToDTO(PatientRecord record)
+    {
+        return modelMapper.map(record, PatientRecordDTO.class);
+    }
+
+    public DataFetcher<PatientRecordDTO> getSingleRecord(){
         return dataFetchingEnvironment -> {
             String uuidRecord = dataFetchingEnvironment.getArgument("uuidRecord");
             PatientRecord patientRecord = applicationUserRepository.findSingleRecord(uuidRecord);
+            if(patientRecord == null)
+                return null;
+
+            PatientRecordDTO recordDTO = mapRecordToDTO(patientRecord);
+            List<String> menusUuids = applicationRecordRepository.getMenusUuidsFromPatientRecord(uuidRecord);
+            recordDTO.setMenus(menusUuids);
+
             if(patientRecord.getUuid().equals(uuidRecord)) {
-                return patientRecord;
+                return recordDTO;
             }else return null;
         };
     }

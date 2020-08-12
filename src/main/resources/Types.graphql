@@ -112,6 +112,7 @@ type PatientRecord{
     bodyFat:    Float
     methabolicRate: Float
     energyRequirements: Float
+    menus: [String]
 }
 
 input PatientRecordInput{
