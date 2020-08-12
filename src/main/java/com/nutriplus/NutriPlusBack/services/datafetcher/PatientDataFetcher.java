@@ -224,28 +224,56 @@ public class PatientDataFetcher {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = new Date(System.currentTimeMillis());
                 patientRecord.setDateModified(formatter.format(date));
-                if(input.containsKey("methodBodyFat") && !input.containsKey("bodyFat")) {
-                    Constants methodBodyFat = null;
-                    String methodBodyFatString = (String) input.get("methodBodyFat");
-                    methodBodyFat = patientRecord.convertMethodStringToConstants(methodBodyFatString);
-                    patientRecord.calculateBodyFat(methodBodyFat);
 
-                }if(!input.containsKey("corporalDensity"))
-                    patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
-                if(!input.containsKey("muscularMass"))
-                    patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
-                if(!input.containsKey("methabolicRate") && input.containsKey("methodMethabolicRate")) {
-                    Constants methodMethabolicRate = null;
-                    String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
-                    methodMethabolicRate = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
-
-                    patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
-                }
-
-                if(!input.containsKey("energyRequirements"))
-                    patientRecord.calculateEnergyRequirements();
+                Constants methodBodyFat = null;
+                Constants methodMethabolicRate = null;
+                LinkedHashMap<String,Object> inputCalculated = new LinkedHashMap<String, Object>();
 
                 applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,input);
+
+                if(!input.containsKey("bodyFat")){
+                    if(input.containsKey("methodBodyFat")) {
+                        String methodBodyFatString = (String) input.get("methodBodyFat");
+                        methodBodyFat = patientRecord.convertMethodStringToConstants(methodBodyFatString);
+
+                    }else{
+                        methodBodyFat = patientRecord.convertMethodStringToConstants(patientRecord.getMethodBodyFat());
+                    }
+                    Double bodyFat = patientRecord.calculateBodyFat(methodBodyFat);
+                    inputCalculated.put("bodyFat",bodyFat);
+                }
+
+
+                if(!input.containsKey("corporalDensity")){
+                    Double corporalDensity = patientRecord.calculateCorporalDensity(patient.getBiologicalSex());
+                    inputCalculated.put("corporalDensity",corporalDensity);
+                }
+
+                if(!input.containsKey("muscularMass")){
+                    Double muscularMass = patientRecord.calculateMuscularMass(patient.getBiologicalSex(),patient.getEthnicGroup());
+                    inputCalculated.put("muscularMass",muscularMass);
+                }
+
+
+                if(!input.containsKey("methabolicRate")){
+                    if(input.containsKey("methodMethabolicRate")) {
+                        String methodMethabolicRateString = (String) input.get("methodMethabolicRate");
+                        methodMethabolicRate = patientRecord.convertMethodStringToConstants(methodMethabolicRateString);
+                    }else{
+                        methodMethabolicRate = patientRecord.convertMethodStringToConstants(patientRecord.getMethodMethabolicRate());
+                    }
+                    Double methabolicRate = patientRecord.calculateMethabolicRate(methodMethabolicRate, patient.getBiologicalSex());
+                    inputCalculated.put("methabolicRate",methabolicRate);
+                }
+
+
+                if(!input.containsKey("energyRequirements")){
+                    Double energyRequirements = patientRecord.calculateEnergyRequirements();
+                    inputCalculated.put("energyRequirements",energyRequirements);
+                }
+
+                applicationUserRepository.updatePatientRecordFromRepository(uuidPatientRecord,inputCalculated);
+
                 return true;
             }else return false;
         };
