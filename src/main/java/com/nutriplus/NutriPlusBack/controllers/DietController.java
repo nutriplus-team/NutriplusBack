@@ -485,6 +485,7 @@ public class DietController {
                 if(excluding.contains(checking.getUuid()))
                 {
                     num = random.nextInt(similarSize);
+                    checking = availableFoods.get(num);
                 }
                 else
                 {
