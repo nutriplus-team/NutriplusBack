@@ -26,14 +26,14 @@ public class AutomaticPopulating {
     private ApplicationMealRepository applicationMealRepository;
 
     @Bean
-    void firstStartUp(){
+    void onStartUp(){
+        startMeals();
+
         if (applicationFoodRepository.numOfFoods() == 0)
             FoodPopulate();
     }
 
     void FoodPopulate(){
-
-        startMeals();
 
         // Read csv
         String csvFile = "./dbAux/foods.csv";
