@@ -25,3 +25,5 @@ To run the application, use gradle and run the command:
 ```
 ./gradlew bootRun
 ```
+
+The API queries utilize GrahQL and its documentation is available on ```docs/rotas.md```
